@@ -15,13 +15,20 @@ import { useForm } from "@mantine/form";
 import { useToggle } from "@mantine/hooks";
 import { GoogleButton } from "../Button/GoogleButton";
 import styled from "styled-components";
-import { ReactNode, useCallback } from "react";
-import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { ReactNode, useCallback, useState } from "react";
+import {
+  getAuth,
+  GoogleAuthProvider,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+} from "firebase/auth";
 import { FirebaseError } from "firebase/app";
 import { useNavigate } from "react-router-dom";
+import fireAuth from "../../../../firebase";
 
 export const AuthenticationForm = (props: PaperProps) => {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const [type, toggle] = useToggle(["login", "register"]);
   const form = useForm({
@@ -54,6 +61,24 @@ export const AuthenticationForm = (props: PaperProps) => {
     }
   }, [navigate]);
 
+  const handleSignIn = useCallback(async () => {
+    setLoading(true);
+    try {
+      await signInWithEmailAndPassword(
+        fireAuth,
+        form.values.email,
+        form.values.password
+      );
+      // const response = await axios.get(baseURL + "/user2?email=" + values.email);
+      // const response2 = await axios.get(baseURL + '/channel/join?user_id=' + response.data[0].id);
+
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+      setLoading(false);
+    }
+  }, [form, navigate]);
+
   return (
     <_Paper radius="md" p="xl" withBorder {...props}>
       <Text size="lg" fw={500}>
@@ -68,11 +93,7 @@ export const AuthenticationForm = (props: PaperProps) => {
 
       <Divider label="または" labelPosition="center" my="lg" />
 
-      <form
-        onSubmit={form.onSubmit(() => {
-          console.log("form.values", form.values);
-        })}
-      >
+      <form onSubmit={form.onSubmit(handleSignIn)}>
         <Stack>
           {type === "register" && (
             <TextInput
@@ -135,7 +156,7 @@ export const AuthenticationForm = (props: PaperProps) => {
               ? "アカウントをお持ちの方はログイン"
               : "アカウントを作成"}
           </Anchor>
-          <Button type="submit" radius="xl">
+          <Button type="submit" radius="xl" disabled={loading}>
             {type === "register" ? "登録" : "ログイン"}
           </Button>
         </Group>
