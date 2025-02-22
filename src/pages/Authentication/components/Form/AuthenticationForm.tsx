@@ -15,9 +15,14 @@ import { useForm } from "@mantine/form";
 import { useToggle } from "@mantine/hooks";
 import { GoogleButton } from "../Button/GoogleButton";
 import styled from "styled-components";
-import { ReactNode } from "react";
+import { ReactNode, useCallback } from "react";
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { FirebaseError } from "firebase/app";
+import { useNavigate } from "react-router-dom";
 
 export const AuthenticationForm = (props: PaperProps) => {
+  const navigate = useNavigate();
+
   const [type, toggle] = useToggle(["login", "register"]);
   const form = useForm({
     initialValues: {
@@ -34,6 +39,21 @@ export const AuthenticationForm = (props: PaperProps) => {
     },
   });
 
+  const signInWithGoogle = useCallback(async () => {
+    const provider = new GoogleAuthProvider();
+    try {
+      const auth = getAuth();
+      await signInWithPopup(auth, provider);
+      navigate("/");
+      return { success: true, message: "" };
+    } catch (e) {
+      if (e instanceof FirebaseError) {
+        console.log(e);
+      }
+      return { success: false, message: "エラーが発生しました" };
+    }
+  }, [navigate]);
+
   return (
     <_Paper radius="md" p="xl" withBorder {...props}>
       <Text size="lg" fw={500}>
@@ -41,12 +61,18 @@ export const AuthenticationForm = (props: PaperProps) => {
       </Text>
 
       <Group grow mb="md" mt="md">
-        <GoogleButton radius="xl">Googleでログイン</GoogleButton>
+        <GoogleButton radius="xl" onClick={signInWithGoogle}>
+          Googleでログイン
+        </GoogleButton>
       </Group>
 
       <Divider label="または" labelPosition="center" my="lg" />
 
-      <form onSubmit={form.onSubmit(() => {console.log(form.values)})}>
+      <form
+        onSubmit={form.onSubmit(() => {
+          console.log("form.values", form.values);
+        })}
+      >
         <Stack>
           {type === "register" && (
             <TextInput
