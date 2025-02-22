@@ -17,6 +17,7 @@ import { GoogleButton } from "../Button/GoogleButton";
 import styled from "styled-components";
 import { ReactNode, useCallback, useState } from "react";
 import {
+  createUserWithEmailAndPassword,
   getAuth,
   GoogleAuthProvider,
   signInWithEmailAndPassword,
@@ -63,21 +64,44 @@ export const AuthenticationForm = (props: PaperProps) => {
 
   const handleSignIn = useCallback(async () => {
     setLoading(true);
-    try {
-      await signInWithEmailAndPassword(
-        fireAuth,
-        form.values.email,
-        form.values.password
-      );
-      // const response = await axios.get(baseURL + "/user2?email=" + values.email);
-      // const response2 = await axios.get(baseURL + '/channel/join?user_id=' + response.data[0].id);
+    if (type === "login") {
+      try {
+        await signInWithEmailAndPassword(
+          fireAuth,
+          form.values.email,
+          form.values.password
+        );
+        // const response = await axios.get(baseURL + "/user2?email=" + values.email);
+        // const response2 = await axios.get(baseURL + '/channel/join?user_id=' + response.data[0].id);
 
-      navigate("/");
-    } catch (error) {
-      console.error(error);
-      setLoading(false);
+        navigate("/");
+      } catch (error) {
+        console.error(error);
+        setLoading(false);
+      }
+    } else {
+      try {
+        // const response = await axios.post(baseURL + '/user', {
+        //   name: values.name,
+        //   email: values.email
+        // });
+        // const response2 = await axios.get(baseURL + '/channel/join?user_id=' + response.data.id);
+
+        await createUserWithEmailAndPassword(
+          fireAuth,
+          form.values.email,
+          form.values.password
+        );
+
+        // setUser(response.data.id, response.data.name, defaultIcon, channel_id);
+
+        navigate("/");
+      } catch (error) {
+        console.error(error);
+        setLoading(false);
+      }
     }
-  }, [form, navigate]);
+  }, [form, navigate, type]);
 
   return (
     <_Paper radius="md" p="xl" withBorder {...props}>
