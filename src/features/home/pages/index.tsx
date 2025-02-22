@@ -2,6 +2,7 @@ import { FC } from "react";
 import styled from "styled-components";
 import { useAuth } from "../../../hooks/useAuth";
 import { Stack } from "@mantine/core";
+import { BottomNavBar } from "../../../components/BottomNavBar/BottomNavBar";
 
 export const Index: FC = () => {
   const { signOut } = useAuth();
@@ -10,6 +11,7 @@ export const Index: FC = () => {
     <Stack align="center" justify="center" gap="8">
       <_Text>これはホームです</_Text>
       <_Button onClick={signOut}>ログアウト</_Button>
+      <BottomNavBar />
     </Stack>
   );
 };
