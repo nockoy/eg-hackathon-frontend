@@ -19,12 +19,12 @@ import { ReactNode } from "react";
 import { useAuth } from "../../../../hooks/useAuth";
 
 export const AuthenticationForm = (props: PaperProps) => {
-  const { signInWithGoogle, handleSignIn, handleSignUp, loading } = useAuth();
+  const { signInWithGoogle, signIn, signUp, loading } = useAuth();
   const [type, toggle] = useToggle(["login", "register"]);
   const form = useForm({
     initialValues: {
       email: "",
-      nickname: "",
+      nickname: "", 
       password: "",
       // terms: true, // TODO: 利用規約を作成する
     },
@@ -38,9 +38,9 @@ export const AuthenticationForm = (props: PaperProps) => {
 
   const onSubmit = form.onSubmit((values) => {
     if (type === "login") {
-      handleSignIn(values.email, values.password);
+      signIn(values.email, values.password);
     } else {
-      handleSignUp(values.email, values.password);
+      signUp(values.email, values.password);
     }
   });
 

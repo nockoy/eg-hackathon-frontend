@@ -1,27 +1,15 @@
-import { FirebaseError } from "firebase/app";
-import { getAuth, signOut } from "firebase/auth";
-import { useCallback } from "react";
+
 import styled from "styled-components";
+import { useAuth } from "../../hooks/useAuth";
 
 export const Home = () => {
-  const signOutFromFirebase = useCallback(async () => {
-    try {
-      const auth = getAuth()
-      await signOut(auth)
-      return { success: true, message: '' }
-    } catch (e) {
-      if (e instanceof FirebaseError) {
-        console.log(e)
-      }
-      return { success: false, message: 'エラーが発生しました' }
-    }
-  }, [])
+  const { signOut } = useAuth();
 
   return (
     <div>
       <Text>Home</Text>
       <button
-        onClick={signOutFromFirebase}
+        onClick={signOut}
       >
         ログアウト
       </button>

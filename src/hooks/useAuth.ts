@@ -6,6 +6,7 @@ import {
   GoogleAuthProvider,
   signInWithEmailAndPassword,
   signInWithPopup,
+  signOut as signOutFirebase,
 } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
 import fireAuth from "../firebase";
@@ -29,7 +30,7 @@ export const useAuth = () => {
     }
   }, [navigate]);
 
-  const handleSignIn = useCallback(
+  const signIn = useCallback(
     async (email: string, password: string) => {
       setLoading(true);
       try {
@@ -43,7 +44,7 @@ export const useAuth = () => {
     [navigate]
   );
 
-  const handleSignUp = useCallback(
+  const signUp = useCallback(
     async (email: string, password: string) => {
       setLoading(true);
 
@@ -58,5 +59,18 @@ export const useAuth = () => {
     [navigate]
   );
 
-  return { signInWithGoogle, handleSignIn, handleSignUp, loading };
+  const signOut = useCallback(async () => {
+    try {
+      const auth = getAuth();
+      await signOutFirebase(auth);
+      return { success: true, message: "" };
+    } catch (e) {
+      if (e instanceof FirebaseError) {
+        console.log(e);
+      }
+      return { success: false, message: "エラーが発生しました" };
+    }
+  }, []);
+
+  return { signInWithGoogle, signIn, signUp, signOut, loading };
 };
