@@ -1,21 +1,17 @@
+import { FC } from "react";
 import styled from "styled-components";
+import { DefaultLayout } from "../../components/Layout/DefaultLayout";
+import { Stack } from "@mantine/core";
 
-export const NotFound = () => {
+export const NotFound: FC = () => {
   return (
-    <_PageWrapper>
-      <_Text>NotFound</_Text>
-    </_PageWrapper>
+    <DefaultLayout>
+      <Stack align="center" justify="center" gap="8">
+        <_Text>NotFound</_Text>
+      </Stack>
+    </DefaultLayout>
   );
 };
-
-const _PageWrapper = styled.div`
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
 
 const _Text = styled.div`
   font-size: 20px;

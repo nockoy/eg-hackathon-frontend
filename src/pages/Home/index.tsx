@@ -1,28 +1,20 @@
 import styled from "styled-components";
 import { useAuth } from "../../hooks/useAuth";
 import { Stack } from "@mantine/core";
+import { DefaultLayout } from "../../components/Layout/DefaultLayout";
 
 export const Home = () => {
   const { signOut } = useAuth();
 
   return (
-    <_PageWrapper>
+    <DefaultLayout>
       <Stack align="center" justify="center" gap="8">
         <_Text>これはホームです</_Text>
         <_Button onClick={signOut}>ログアウト</_Button>
       </Stack>
-    </_PageWrapper>
+    </DefaultLayout>
   );
 };
-
-const _PageWrapper = styled.div`
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-`;
 
 const _Text = styled.div`
   font-size: 20px;
