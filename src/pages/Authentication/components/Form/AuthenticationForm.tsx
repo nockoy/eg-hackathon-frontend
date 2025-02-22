@@ -1,7 +1,7 @@
 import {
   Anchor,
   Button,
-  Checkbox,
+  // Checkbox,
   Divider,
   Group,
   Paper,
@@ -15,29 +15,18 @@ import { useForm } from "@mantine/form";
 import { useToggle } from "@mantine/hooks";
 import { GoogleButton } from "../Button/GoogleButton";
 import styled from "styled-components";
-import { ReactNode, useCallback, useState } from "react";
-import {
-  createUserWithEmailAndPassword,
-  getAuth,
-  GoogleAuthProvider,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-} from "firebase/auth";
-import { FirebaseError } from "firebase/app";
-import { useNavigate } from "react-router-dom";
-import fireAuth from "../../../../firebase";
+import { ReactNode } from "react";
+import { useAuth } from "../../../../hooks/useAuth";
 
 export const AuthenticationForm = (props: PaperProps) => {
-  const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
-
+  const { signInWithGoogle, handleSignIn, handleSignUp, loading } = useAuth();
   const [type, toggle] = useToggle(["login", "register"]);
   const form = useForm({
     initialValues: {
       email: "",
-      name: "",
+      nickname: "",
       password: "",
-      terms: true,
+      // terms: true, // TODO: 利用規約を作成する
     },
 
     validate: {
@@ -47,61 +36,13 @@ export const AuthenticationForm = (props: PaperProps) => {
     },
   });
 
-  const signInWithGoogle = useCallback(async () => {
-    const provider = new GoogleAuthProvider();
-    try {
-      const auth = getAuth();
-      await signInWithPopup(auth, provider);
-      navigate("/");
-      return { success: true, message: "" };
-    } catch (e) {
-      if (e instanceof FirebaseError) {
-        console.log(e);
-      }
-      return { success: false, message: "エラーが発生しました" };
-    }
-  }, [navigate]);
-
-  const handleSignIn = useCallback(async () => {
-    setLoading(true);
+  const onSubmit = form.onSubmit((values) => {
     if (type === "login") {
-      try {
-        await signInWithEmailAndPassword(
-          fireAuth,
-          form.values.email,
-          form.values.password
-        );
-        // const response = await axios.get(baseURL + "/user2?email=" + values.email);
-        // const response2 = await axios.get(baseURL + '/channel/join?user_id=' + response.data[0].id);
-
-        navigate("/");
-      } catch (error) {
-        console.error(error);
-        setLoading(false);
-      }
+      handleSignIn(values.email, values.password);
     } else {
-      try {
-        // const response = await axios.post(baseURL + '/user', {
-        //   name: values.name,
-        //   email: values.email
-        // });
-        // const response2 = await axios.get(baseURL + '/channel/join?user_id=' + response.data.id);
-
-        await createUserWithEmailAndPassword(
-          fireAuth,
-          form.values.email,
-          form.values.password
-        );
-
-        // setUser(response.data.id, response.data.name, defaultIcon, channel_id);
-
-        navigate("/");
-      } catch (error) {
-        console.error(error);
-        setLoading(false);
-      }
+      handleSignUp(values.email, values.password);
     }
-  }, [form, navigate, type]);
+  });
 
   return (
     <_Paper radius="md" p="xl" withBorder {...props}>
@@ -117,16 +58,16 @@ export const AuthenticationForm = (props: PaperProps) => {
 
       <Divider label="または" labelPosition="center" my="lg" />
 
-      <form onSubmit={form.onSubmit(handleSignIn)}>
+      <form onSubmit={onSubmit}>
         <Stack>
           {type === "register" && (
             <TextInput
               required
               label="ニックネーム"
               placeholder=""
-              value={form.values.name}
+              value={form.values.nickname}
               onChange={(event) =>
-                form.setFieldValue("name", event.currentTarget.value)
+                form.setFieldValue("nickname", event.currentTarget.value)
               }
               radius="md"
             />
@@ -156,8 +97,8 @@ export const AuthenticationForm = (props: PaperProps) => {
             radius="md"
           />
 
-          {type === "register" && (
-            // TODO: 利用規約を作成する
+          {/* 利用規約 */}
+          {/* {type === "register" && (
             <Checkbox
               label="利用規約に同意する"
               checked={form.values.terms}
@@ -165,7 +106,7 @@ export const AuthenticationForm = (props: PaperProps) => {
                 form.setFieldValue("terms", event.currentTarget.checked)
               }
             />
-          )}
+          )} */}
         </Stack>
 
         <Group justify="space-between" mt="xl">

@@ -1,11 +1,13 @@
-import { createContext, useState, useContext, useEffect } from 'react';
+import { createContext, useState, useContext, useEffect } from "react";
 
-import { User } from 'firebase/auth';
-import fireAuth from '../firebase';
+import { User } from "firebase/auth";
+import fireAuth from "../firebase";
 // import { fireAuth } from '../firebase';
 
-
-const AuthContext = createContext<{ user: User | null; loading: boolean; }>({ user: null, loading: true });
+const AuthContext = createContext<{ user: User | null; loading: boolean }>({
+  user: null,
+  loading: true,
+});
 
 export function useAuthContext() {
   return useContext(AuthContext);
@@ -16,10 +18,10 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const [loading, setLoading] = useState<boolean>(true);
 
-  const value : {
-    user: User | null,
-    loading: boolean,
-  } = {user, loading};
+  const value: {
+    user: User | null;
+    loading: boolean;
+  } = { user, loading };
 
   useEffect(() => {
     const unsubscribed = fireAuth.onAuthStateChanged((user) => {
@@ -32,7 +34,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   if (loading) {
-    return <p>loading...</p>;
+    return null;
   } else {
     return (
       <AuthContext.Provider value={value}>
