@@ -5,7 +5,7 @@ import "@mantine/core/styles.css";
 
 import { MantineProvider } from "@mantine/core";
 import { Authentication } from "./pages/Authentication";
-import { useAuthContext } from "./context/AuthContext";
+import { useAuthContext } from "./contexts/AuthContext";
 import React from "react";
 
 export const App = () => {
