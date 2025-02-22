@@ -1,17 +1,11 @@
-import styled from "styled-components";
-import { AuthenticationForm } from "./components/Form/AuthenticationForm";
+import { FC } from "react";
+import { Index } from "../../features/authentication/pages";
+import { DefaultLayout } from "../../components/Layout/DefaultLayout";
 
-export const Authentication = () => {
+export const Authentication: FC = () => {
   return (
-    <_Wrapper>
-      <AuthenticationForm />
-    </_Wrapper>
+    <DefaultLayout>
+      <Index />
+    </DefaultLayout>
   );
 };
-
-const _Wrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-`;
