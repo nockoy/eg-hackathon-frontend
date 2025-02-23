@@ -47,9 +47,7 @@ export const AuthenticationForm = (props: PaperProps) => {
   return (
     <_Paper radius="md" p="xl" withBorder {...props}>
       <_TextWrapper>
-        <Text size="lg" fw={500}>
-          Comitty
-        </Text>
+        <_Logo src="/img/logo.png" alt="Comitty" />
       </_TextWrapper>
 
       <Group grow mb="md" mt="md">
@@ -131,6 +129,11 @@ export const AuthenticationForm = (props: PaperProps) => {
     </_Paper>
   );
 };
+
+const _Logo = styled.img`
+  width: 100px;
+  height: 100px;
+`;
 
 const _TextWrapper = styled.div`
   display: flex;
