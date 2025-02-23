@@ -18,7 +18,7 @@ type TabItem = {
 
 const tabItems: TabItem[] = [
   { tabNum: 0, title: "ホーム", iconName: "home", to: "/" },
-  { tabNum: 1, title: "新規目標", iconName: "add_circle", to: "/challenge" },
+  { tabNum: 1, title: "新規目標", iconName: "add_circle", to: "/new-goal" },
   { tabNum: 2, title: "マイページ", iconName: "person", to: "/setting" },
 ];
 
@@ -46,8 +46,7 @@ export const BottomNavBar: FC<BottomNavBarProps> = ({ currentTabNum }) => {
                   style={{
                     fontWeight:
                       currentTabNum === item.tabNum ? "bold" : "normal",
-                    color:
-                      currentTabNum === item.tabNum ? "#FF9D00" : "normal",
+                    color: currentTabNum === item.tabNum ? "#FF9D00" : "normal",
                   }}
                 >
                   {item.title}

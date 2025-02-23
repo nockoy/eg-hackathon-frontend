@@ -2,10 +2,12 @@ import { FC } from "react";
 import styled from "styled-components";
 import { Stack } from "@mantine/core";
 import { BottomNavBar } from "../../../components/BottomNavBar/BottomNavBar";
+import { Header } from "../../../components/Header/Header";
 
 export const Index: FC = () => {
   return (
-    <Stack align="center" justify="center" gap="8">
+    <Stack align="center" justify="center" gap="8" w="100%">
+      <Header />
       <_Text>これはチャレンジです</_Text>
       <BottomNavBar currentTabNum={1} />
     </Stack>

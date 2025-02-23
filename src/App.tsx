@@ -7,7 +7,7 @@ import { useAuthContext } from "./contexts/AuthContext";
 import { Authentication } from "./pages/Authentication";
 import { NotFound } from "./pages/NotFound";
 import { Home } from "./pages/Home";
-import { Challenge } from "./pages/Challenge";
+import { NewGoal } from "./pages/NewGoal";
 import { Setting } from "./pages/Setting";
 
 export const App = () => {
@@ -29,7 +29,7 @@ export const App = () => {
     <MantineProvider>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/challenge" element={<Challenge />} />
+        <Route path="/new-goal" element={<NewGoal />} />
         <Route path="/setting" element={<Setting />} />
         <Route path="/authentication" element={<Authentication />} />
         <Route path="*" element={<NotFound />} />

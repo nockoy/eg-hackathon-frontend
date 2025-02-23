@@ -1,8 +1,8 @@
 import { FC } from "react";
-import { Index } from "../../features/challenge/pages";
+import { Index } from "../../features/newGoal/pages";
 import { DefaultLayout } from "../../components/Layout/DefaultLayout";
 
-export const Challenge: FC = () => {
+export const NewGoal: FC = () => {
   return (
     <DefaultLayout>
       <Index />
