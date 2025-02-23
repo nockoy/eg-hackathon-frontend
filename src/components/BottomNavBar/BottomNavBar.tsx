@@ -28,26 +28,32 @@ export const BottomNavBar: FC<BottomNavBarProps> = ({ currentTabNum }) => {
   return (
     <AppShell>
       <AppShell.Footer>
-        <Group grow gap={0}>
-          {tabItems.map((item) => (
-            <_Stack
-              key={item.tabNum}
-              onClick={() => {
-                navigate(item.to);
-              }}
-            >
-              <MaterialIcon
-                selected={currentTabNum === item.tabNum}
-                iconName={item.iconName}
-              />
-              <Text size="xs">{item.title}</Text>
-            </_Stack>
-          ))}
-        </Group>
+        <_SafeArea>
+          <Group grow gap={0}>
+            {tabItems.map((item) => (
+              <_Stack
+                key={item.tabNum}
+                onClick={() => {
+                  navigate(item.to);
+                }}
+              >
+                <MaterialIcon
+                  selected={currentTabNum === item.tabNum}
+                  iconName={item.iconName}
+                />
+                <Text size="xs">{item.title}</Text>
+              </_Stack>
+            ))}
+          </Group>
+        </_SafeArea>
       </AppShell.Footer>
     </AppShell>
   );
 };
+
+const _SafeArea = styled.div`
+  padding-bottom: env(safe-area-inset-bottom);
+`;
 
 const _Stack = styled(Stack)`
   height: 60px;
