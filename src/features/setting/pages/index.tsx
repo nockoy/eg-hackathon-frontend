@@ -1,15 +1,16 @@
 import { FC } from "react";
 import styled from "styled-components";
 import { useAuth } from "../../../hooks/useAuth";
+import { Stack } from "@mantine/core";
 
 export const Index: FC = () => {
   const { signOut } = useAuth();
 
   return (
-    <>
+    <Stack w="100%" pt={96} pb={100}>
       <_Text>これは設定です</_Text>
       <_Button onClick={signOut}>ログアウト</_Button>
-    </>
+    </Stack>
   );
 };
 

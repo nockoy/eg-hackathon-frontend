@@ -17,7 +17,6 @@ const _Header = styled.div`
   top: 0;
   width: 100%;
   height: 60px;
-  padding: 0 var(--mantine-spacing-md);
   border-bottom: 1px solid
     light-dark(var(--mantine-color-gray-3), var(--mantine-color-dark-4));
   z-index: 100;

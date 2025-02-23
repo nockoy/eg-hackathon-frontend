@@ -24,6 +24,5 @@ const _Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-top: 92px;
-  padding-bottom: 200px;
+  padding: 0 32px;
 `;
