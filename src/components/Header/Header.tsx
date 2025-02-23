@@ -6,7 +6,7 @@ export const Header: FC = () => {
   return (
     <_Header>
       <Group justify="center" h="100%">
-        <_Logo src="/img/committy.svg" alt="Comitty" />
+        <_Logo src="/img/committy.svg" alt="Committy" />
       </Group>
     </_Header>
   );

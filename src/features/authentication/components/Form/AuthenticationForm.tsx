@@ -46,7 +46,7 @@ export const AuthenticationForm = (props: PaperProps) => {
   return (
     <_Paper radius="md" p="xl" withBorder {...props}>
       <_TextWrapper>
-        <_Logo src="/img/logo.png" alt="Comitty" />
+        <_Logo src="/img/logo.png" alt="Committy" />
       </_TextWrapper>
 
       <Group grow mb="md" mt="md">

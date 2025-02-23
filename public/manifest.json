@@ -1,6 +1,6 @@
 {
-  "name": "Comitty",
-  "short_name": "Comitty",
+  "name": "Committy",
+  "short_name": "Committy",
   "description": "結果にComittする",
   "start_url": "/",
   "display": "standalone",
