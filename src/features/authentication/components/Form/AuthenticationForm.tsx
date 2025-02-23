@@ -8,7 +8,6 @@ import {
   PaperProps,
   PasswordInput,
   Stack,
-  Text,
   TextInput,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
