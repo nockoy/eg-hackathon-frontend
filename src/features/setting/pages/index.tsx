@@ -11,7 +11,7 @@ export const Index: FC = () => {
     <Stack align="center" justify="center" gap="8">
       <_Text>これは設定です</_Text>
       <_Button onClick={signOut}>ログアウト</_Button>
-      <BottomNavBar activeTab="person" />
+      <BottomNavBar currentTabNum={2} />
     </Stack>
   );
 };

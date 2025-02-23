@@ -7,7 +7,7 @@ export const Index: FC = () => {
   return (
     <Stack align="center" justify="center" gap="8">
       <_Text>これはホームです</_Text>
-      <BottomNavBar activeTab="home" />
+      <BottomNavBar currentTabNum={0} />
     </Stack>
   );
 };

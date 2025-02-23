@@ -3,44 +3,42 @@ import { AppShell, Group, Stack, Text } from "@mantine/core";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-type ActiveTab = "home" | "search" | "person";
+type IconType = "home" | "search" | "person";
 
 export type BottomNavBarProps = {
-  activeTab: ActiveTab;
-  currentTab?: number;
+  currentTabNum: number;
 };
 
-export const BottomNavBar: FC<BottomNavBarProps> = ({ activeTab }) => {
+type TabItem = {
+  pageNum: number;
+  title: string;
+  iconName: IconType;
+  to: string;
+};
+
+const tabItems: TabItem[] = [
+  { pageNum: 0, title: "ホーム", iconName: "home", to: "/" },
+  { pageNum: 1, title: "チャレンジ", iconName: "search", to: "/challenge" },
+  { pageNum: 2, title: "マイページ", iconName: "person", to: "/setting" },
+];
+
+export const BottomNavBar: FC<BottomNavBarProps> = ({ currentTabNum }) => {
   const navigate = useNavigate();
 
   return (
     <AppShell>
       <AppShell.Footer>
         <Group grow gap={0}>
-          <_Stack
-            onClick={() => {
-              navigate("/");
-            }}
-          >
-            <MaterialIcon activeTab={activeTab} iconName="home" />
-            <Text size="xs">ホーム</Text>
-          </_Stack>
-          <_Stack
-            onClick={() => {
-              navigate("/challenge");
-            }}
-          >
-            <MaterialIcon activeTab={activeTab} iconName="search" />
-            <Text size="xs">チャレンジ</Text>
-          </_Stack>
-          <_Stack
-            onClick={() => {
-              navigate("/setting");
-            }}
-          >
-            <MaterialIcon activeTab={activeTab} iconName="person" />
-            <Text size="xs">マイページ</Text>
-          </_Stack>
+          {tabItems.map((item) => (
+            <_Stack
+              onClick={() => {
+                navigate(item.to);
+              }}
+            >
+              <MaterialIcon selected={currentTabNum === item.pageNum} iconName={item.iconName} />
+              <Text size="xs">{item.title}</Text>
+            </_Stack>
+          ))}
         </Group>
       </AppShell.Footer>
     </AppShell>
@@ -56,24 +54,22 @@ const _Stack = styled(Stack)`
 `;
 
 type MaterialIconProps = {
-  activeTab: ActiveTab;
+  selected: boolean;
   iconName: string;
 };
 
 export const MaterialIcon: React.FC<MaterialIconProps> = ({
-  activeTab,
+  selected,
   iconName,
 }) => {
-  const isSelected = activeTab === iconName;
-
   return (
     <>
-      {isSelected ? (
-        <_Icon className="material-icons" selected={isSelected}>
+      {selected ? (
+        <_Icon className="material-icons" selected={selected}>
           {iconName}
         </_Icon>
       ) : (
-        <_Icon className="material-icons-outlined" selected={isSelected}>
+        <_Icon className="material-icons-outlined" selected={selected}>
           {iconName}
         </_Icon>
       )}
