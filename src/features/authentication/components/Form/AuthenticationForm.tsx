@@ -24,7 +24,7 @@ export const AuthenticationForm = (props: PaperProps) => {
   const form = useForm({
     initialValues: {
       email: "",
-      nickname: "", 
+      nickname: "",
       password: "",
       // terms: true, // TODO: 利用規約を作成する
     },
@@ -46,9 +46,11 @@ export const AuthenticationForm = (props: PaperProps) => {
 
   return (
     <_Paper radius="md" p="xl" withBorder {...props}>
-      <Text size="lg" fw={500}>
-        アプリのロゴを入れたい
-      </Text>
+      <_TextWrapper>
+        <Text size="lg" fw={500}>
+          Comitty
+        </Text>
+      </_TextWrapper>
 
       <Group grow mb="md" mt="md">
         <GoogleButton radius="xl" onClick={signInWithGoogle}>
@@ -129,6 +131,13 @@ export const AuthenticationForm = (props: PaperProps) => {
     </_Paper>
   );
 };
+
+const _TextWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`;
 
 interface PaperPropsWithChildren extends PaperProps {
   children: ReactNode;
