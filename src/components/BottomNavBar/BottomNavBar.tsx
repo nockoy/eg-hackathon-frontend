@@ -31,6 +31,7 @@ export const BottomNavBar: FC<BottomNavBarProps> = ({ currentTabNum }) => {
         <Group grow gap={0}>
           {tabItems.map((item) => (
             <_Stack
+              key={item.tabNum}
               onClick={() => {
                 navigate(item.to);
               }}
