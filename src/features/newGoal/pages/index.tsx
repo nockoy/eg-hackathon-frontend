@@ -1,18 +1,27 @@
 import { FC } from "react";
 import styled from "styled-components";
-import { Stack } from "@mantine/core";
 import { BottomNavBar } from "../../../components/BottomNavBar/BottomNavBar";
 import { Header } from "../../../components/Header/Header";
 
 export const Index: FC = () => {
   return (
-    <Stack align="center" justify="center" gap="8" w="100%">
+    <_Container>
       <Header />
       <_Text>これはチャレンジです</_Text>
       <BottomNavBar currentTabNum={1} />
-    </Stack>
+    </_Container>
   );
 };
+
+const _Container = styled.div`
+  width: 100%;
+  max-width: 480px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 92px;
+`;
 
 const _Text = styled.div`
   font-size: 20px;
