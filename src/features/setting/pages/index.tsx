@@ -9,9 +9,9 @@ export const Index: FC = () => {
 
   return (
     <Stack align="center" justify="center" gap="8">
-      <_Text>これはホームです</_Text>
+      <_Text>これは設定です</_Text>
       <_Button onClick={signOut}>ログアウト</_Button>
-      <BottomNavBar activeTab="home" />
+      <BottomNavBar activeTab="person" />
     </Stack>
   );
 };
