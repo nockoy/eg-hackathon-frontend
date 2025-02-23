@@ -8,11 +8,11 @@ import styled from "styled-components";
 export const NewGoal: FC = () => {
   return (
     <DefaultLayout>
+      <Header />
       <_Container>
-        <Header />
         <Index />
-        <BottomNavBar currentTabNum={1} />
       </_Container>
+      <BottomNavBar currentTabNum={1} />
     </DefaultLayout>
   );
 };

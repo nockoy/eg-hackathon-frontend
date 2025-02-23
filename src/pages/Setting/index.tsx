@@ -8,11 +8,11 @@ import styled from "styled-components";
 export const Setting: FC = () => {
   return (
     <DefaultLayout>
+      <Header />
       <_Container>
-        <Header />
         <Index />
-        <BottomNavBar currentTabNum={2} />
       </_Container>
+      <BottomNavBar currentTabNum={2} />
     </DefaultLayout>
   );
 };
