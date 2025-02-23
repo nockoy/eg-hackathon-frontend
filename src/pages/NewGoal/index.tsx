@@ -19,7 +19,7 @@ export const NewGoal: FC = () => {
 
 const _Container = styled.div`
   width: 100%;
-  max-width: 480px;
+  max-width: 600px;
   height: 100%;
   display: flex;
   flex-direction: column;

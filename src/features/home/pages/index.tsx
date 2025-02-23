@@ -6,20 +6,20 @@ export const Index: FC = () => {
   return (
     <_Stack gap={16}>
       <_Box>
-        <Group justify="left" w="100%" gap={16}>
+        <Group justify="left" w="100%" gap={16} p={16}>
           <img
             src="/img/logo.png"
             alt="committy"
             style={{ width: 40, height: 40 }}
           />
           <Stack gap={4}>
-            <_Text>3日に一回資格勉強</_Text>
+            <_Text>3日に1回資格勉強</_Text>
             <_Date>～ 3月1日(土) 13:00</_Date>
           </Stack>
         </Group>
       </_Box>
       <_Box>
-        <Group justify="left" w="100%" gap={16}>
+        <Group justify="left" w="100%" gap={16} p={16}>
           <img
             src="/img/logo.png"
             alt="committy"
@@ -46,7 +46,7 @@ export const Index: FC = () => {
         <img
           src="/img/committy.svg"
           alt="committy"
-          style={{ width: "100%", backgroundColor: "gray" }}
+          style={{ width: "100%", backgroundColor: "#DADCE0" }}
         />
         <Stack justify="left" w="100%" gap={16} p={16}>
           <_Text>進捗</_Text>
@@ -79,6 +79,5 @@ const _Text = styled.div`
 
 const _Date = styled.div`
   font-size: 14px;
-  font-weight: bold;
   line-height: 1.6;
 `;

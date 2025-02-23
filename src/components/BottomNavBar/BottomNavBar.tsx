@@ -61,7 +61,7 @@ export const BottomNavBar: FC<BottomNavBarProps> = ({ currentTabNum }) => {
 };
 
 const _SafeArea = styled.div`
-  padding-bottom: env(safe-area-inset-bottom);
+  padding-bottom: calc(env(safe-area-inset-bottom) * 0.5);
 `;
 
 const _Stack = styled(Stack)`
