@@ -8,11 +8,11 @@ import styled from "styled-components";
 export const Home: FC = () => {
   return (
     <DefaultLayout>
+      <Header />
       <_Container>
-        <Header />
         <Index />
-        <BottomNavBar currentTabNum={0} />
       </_Container>
+      <BottomNavBar currentTabNum={0} />
     </DefaultLayout>
   );
 };
@@ -25,4 +25,5 @@ const _Container = styled.div`
   flex-direction: column;
   align-items: center;
   padding-top: 92px;
+  padding-bottom: 200px;
 `;
