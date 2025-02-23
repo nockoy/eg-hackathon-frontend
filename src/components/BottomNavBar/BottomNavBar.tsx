@@ -10,16 +10,16 @@ export type BottomNavBarProps = {
 };
 
 type TabItem = {
-  pageNum: number;
+  tabNum: number;
   title: string;
   iconName: IconType;
   to: string;
 };
 
 const tabItems: TabItem[] = [
-  { pageNum: 0, title: "ホーム", iconName: "home", to: "/" },
-  { pageNum: 1, title: "チャレンジ", iconName: "search", to: "/challenge" },
-  { pageNum: 2, title: "マイページ", iconName: "person", to: "/setting" },
+  { tabNum: 0, title: "ホーム", iconName: "home", to: "/" },
+  { tabNum: 1, title: "チャレンジ", iconName: "search", to: "/challenge" },
+  { tabNum: 2, title: "マイページ", iconName: "person", to: "/setting" },
 ];
 
 export const BottomNavBar: FC<BottomNavBarProps> = ({ currentTabNum }) => {
@@ -35,7 +35,10 @@ export const BottomNavBar: FC<BottomNavBarProps> = ({ currentTabNum }) => {
                 navigate(item.to);
               }}
             >
-              <MaterialIcon selected={currentTabNum === item.pageNum} iconName={item.iconName} />
+              <MaterialIcon
+                selected={currentTabNum === item.tabNum}
+                iconName={item.iconName}
+              />
               <Text size="xs">{item.title}</Text>
             </_Stack>
           ))}
