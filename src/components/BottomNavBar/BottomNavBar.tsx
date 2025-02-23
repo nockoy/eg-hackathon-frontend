@@ -81,5 +81,6 @@ export const MaterialIcon: React.FC<MaterialIconProps> = ({
 };
 
 const _Icon = styled.span<{ selected: boolean }>`
+  height: 26px;
   font-size: ${({ selected }) => (selected ? "26px" : "24px")};
 `;
