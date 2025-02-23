@@ -50,7 +50,6 @@ export const Index: FC = () => {
         />
         <Stack justify="left" w="100%" gap={16} p={16}>
           <_Text>進捗</_Text>
-          <_Date>～ 3月1日(土) 13:00</_Date>
         </Stack>
       </_Box>
     </_Stack>

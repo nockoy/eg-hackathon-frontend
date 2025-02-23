@@ -1,18 +1,18 @@
 import { FC } from "react";
-import { Index } from "../../features/setting/pages";
+import { Index } from "../../features/community/pages";
 import { DefaultLayout } from "../../components/Layout/DefaultLayout";
 import { Header } from "../../components/Header/Header";
 import { BottomNavBar } from "../../components/BottomNavBar/BottomNavBar";
 import styled from "styled-components";
 
-export const Setting: FC = () => {
+export const Community: FC = () => {
   return (
     <DefaultLayout>
       <Header />
       <_Container>
         <Index />
       </_Container>
-      <BottomNavBar currentTabNum={3} />
+      <BottomNavBar currentTabNum={2} />
     </DefaultLayout>
   );
 };

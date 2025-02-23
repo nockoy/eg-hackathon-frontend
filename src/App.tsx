@@ -8,6 +8,7 @@ import { Authentication } from "./pages/Authentication";
 import { NotFound } from "./pages/NotFound";
 import { Home } from "./pages/Home";
 import { NewGoal } from "./pages/NewGoal";
+import { Community } from "./pages/Community";
 import { Setting } from "./pages/Setting";
 
 export const App = () => {
@@ -30,6 +31,7 @@ export const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/new-goal" element={<NewGoal />} />
+        <Route path="/community" element={<Community />} />
         <Route path="/setting" element={<Setting />} />
         <Route path="/authentication" element={<Authentication />} />
         <Route path="*" element={<NotFound />} />

@@ -3,7 +3,7 @@ import { AppShell, Group, Stack, Text } from "@mantine/core";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-type IconType = "home" | "add_circle" | "person";
+type IconType = "home" | "add_circle" | "groups" | "settings";
 
 export type BottomNavBarProps = {
   currentTabNum: number;
@@ -19,7 +19,8 @@ type TabItem = {
 const tabItems: TabItem[] = [
   { tabNum: 0, title: "ホーム", iconName: "home", to: "/" },
   { tabNum: 1, title: "新規目標", iconName: "add_circle", to: "/new-goal" },
-  { tabNum: 2, title: "マイページ", iconName: "person", to: "/setting" },
+  { tabNum: 2, title: "コミュニティ", iconName: "groups", to: "/community" },
+  { tabNum: 3, title: "マイページ", iconName: "settings", to: "/setting" },
 ];
 
 export const BottomNavBar: FC<BottomNavBarProps> = ({ currentTabNum }) => {
