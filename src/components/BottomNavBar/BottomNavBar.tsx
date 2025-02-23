@@ -7,6 +7,7 @@ type ActiveTab = "home" | "search" | "person";
 
 export type BottomNavBarProps = {
   activeTab: ActiveTab;
+  currentTab?: number;
 };
 
 export const BottomNavBar: FC<BottomNavBarProps> = ({ activeTab }) => {
@@ -26,7 +27,7 @@ export const BottomNavBar: FC<BottomNavBarProps> = ({ activeTab }) => {
           </_Stack>
           <_Stack
             onClick={() => {
-              navigate("/search");
+              navigate("/challenge");
             }}
           >
             <MaterialIcon activeTab={activeTab} iconName="search" />
