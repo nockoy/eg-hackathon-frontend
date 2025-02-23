@@ -3,7 +3,7 @@ import { AppShell, Group, Stack, Text } from "@mantine/core";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-type IconType = "home" | "search" | "person";
+type IconType = "home" | "add_circle" | "person";
 
 export type BottomNavBarProps = {
   currentTabNum: number;
@@ -18,7 +18,7 @@ type TabItem = {
 
 const tabItems: TabItem[] = [
   { tabNum: 0, title: "ホーム", iconName: "home", to: "/" },
-  { tabNum: 1, title: "チャレンジ", iconName: "search", to: "/challenge" },
+  { tabNum: 1, title: "新規目標", iconName: "add_circle", to: "/challenge" },
   { tabNum: 2, title: "マイページ", iconName: "person", to: "/setting" },
 ];
 
@@ -41,7 +41,17 @@ export const BottomNavBar: FC<BottomNavBarProps> = ({ currentTabNum }) => {
                   selected={currentTabNum === item.tabNum}
                   iconName={item.iconName}
                 />
-                <Text size="xs">{item.title}</Text>
+                <Text
+                  size="xs"
+                  style={{
+                    fontWeight:
+                      currentTabNum === item.tabNum ? "bold" : "normal",
+                    color:
+                      currentTabNum === item.tabNum ? "#FF9D00" : "normal",
+                  }}
+                >
+                  {item.title}
+                </Text>
               </_Stack>
             ))}
           </Group>
@@ -90,4 +100,5 @@ export const MaterialIcon: React.FC<MaterialIconProps> = ({
 const _Icon = styled.span<{ selected: boolean }>`
   height: 26px;
   font-size: ${({ selected }) => (selected ? "26px" : "24px")};
+  color: ${({ selected }) => (selected ? "#FF9D00" : "normal")};
 `;
