@@ -33,6 +33,7 @@ export const Index: FC = () => {
               <TextInput
                 required
                 type="text"
+                size="md"
                 placeholder="例）1週間後までに2回ジムに行く！"
                 label="タイトル"
                 radius="8px"
@@ -45,6 +46,7 @@ export const Index: FC = () => {
               <TextInput
                 required
                 type="text"
+                size="md"
                 placeholder="例）3月1日(土) 13:00"
                 label="期限"
                 radius="8px"
@@ -57,6 +59,7 @@ export const Index: FC = () => {
               <TextInput
                 required
                 type="number"
+                size="md"
                 placeholder="例）2"
                 label="回数"
                 radius="8px"
@@ -69,6 +72,7 @@ export const Index: FC = () => {
               <TextInput
                 required
                 type="number"
+                size="md"
                 placeholder="例）2000"
                 label="金額（円）"
                 radius="8px"
@@ -80,6 +84,7 @@ export const Index: FC = () => {
               />
               <Textarea
                 label="やること"
+                size="md"
                 placeholder="目標をしっかりと書こう"
                 autosize
                 minRows={3}
