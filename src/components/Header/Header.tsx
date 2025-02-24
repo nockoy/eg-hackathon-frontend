@@ -3,6 +3,7 @@ import { Group } from "@mantine/core";
 import styled from "styled-components";
 
 export const Header: FC = () => {
+
   return (
     <_Header>
       <Group justify="center" h="100%">
@@ -24,5 +25,5 @@ const _Header = styled.div`
 `;
 
 const _Logo = styled.img`
-  height: 32px;
+  height: 40px;
 `;

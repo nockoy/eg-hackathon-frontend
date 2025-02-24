@@ -1,52 +1,59 @@
 import { Button, Stack, Textarea, TextInput } from "@mantine/core";
-import { FC } from "react";
+import { FC, useState } from "react";
 import styled from "styled-components";
 
 export const Index: FC = () => {
+  const [page, setPage] = useState<number>(0);
+
   return (
     <_Stack>
-      <Stack gap={16}>
-        <TextInput
-          type="text"
-          placeholder="例）1週間後までに2回ジムに行く！"
-          label="タイトル"
-          radius="8px"
-        />
-        <TextInput
-          type="text"
-          placeholder="例）3月1日(土) 13:00"
-          label="期限"
-          radius="8px"
-        />
-        <TextInput
-          type="number"
-          placeholder="例）2"
-          label="回数"
-          radius="8px"
-        />
-        <TextInput
-          type="number"
-          placeholder="例）2,000"
-          label="金額"
-          radius="8px"
-        />
-        <Textarea
-          label="やること"
-          placeholder="目標をしっかりと書こう"
-          autosize
-          minRows={3}
-        />
-      </Stack>
-      <Button
-        variant="light"
-        radius="xl"
-        size="md"
-        pr={14}
-        h={48}
-        styles={{ section: { marginLeft: 22 } }}
-      >
-        次へ
-      </Button>
+      {page === 0 && (
+        <>
+          <Stack gap={16}>
+            <TextInput
+              type="text"
+              placeholder="例）1週間後までに2回ジムに行く！"
+              label="タイトル"
+              radius="8px"
+            />
+            <TextInput
+              type="text"
+              placeholder="例）3月1日(土) 13:00"
+              label="期限"
+              radius="8px"
+            />
+            <TextInput
+              type="number"
+              placeholder="例）2"
+              label="回数"
+              radius="8px"
+            />
+            <TextInput
+              type="number"
+              placeholder="例）2,000"
+              label="金額"
+              radius="8px"
+            />
+            <Textarea
+              label="やること"
+              placeholder="目標をしっかりと書こう"
+              autosize
+              minRows={3}
+            />
+          </Stack>
+          <Button
+            variant="light"
+            radius="xl"
+            size="md"
+            pr={14}
+            h={48}
+            styles={{ section: { marginLeft: 22 } }}
+            onClick={() => setPage(1)}
+          >
+            次へ
+          </Button>
+        </>
+      )}
     </_Stack>
   );
 };
