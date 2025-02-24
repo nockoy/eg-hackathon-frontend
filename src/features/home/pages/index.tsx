@@ -1,17 +1,47 @@
-import { Group, Stack } from "@mantine/core";
+import { Group, Progress, Slider, Stack, Tooltip } from "@mantine/core";
+import { useHover } from "@mantine/hooks";
 import { FC } from "react";
 import styled from "styled-components";
 
 export const Index: FC = () => {
+  const { ref } = useHover();
+
   return (
     <_Stack>
       <_Box>
-        <Group justify="left" w="100%" gap={16} p={16}>
+        <Group justify="left" w="100%" gap={16}>
           <Stack gap={4}>
             <_Text>ジムに2回行く！</_Text>
-            <_Date>～ 3月1日(土) 13:00</_Date>
+            <_Date>～ 3月1日(土) 13:00</_Date>{" "}
           </Stack>
         </Group>
+        {/* <Slider
+          thumbChildren={
+            <span className="material-icons">local_fire_department</span>
+          }
+          w="100%"
+          defaultValue={40}
+          min={10}
+          max={90}
+          ref={ref}
+          label={null}
+          color="yellow"
+          styles={{
+            thumb: { borderWidth: 2, height: 26, width: 26, padding: 3 },
+          }}
+          size={20}
+        /> */}
+        <Progress.Root w="100%" size={20} radius={16}>
+          <Tooltip label="Progress">
+            <Progress.Section
+              value={28}
+              color="orange"
+              style={{ borderRadius: 16 }}
+            >
+              <Progress.Label>Progress</Progress.Label>
+            </Progress.Section>
+          </Tooltip>
+        </Progress.Root>
 
         <Stack justify="left" w="100%" gap={16} p={16}>
           <_Text>進捗</_Text>
@@ -49,6 +79,7 @@ const _Box = styled.div`
   align-items: center;
   border-radius: 16px;
   border: 1px solid #e0e0e0;
+  padding: 16px;
 `;
 
 const _Text = styled.div`
