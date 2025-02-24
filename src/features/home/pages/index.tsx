@@ -1,45 +1,40 @@
-import { Group, Progress, Stack, Tooltip } from "@mantine/core";
+import { Group, Progress, Stack, Text, Tooltip } from "@mantine/core";
 import { FC } from "react";
 import styled from "styled-components";
 
 export const Index: FC = () => {
   return (
     <_Stack>
-      <_Box>
-        <Group justify="left" w="100%" gap={16}>
-          <Stack gap={4}>
-            <_Text>ジムに2回行く！</_Text>
-            <_Date>～ 3月1日(土) 13:00</_Date>{" "}
-          </Stack>
-        </Group>
-        <Progress.Root w="100%" size={20} radius={16}>
-          <Tooltip label="Progress">
-            <Progress.Section
-              value={28}
-              color="orange"
-              style={{ borderRadius: 16 }}
-            >
-              <Progress.Label>Progress</Progress.Label>
-            </Progress.Section>
-          </Tooltip>
-        </Progress.Root>
+      {Array.from({ length: 3 }).map((_, index) => (
+        <_Card key={index}>
+          <Stack w="100%" gap={16}>
+            <Group justify="space-between" w="100%" gap={16}>
+              <Stack gap={4} >
+                <_Text>ジムに5回行く！</_Text>
+                <_Date>～ 3月1日(土) 13:00</_Date>{" "}
+              </Stack>
+              <Text fz="32" fw={700} c="yellow">
+                ￥2,000
+              </Text>
+            </Group>
+            <Progress.Root w="100%" size={20} radius={16}>
+              <Tooltip label="Progress">
+                <Progress.Section
+                  value={28}
+                  color="orange"
+                  style={{ borderRadius: 16 }}
+                >
+                  <Progress.Label>Progress</Progress.Label>
+                </Progress.Section>
+              </Tooltip>
+            </Progress.Root>
 
-        <Stack justify="left" w="100%" gap={16} p={16}>
-          <_Text>進捗</_Text>
-        </Stack>
-      </_Box>
-      <_Box>
-        <Group justify="left" w="100%" gap={16} p={16}>
-          <Stack gap={4}>
-            <_Text>ジムに2回行く！</_Text>
-            <_Date>～ 3月1日(土) 13:00</_Date>
+            <Stack justify="left" w="100%" gap={16}>
+              <Text>ジムに5回行く！</Text>
+            </Stack>
           </Stack>
-        </Group>
-
-        <Stack justify="left" w="100%" gap={16} p={16}>
-          <_Text>進捗</_Text>
-        </Stack>
-      </_Box>
+        </_Card>
+      ))}
     </_Stack>
   );
 };
@@ -53,7 +48,7 @@ const _Stack = styled.div`
   padding-bottom: calc(80px + env(safe-area-inset-bottom) * 0.25);
 `;
 
-const _Box = styled.div`
+const _Card = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
