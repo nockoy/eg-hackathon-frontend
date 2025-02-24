@@ -7,7 +7,7 @@ export const Index: FC = () => {
 
   return (
     <_Stack>
-      <_Text>これは設定です</_Text>
+      <_Text>開発中です</_Text>
       <_Button onClick={signOut}>ログアウト</_Button>
     </_Stack>
   );
