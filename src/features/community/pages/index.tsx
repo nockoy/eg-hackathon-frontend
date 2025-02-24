@@ -4,7 +4,7 @@ import styled from "styled-components";
 export const Index: FC = () => {
   return (
     <_Stack>
-      <_Text>これはコミュニティです</_Text>
+      <_Text>開発中です</_Text>
     </_Stack>
   );
 };
