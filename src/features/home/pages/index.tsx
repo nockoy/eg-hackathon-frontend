@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 export const Index: FC = () => {
   return (
-    <Stack gap={16} w="100%" pt={96} pb={100}>
+    <_Stack>
       <_Box>
         <Group justify="left" w="100%" gap={16} p={16}>
           <img
@@ -94,9 +94,18 @@ export const Index: FC = () => {
           <_Text>進捗</_Text>
         </Stack>
       </_Box>
-    </Stack>
+    </_Stack>
   );
 };
+
+const _Stack = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 96px;
+  padding-bottom: calc(96px + env(safe-area-inset-bottom) * 0.25);
+`;
 
 const _Box = styled.div`
   width: 100%;

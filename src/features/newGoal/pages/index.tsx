@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 export const Index: FC = () => {
   return (
-    <_Stack gap={32} w="100%" pt={96} pb={100}>
+    <_Stack>
       <Stack gap={16}>
         <TextInput
           type="text"
@@ -33,7 +33,11 @@ export const Index: FC = () => {
   );
 };
 
-const _Stack = styled(Stack)`
+const _Stack = styled.div`
   width: 100%;
-  padding: 0 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 96px;
+  padding-bottom: calc(96px + env(safe-area-inset-bottom) * 0.25);
 `;

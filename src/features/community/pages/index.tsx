@@ -1,16 +1,24 @@
-import { Stack } from "@mantine/core";
 import { FC } from "react";
 import styled from "styled-components";
 
 export const Index: FC = () => {
   return (
-    <Stack w="100%" pt={96} pb={100}>
+    <_Stack>
       <_Text>これはコミュニティです</_Text>
-    </Stack>
+    </_Stack>
   );
 };
 
 const _Text = styled.div`
   font-size: 20px;
   font-weight: bold;
+`;
+
+const _Stack = styled.div`
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding-top: 96px;
+  padding-bottom: calc(96px + env(safe-area-inset-bottom) * 0.25);
 `;
