@@ -8,8 +8,26 @@ export const Index: FC = () => {
       <Stack gap={16}>
         <TextInput
           type="text"
-          placeholder="タイトルを入力"
+          placeholder="例）1週間後までに2回ジムに行く！"
           label="タイトル"
+          radius="8px"
+        />
+        <TextInput
+          type="text"
+          placeholder="例）3月1日(土) 13:00"
+          label="期限"
+          radius="8px"
+        />
+        <TextInput
+          type="number"
+          placeholder="例）2"
+          label="回数"
+          radius="8px"
+        />
+        <TextInput
+          type="number"
+          placeholder="例）2,000"
+          label="金額"
           radius="8px"
         />
         <Textarea
@@ -27,7 +45,7 @@ export const Index: FC = () => {
         h={48}
         styles={{ section: { marginLeft: 22 } }}
       >
-        作成
+        次へ
       </Button>
     </_Stack>
   );
@@ -37,7 +55,7 @@ const _Stack = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 16px;
-  padding-top: 96px;
-  padding-bottom: calc(96px + env(safe-area-inset-bottom) * 0.25);
+  gap: 32px;
+  padding-top: 80px;
+  padding-bottom: calc(80px + env(safe-area-inset-bottom) * 0.25);
 `;
