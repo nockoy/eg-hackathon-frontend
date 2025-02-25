@@ -38,19 +38,19 @@ export const Index: FC = () => {
               {data.title}
             </Text>
             <Text size="md" fw={400}>
-              {formatDate(data.end_date.toString())} までに
+              開始：{formatDate(data.created_at.toString())}
             </Text>
             <Text size="md" fw={400}>
-              {data.max_commit}回
+              期限：{formatDate(data.end_date.toString())}
             </Text>
             <Text size="md" fw={400}>
-              {data.deposit.toLocaleString()}円
+              回数：{data.max_commit}回
             </Text>
             <Text size="md" fw={400}>
-              {data.description}
+              預かり金額：{data.deposit.toLocaleString()}円
             </Text>
-            <Text size="xl" fw={700}>
-              決済方法
+            <Text size="md" fw={400}>
+              やること：{data.description}
             </Text>
           </Stack>
         </Stack>
