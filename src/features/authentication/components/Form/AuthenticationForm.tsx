@@ -63,6 +63,7 @@ export const AuthenticationForm = (props: PaperProps) => {
             <TextInput
               required
               label="ニックネーム"
+              size="md"
               placeholder=""
               value={form.values.nickname}
               onChange={(event) =>
@@ -75,6 +76,7 @@ export const AuthenticationForm = (props: PaperProps) => {
           <TextInput
             required
             label="メールアドレス"
+            size="md"
             placeholder=""
             value={form.values.email}
             onChange={(event) =>
@@ -87,6 +89,7 @@ export const AuthenticationForm = (props: PaperProps) => {
           <PasswordInput
             required
             label="パスワード"
+            size="md"
             placeholder=""
             value={form.values.password}
             onChange={(event) =>
