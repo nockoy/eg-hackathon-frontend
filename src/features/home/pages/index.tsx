@@ -2,37 +2,74 @@ import { Group, Progress, Stack, Text, Tooltip } from "@mantine/core";
 import { FC } from "react";
 import styled from "styled-components";
 
+const fetchMockData = () => {
+  return [
+    {
+      status: "ongoing",
+      progress: 10,
+      title: "ジムに5回行く！",
+      deadline: "3月1日(土) 13:00",
+      amount: 2000,
+      description: "ジムに5回行く！",
+    },
+    {
+      status: "ongoing",
+      progress: 60,
+      title: "本番までに過去問10年分解く",
+      deadline: "3月1日(土) 13:00",
+      amount: 2000,
+      description:
+        "2010年度〜2019年度の過去問を解く！\n得点率8割越えを目指したい。",
+    },
+    {
+      status: "completed",
+      progress: 80,
+      title: "毎日英単語を50個覚える",
+      deadline: "3月15日(日) 18:00",
+      amount: 1500,
+      description: "毎日50個の英単語を覚えて、語彙力を強化する。",
+    },
+  ];
+};
+
 export const Index: FC = () => {
-  const progress = 10;
-  const title = "ジムに5回行く！";
-  const deadline = "3月1日(土) 13:00";
-  const amount = 2000;
-  const description = "ジムに5回行く！";
+  const mockData = fetchMockData();
+  const ongoingData = mockData.filter((item) => item.status === "ongoing");
+  const completedData = mockData.filter((item) => item.status === "completed");
 
   return (
     <_Stack>
-      {Array.from({ length: 3 }).map((_, index) => (
-        <>
+      <Stack gap={16}>
+        <Text fz="24" fw={700}>
+          進行中
+        </Text>
+        {ongoingData.map((item, index) => (
           <Card
             key={index}
-            title={title}
-            deadline={deadline}
-            amount={amount}
-            description={description}
-            progress={progress}
+            title={item.title}
+            deadline={item.deadline}
+            amount={item.amount}
+            description={item.description}
+            progress={item.progress}
           />
+        ))}
+      </Stack>
+
+      <Stack gap={16}>
+        <Text fz="24" fw={700}>
+          過去のコミット
+        </Text>
+        {completedData.map((item, index) => (
           <Card
             key={index}
-            title={"本番までに過去問10年分解く"}
-            deadline={"3月1日(土) 13:00"}
-            amount={2000}
-            description={
-              "2010年度〜2019年度の過去問を解く！\n得点率8割越えを目指したい。"
-            }
-            progress={60}
+            title={item.title}
+            deadline={item.deadline}
+            amount={item.amount}
+            description={item.description}
+            progress={item.progress}
           />
-        </>
-      ))}
+        ))}
+      </Stack>
     </_Stack>
   );
 };
@@ -100,7 +137,7 @@ const _Stack = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 32px;
   padding-top: 80px;
   padding-bottom: calc(80px + env(safe-area-inset-bottom) * 0.2);
 `;
@@ -113,7 +150,7 @@ const _Card = styled.div`
   border-radius: 16px;
   border: 1px solid #e0e0e0;
   padding: 16px;
-  box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.05);
 `;
 
 const _Text = styled.div`
