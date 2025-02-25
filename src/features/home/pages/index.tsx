@@ -3,7 +3,7 @@ import { FC, useEffect } from "react";
 import styled from "styled-components";
 import { Card } from "../components/Card";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../../../api/axios";
 
 const fetchMockData = () => {
   return [
@@ -46,7 +46,7 @@ const fetchMockData = () => {
 
 const fetchData = async () => {
   try {
-    const res = await axios.get("http://localhost:8080/users/3/home");
+    const res = await api.get("/users/3/home");
     return res;
   } catch (error) {
     console.error("Error fetching data:", error);
