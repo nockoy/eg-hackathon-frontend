@@ -101,12 +101,7 @@ export const Card = ({
                     <_Span> {remainingDays} </_Span>日&nbsp;
                   </>
                 )}
-                {remainingDays > 0 ||
-                  (remainingDays === 0 && remainingHours > 0 && (
-                    <>
-                      <_Span> {remainingHours} </_Span>時間
-                    </>
-                  ))}
+                <_Span> {remainingHours} </_Span>時間
                 <_Span> {remainingMinutes} </_Span>分
               </>
             ) : (
