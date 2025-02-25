@@ -38,7 +38,11 @@ export const Card = ({
         <Text>
           あと<_Span> {max_commit - commit} </_Span>回！
         </Text>
-        <ProgressBar progress={progress} />
+        <ProgressBar progress={progress} color="orange" />
+        <Text>
+          あと<_Span> 10 </_Span>時間！
+        </Text>
+        <ProgressBar progress={progress} color="green" />
 
         <Stack justify="left" w="100%" gap={16}>
           <Text>{description}</Text>
