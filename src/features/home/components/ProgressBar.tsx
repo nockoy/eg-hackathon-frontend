@@ -3,7 +3,7 @@ import styled from "styled-components";
 
 type ProgressBarProps = {
   progress: number;
-  color: "yellow" | "green";
+  color: "yellow" | "green" | "orange" | "red";
 };
 
 export const ProgressBar = ({ progress, color }: ProgressBarProps) => {
@@ -31,5 +31,11 @@ const _Period = styled.div<{ color: string }>`
   width: 16px;
   border-radius: 50%;
   background-color: ${({ color }) =>
-    color === "yellow" ? "#FAB005" : "#40C057"};
+    color === "yellow"
+      ? "#FAB005"
+      : color === "green"
+      ? "#40C057"
+      : color === "orange"
+      ? "#FD7E14"
+      : "#FA5252"};
 `;

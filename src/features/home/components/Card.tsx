@@ -43,9 +43,9 @@ export const Card = ({
         </Stack>
         <Stack gap={4}>
           <Text>
-            あと<_GreenSpan> 10 </_GreenSpan>時間！
+            残り<_RedSpan> 10 </_RedSpan>時間！
           </Text>
-          <ProgressBar progress={0.4} color="green" />
+          <ProgressBar progress={0.4} color="red" />
         </Stack>
 
         <Stack justify="left" w="100%" gap={16}>
@@ -87,6 +87,12 @@ const _OrangeSpan = styled.span`
 
 const _GreenSpan = styled.span`
   color: #40C057;
+  font-weight: bold;
+  font-size: 24px;
+`;
+
+const _RedSpan = styled.span`
+  color: #fa5252;
   font-weight: bold;
   font-size: 24px;
 `;
