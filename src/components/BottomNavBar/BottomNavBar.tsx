@@ -18,7 +18,7 @@ type TabItem = {
 
 const tabItems: TabItem[] = [
   { tabNum: 0, title: "ホーム", iconName: "home", to: "/" },
-  { tabNum: 1, title: "新規目標", iconName: "add_circle", to: "/new-goal" },
+  { tabNum: 1, title: "新規目標", iconName: "add_circle", to: "/new-commit" },
   { tabNum: 2, title: "コミュニティ", iconName: "groups", to: "/community" },
   { tabNum: 3, title: "マイページ", iconName: "settings", to: "/setting" },
 ];

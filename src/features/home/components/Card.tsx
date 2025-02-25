@@ -10,6 +10,7 @@ type CardProps = {
   progress: number;
   max_commit: number;
   commit: number;
+  onClick: () => void;
 };
 
 export const Card = ({
@@ -20,9 +21,10 @@ export const Card = ({
   progress,
   max_commit,
   commit,
+  onClick,
 }: CardProps) => {
   return (
-    <_Card>
+    <_Card onClick={onClick}>
       <Stack w="100%" gap={16}>
         <Group justify="space-between" w="100%" gap={16}>
           <Stack gap={4}>
@@ -55,6 +57,7 @@ const _Card = styled.div`
   border: 1px solid #e0e0e0;
   padding: 16px;
   box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.05);
+  cursor: pointer;
 `;
 
 const _Text = styled.div`

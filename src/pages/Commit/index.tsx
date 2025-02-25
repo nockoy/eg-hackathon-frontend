@@ -1,18 +1,18 @@
 import { FC } from "react";
-import { Index } from "../../features/newGoal/pages";
+import { Index } from "../../features/commit/pages";
 import { DefaultLayout } from "../../components/Layout/DefaultLayout";
 import { Header } from "../../components/Header/Header";
 import { BottomNavBar } from "../../components/BottomNavBar/BottomNavBar";
 import styled from "styled-components";
 
-export const NewGoal: FC = () => {
+export const Commit: FC = () => {
   return (
     <DefaultLayout>
       <Header />
       <_Container>
         <Index />
       </_Container>
-      <BottomNavBar currentTabNum={1} />
+      <BottomNavBar currentTabNum={0} />
     </DefaultLayout>
   );
 };
