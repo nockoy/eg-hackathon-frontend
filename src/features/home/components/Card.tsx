@@ -80,22 +80,34 @@ export const Card = ({
   return (
     <_Card onClick={onClick}>
       <Stack w="100%" gap={16}>
-        <Group justify="space-between" w="100%" gap={16}>
+        <_Row>
           <Stack gap={4}>
             <_Text>{title}</_Text>
             <_Date>~ {formatDate(end_at)}</_Date>
           </Stack>
-          <Stack gap={4} align="flex-end">
-            <Text fz="32" fw={700} lh={1.2} c="yellow">
+          <Stack gap={4} align="flex-end" w="fit-content">
+            <Text
+              fz="32"
+              fw={700}
+              lh={1.2}
+              c="yellow"
+              style={{ whiteSpace: "nowrap" }}
+            >
               ¥ {deposit}
             </Text>
             {status === "completed" && (
-              <Text fz="32" fw={700} lh={1.2} c="red">
+              <Text
+                fz="32"
+                fw={700}
+                lh={1.2}
+                c="red"
+                style={{ whiteSpace: "nowrap" }}
+              >
                 - ¥ {deposit - refund}
               </Text>
             )}
           </Stack>
-        </Group>
+        </_Row>
         <Stack gap={4}>
           <Text>
             あと<_OrangeSpan> {max_commit - commit} </_OrangeSpan> 回 /{" "}
@@ -134,6 +146,14 @@ export const Card = ({
     </_Card>
   );
 };
+
+const _Row = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+`;
 
 const _Card = styled.div`
   width: 100%;
