@@ -3,7 +3,7 @@ import { useState, createContext, ReactNode, FC } from "react";
 type UserContextType = {
   id: string;
   name: string;
-  setUser: (id: string, name: string) => void;
+  setUser: (user: { id: string; name: string }) => void;
 };
 
 const defaultValue: UserContextType = {
@@ -18,9 +18,9 @@ export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
   const [id, setId] = useState("");
   const [name, setName] = useState("");
 
-  const setUser = (id: string, name: string) => {
-    setId(id);
-    setName(name);
+  const setUser = (user: { id: string; name: string }) => {
+    setId(user.id);
+    setName(user.name);
   };
 
   return (

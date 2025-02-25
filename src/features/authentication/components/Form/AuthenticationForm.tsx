@@ -14,10 +14,13 @@ import { useForm } from "@mantine/form";
 import { useToggle } from "@mantine/hooks";
 import { GoogleButton } from "../Button/GoogleButton";
 import styled from "styled-components";
-import { ReactNode } from "react";
+import { ReactNode, useContext } from "react";
 import { useAuth } from "../../../../hooks/useAuth";
+import api from "../../../../api/axios";
+import { UserContext } from "../../../../contexts/UserContext";
 
 export const AuthenticationForm = (props: PaperProps) => {
+  const { setUser } = useContext(UserContext);
   const { signInWithGoogle, signIn, signUp, loading } = useAuth();
   const [type, toggle] = useToggle(["login", "register"]);
   const form = useForm({
@@ -35,11 +38,36 @@ export const AuthenticationForm = (props: PaperProps) => {
     },
   });
 
-  const onSubmit = form.onSubmit((values) => {
+  const onSubmit = form.onSubmit(async (values) => {
     if (type === "login") {
-      signIn(values.email, values.password);
+      try {
+        await signIn(values.email, values.password);
+        const res = await api.get(`/auth/login?email=${values.email}`);
+        console.log(res);
+
+        setUser({
+          id: res.data.id,
+          name: res.data.name,
+        });
+      } catch (error) {
+        console.error(error);
+      }
     } else {
-      signUp(values.email, values.password);
+      try {
+        const res = await api.post("/auth/signup", {
+          email: values.email,
+          name: values.nickname,
+        });
+        await signUp(values.email, values.password);
+        console.log(res);
+
+        setUser({
+          id: res.data.id,
+          name: res.data.name,
+        });
+      } catch (error) {
+        console.error(error);
+      }
     }
   });
 
