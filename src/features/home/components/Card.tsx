@@ -1,6 +1,7 @@
 import { Group, Stack, Text } from "@mantine/core";
 import styled from "styled-components";
 import { ProgressBar } from "./ProgressBar";
+import { useEffect, useState } from "react";
 
 type CardProps = {
   title: string;
@@ -38,26 +39,49 @@ export const Card = ({
   commit,
   onClick,
 }: CardProps) => {
-  const now = new Date();
-  const startDate = new Date(start_at);
-  const endDate = new Date(end_at);
-  console.log("end_at", end_at);
-  console.log("endDate", endDate);
+  const [remainingDays, setRemainingDays] = useState(0);
+  const [remainingHours, setRemainingHours] = useState(0);
+  const [remainingMinutes, setRemainingMinutes] = useState(0);
+  const [timeFromStartToNow, setTimeFromStartToNow] = useState(0);
+  const [timeFromNowToEnd, setTimeFromNowToEnd] = useState(0);
+  const [timeRatio, setTimeRatio] = useState(0);
+  const [timeFromStartToEnd, setTimeFromStartToEnd] = useState(0);
 
-  const timeFromNowToStart = now.getTime() - startDate.getTime();
-  const timeFromStartToEnd = endDate.getTime() - startDate.getTime();
-  const timeRatio = timeFromNowToStart / timeFromStartToEnd;
-  console.log("timeRatio", timeRatio);
+  useEffect(() => {
+    const updateRemainingTime = () => {
+      const now = new Date();
+      const startDate = new Date(start_at);
+      const endDate = new Date(end_at);
+      setTimeFromStartToNow(now.getTime() - startDate.getTime());
+      setTimeFromNowToEnd(endDate.getTime() - now.getTime());
+      setTimeFromStartToEnd(endDate.getTime() - startDate.getTime());
+      setTimeRatio(timeFromStartToNow / timeFromStartToEnd);
+      setRemainingDays(Math.floor(timeFromNowToEnd / (1000 * 60 * 60 * 24)));
+      setRemainingHours(
+        Math.floor(
+          (timeFromNowToEnd % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        )
+      );
+      setRemainingMinutes(
+        Math.floor((timeFromNowToEnd % (1000 * 60 * 60)) / (1000 * 60))
+      );
+    };
 
-  const timeFromNowToEnd = endDate.getTime() - now.getTime();
+    updateRemainingTime();
+    const intervalId = setInterval(updateRemainingTime, 60000); // 1分ごとに更新
 
-  const remainingDays = Math.floor(timeFromNowToEnd / (1000 * 60 * 60 * 24));
-  const remainingHours = Math.floor(
-    (timeFromNowToEnd % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-  );
-  const remainingMinutes = Math.floor(
-    (timeFromNowToEnd % (1000 * 60 * 60)) / (1000 * 60)
-  );
+    return () => clearInterval(intervalId);
+  }, [
+    end_at,
+    start_at,
+    timeFromStartToEnd,
+    timeFromStartToNow,
+    timeFromNowToEnd,
+    timeRatio,
+    remainingDays,
+    remainingHours,
+    remainingMinutes,
+  ]);
 
   return (
     <_Card onClick={onClick}>
@@ -80,9 +104,20 @@ export const Card = ({
         </Stack>
         <Stack gap={4}>
           <Text>
-            残り<_Span> {remainingDays} </_Span>日&nbsp;
-            <_Span> {remainingHours} </_Span>時間
-            <_Span> {remainingMinutes} </_Span>分
+            {timeRatio < 1 ? (
+              <>
+                残り
+                {remainingDays > 0 && (
+                  <>
+                    <_Span> {remainingDays} </_Span>日&nbsp;
+                  </>
+                )}
+                <_Span> {remainingHours} </_Span>時間
+                <_Span> {remainingMinutes} </_Span>分
+              </>
+            ) : (
+              <>終了しました</>
+            )}
           </Text>
           <ProgressBar
             progress={timeRatio}

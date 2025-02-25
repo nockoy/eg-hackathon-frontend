@@ -53,7 +53,7 @@ const fetchMockData = (): Data[] => {
       created_at: new Date("2025-02-24T00:00:00.000Z"),
       deposit: 1500,
       description: "毎日50個の英単語を覚えて、語彙力を強化する。",
-      end_date: new Date("2025-03-01T13:00:00.000Z"),
+      end_date: new Date("2025-02-24T10:00:00.000Z"),
       refund: 0,
       status: "completed",
       title: "毎日英単語を50個覚える",
