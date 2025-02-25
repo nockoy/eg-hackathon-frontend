@@ -37,7 +37,7 @@ export const Card = ({
         </Group>
         <Stack gap={4}>
           <Text>
-            あと<_OrangeSpan> {max_commit - commit} </_OrangeSpan>回！
+            あと<_OrangeSpan> {max_commit - commit} </_OrangeSpan> 回 / {max_commit} 回
           </Text>
           <ProgressBar progress={progress} color="yellow" />
         </Stack>
@@ -85,11 +85,11 @@ const _OrangeSpan = styled.span`
   font-size: 24px;
 `;
 
-const _GreenSpan = styled.span`
-  color: #40C057;
-  font-weight: bold;
-  font-size: 24px;
-`;
+// const _GreenSpan = styled.span`
+//   color: #40C057;
+//   font-weight: bold;
+//   font-size: 24px;
+// `;
 
 const _RedSpan = styled.span`
   color: #fa5252;
