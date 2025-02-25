@@ -93,6 +93,7 @@ export const Index: FC = () => {
 
   useEffect(() => {
     fetchDataAndLog();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // if (data.length === 0) {

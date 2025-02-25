@@ -94,7 +94,7 @@ export const Card = ({
                 c="yellow"
                 style={{ whiteSpace: "nowrap" }}
               >
-                ¥ {deposit}
+                ¥ {deposit.toLocaleString()}
               </Text>
             )}
             {status === "completed" && (
@@ -106,7 +106,7 @@ export const Card = ({
                   c="gray.5"
                   style={{ whiteSpace: "nowrap" }}
                 >
-                  ¥ {deposit}
+                  ¥ {deposit.toLocaleString()}
                 </Text>
                 <Text
                   fz="32"
@@ -115,7 +115,7 @@ export const Card = ({
                   c="red"
                   style={{ whiteSpace: "nowrap" }}
                 >
-                  - ¥ {deposit - refund}
+                  - ¥ {(deposit - refund).toLocaleString()}
                 </Text>
               </>
             )}
