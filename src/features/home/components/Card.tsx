@@ -35,14 +35,18 @@ export const Card = ({
             ¥ {amount}
           </Text>
         </Group>
-        <Text>
-          あと<_Span> {max_commit - commit} </_Span>回！
-        </Text>
-        <ProgressBar progress={progress} color="orange" />
-        <Text>
-          あと<_Span> 10 </_Span>時間！
-        </Text>
-        <ProgressBar progress={0.4} color="green" />
+        <Stack gap={4}>
+          <Text>
+            あと<_OrangeSpan> {max_commit - commit} </_OrangeSpan>回！
+          </Text>
+          <ProgressBar progress={progress} color="yellow" />
+        </Stack>
+        <Stack gap={4}>
+          <Text>
+            あと<_GreenSpan> 10 </_GreenSpan>時間！
+          </Text>
+          <ProgressBar progress={0.4} color="green" />
+        </Stack>
 
         <Stack justify="left" w="100%" gap={16}>
           <Text>{description}</Text>
@@ -75,8 +79,14 @@ const _Date = styled.div`
   line-height: 1.6;
 `;
 
-const _Span = styled.span`
+const _OrangeSpan = styled.span`
   color: #ffa500;
+  font-weight: bold;
+  font-size: 24px;
+`;
+
+const _GreenSpan = styled.span`
+  color: #40C057;
   font-weight: bold;
   font-size: 24px;
 `;
