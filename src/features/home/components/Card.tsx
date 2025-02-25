@@ -1,4 +1,4 @@
-import { Group, Stack, Text } from "@mantine/core";
+import { Stack, Text } from "@mantine/core";
 import styled from "styled-components";
 import { ProgressBar } from "./ProgressBar";
 import { useEffect, useState } from "react";
@@ -93,9 +93,10 @@ export const Card = ({
                 lh={1.2}
                 c="yellow"
                 style={{ whiteSpace: "nowrap" }}
-            >
-              ¥ {deposit}
-            </Text>)}
+              >
+                ¥ {deposit}
+              </Text>
+            )}
             {status === "completed" && (
               <>
                 <Text
