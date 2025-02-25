@@ -122,11 +122,11 @@ export const Card = ({
                 残り
                 {remainingDays > 0 && (
                   <>
-                    <_Span> {remainingDays} </_Span>日&nbsp;
+                    <_Span> {remainingDays}</_Span>日&nbsp;
                   </>
                 )}
-                <_Span> {remainingHours} </_Span>時間
-                <_Span> {remainingMinutes} </_Span>分
+                <_Span>{remainingHours}</_Span>時間
+                <_Span>{remainingMinutes}</_Span>分
               </>
             ) : (
               <>終了しました</>
@@ -181,7 +181,7 @@ const _Date = styled.div`
 const _OrangeSpan = styled.span`
   color: #ffa500;
   font-weight: bold;
-  font-size: 24px;
+  font-size: 26px;
 `;
 
 // const _GreenSpan = styled.span`
@@ -198,5 +198,5 @@ const _OrangeSpan = styled.span`
 
 const _Span = styled.span`
   /* font-weight: bold; */
-  font-size: 24px;
+  font-size: 22px;
 `;
