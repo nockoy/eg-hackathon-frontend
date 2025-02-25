@@ -96,9 +96,10 @@ export const Index: FC = () => {
             </Stack>
           </form>
           <Button
-            variant="light"
+            // variant="light"
             radius="xl"
             size="md"
+            color="yellow"
             pr={14}
             h={48}
             styles={{ section: { marginLeft: 22 } }}

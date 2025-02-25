@@ -1,4 +1,4 @@
-import { Stack, Text } from "@mantine/core";
+import { Button, Group, Stack, Text } from "@mantine/core";
 import { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Card } from "../components/Card";
@@ -111,6 +111,34 @@ export const Index: FC = () => {
 
   return (
     <_Stack>
+      <Group justify="space-between">
+        <Button
+          w="47%"
+          color="yellow"
+          variant="outline"
+          radius="xl"
+          size="md"
+          pr={14}
+          h={48}
+          styles={{ section: { marginLeft: 22 } }}
+          onClick={() => navigate("/new-commit")}
+        >
+          AIに相談する
+        </Button>
+        <Button
+          w="47%"
+          color="yellow"
+          variant="outline"
+          radius="xl"
+          size="md"
+          pr={14}
+          h={48}
+          styles={{ section: { marginLeft: 22 } }}
+          onClick={() => navigate("/new-commit")}
+        >
+          チャレンジを作成する
+        </Button>
+      </Group>
       {isDevelopment && (
         <Stack gap={16}>
           <Text fz="24" fw={700}>

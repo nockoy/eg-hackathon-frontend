@@ -1,6 +1,7 @@
 import { FC } from "react";
 import styled from "styled-components";
 import { useAuth } from "../../../hooks/useAuth";
+import { Button } from "@mantine/core";
 
 export const Index: FC = () => {
   const { signOut } = useAuth();
@@ -8,7 +9,18 @@ export const Index: FC = () => {
   return (
     <_Stack>
       <_Text>開発中です</_Text>
-      <_Button onClick={signOut}>ログアウト</_Button>
+      <Button
+        color="yellow"
+        variant="outline"
+        radius="xl"
+        size="md"
+        pr={14}
+        h={48}
+        styles={{ section: { marginLeft: 22 } }}
+        onClick={signOut}
+      >
+        ログアウト
+      </Button>
     </_Stack>
   );
 };
@@ -25,12 +37,4 @@ const _Stack = styled.div`
 const _Text = styled.div`
   font-size: 20px;
   font-weight: bold;
-`;
-
-const _Button = styled.div`
-  background-color: #3400c2;
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
 `;
