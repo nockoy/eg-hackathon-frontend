@@ -86,25 +86,37 @@ export const Card = ({
             <_Date>~ {formatDate(end_at)}</_Date>
           </Stack>
           <Stack gap={4} align="flex-end" w="fit-content">
-            <Text
-              fz="32"
-              fw={700}
-              lh={1.2}
-              c="yellow"
-              style={{ whiteSpace: "nowrap" }}
-            >
-              ¥ {deposit}
-            </Text>
-            {status === "completed" && (
+            {status === "ongoing" && (
               <Text
                 fz="32"
                 fw={700}
                 lh={1.2}
-                c="red"
+                c="yellow"
                 style={{ whiteSpace: "nowrap" }}
-              >
-                - ¥ {deposit - refund}
-              </Text>
+            >
+              ¥ {deposit}
+            </Text>)}
+            {status === "completed" && (
+              <>
+                <Text
+                  fz="26"
+                  fw={700}
+                  lh={1.2}
+                  c="gray.5"
+                  style={{ whiteSpace: "nowrap" }}
+                >
+                  ¥ {deposit}
+                </Text>
+                <Text
+                  fz="32"
+                  fw={700}
+                  lh={1.2}
+                  c="red"
+                  style={{ whiteSpace: "nowrap" }}
+                >
+                  - ¥ {deposit - refund}
+                </Text>
+              </>
             )}
           </Stack>
         </_Row>
