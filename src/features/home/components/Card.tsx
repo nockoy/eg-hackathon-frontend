@@ -42,20 +42,19 @@ export const Card = ({
   const [remainingDays, setRemainingDays] = useState(0);
   const [remainingHours, setRemainingHours] = useState(0);
   const [remainingMinutes, setRemainingMinutes] = useState(0);
-  const [timeFromStartToNow, setTimeFromStartToNow] = useState(0);
-  const [timeFromNowToEnd, setTimeFromNowToEnd] = useState(0);
   const [timeRatio, setTimeRatio] = useState(0);
-  const [timeFromStartToEnd, setTimeFromStartToEnd] = useState(0);
 
   useEffect(() => {
     const updateRemainingTime = () => {
-      const now = new Date();
+      const currentTime = new Date();
       const startDate = new Date(start_at);
       const endDate = new Date(end_at);
-      setTimeFromStartToNow(now.getTime() - startDate.getTime());
-      setTimeFromNowToEnd(endDate.getTime() - now.getTime());
-      setTimeFromStartToEnd(endDate.getTime() - startDate.getTime());
-      setTimeRatio(timeFromStartToNow / timeFromStartToEnd);
+      const timeFromStartToNow = currentTime.getTime() - startDate.getTime();
+      const timeFromNowToEnd = endDate.getTime() - currentTime.getTime();
+      const timeFromStartToEnd = endDate.getTime() - startDate.getTime();
+      const timeRatio = timeFromStartToNow / timeFromStartToEnd;
+
+      setTimeRatio(timeRatio);
       setRemainingDays(Math.floor(timeFromNowToEnd / (1000 * 60 * 60 * 24)));
       setRemainingHours(
         Math.floor(
@@ -68,20 +67,10 @@ export const Card = ({
     };
 
     updateRemainingTime();
-    const intervalId = setInterval(updateRemainingTime, 60000); // 1分ごとに更新
+    const intervalId = setInterval(updateRemainingTime, 1000); // 1秒ごとに更新
 
     return () => clearInterval(intervalId);
-  }, [
-    end_at,
-    start_at,
-    timeFromStartToEnd,
-    timeFromStartToNow,
-    timeFromNowToEnd,
-    timeRatio,
-    remainingDays,
-    remainingHours,
-    remainingMinutes,
-  ]);
+  }, [start_at, end_at]);
 
   return (
     <_Card onClick={onClick}>
