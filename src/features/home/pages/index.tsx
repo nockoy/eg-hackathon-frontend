@@ -113,6 +113,7 @@ const _Card = styled.div`
   border-radius: 16px;
   border: 1px solid #e0e0e0;
   padding: 16px;
+  box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.1);
 `;
 
 const _Text = styled.div`
