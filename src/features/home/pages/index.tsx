@@ -1,8 +1,9 @@
 import { Stack, Text } from "@mantine/core";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import styled from "styled-components";
 import { Card } from "../components/Card";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const fetchMockData = () => {
   return [
@@ -43,11 +44,33 @@ const fetchMockData = () => {
   ];
 };
 
+const fetchData = async () => {
+  try {
+    const res = await axios.get("http://localhost:8080/users/3/home");
+    return res;
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+};
+
 export const Index: FC = () => {
   const mockData = fetchMockData();
   const ongoingData = mockData.filter((item) => item.status === "ongoing");
   const completedData = mockData.filter((item) => item.status === "completed");
   const navigate = useNavigate();
+
+  // fetchDataを非同期で呼び出し、結果を待つ
+  const fetchDataAndLog = async () => {
+    const data = await fetchData();
+    console.log("data", data);
+  };
+
+  // コンポーネントがマウントされたときにデータを取得
+  useEffect(() => {
+    fetchDataAndLog();
+  }, []);
+
   return (
     <_Stack>
       <Stack gap={16}>
