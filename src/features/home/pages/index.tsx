@@ -68,6 +68,19 @@ const fetchData = async (): Promise<Data[]> => {
   }
 };
 
+const formatDate = (dateString: string): string => {
+  const date = new Date(dateString);
+  const options: Intl.DateTimeFormatOptions = {
+    month: "numeric",
+    day: "numeric",
+    weekday: "short",
+    hour: "2-digit",
+    minute: "2-digit",
+    hour12: false,
+  };
+  return new Intl.DateTimeFormat("ja-JP", options).format(date);
+};
+
 export const Index: FC = () => {
   const mockData = fetchMockData();
   const ongoingData = mockData.filter((item) => item.status === "ongoing");
@@ -107,7 +120,7 @@ export const Index: FC = () => {
             <Card
               key={index}
               title={item.title}
-              deadline={item.end_date.toString()}
+              deadline={formatDate(item.end_date.toString())}
               amount={item.deposit.toLocaleString()}
               description={item.description}
               progress={item.commits.length / 5}
@@ -126,7 +139,7 @@ export const Index: FC = () => {
           <Card
             key={index}
             title={item.title}
-            deadline={item.end_date.toString()}
+            deadline={formatDate(item.end_date.toString())}
             amount={item.deposit.toLocaleString()}
             description={item.description}
             progress={item.commits.length / 5}
@@ -145,7 +158,7 @@ export const Index: FC = () => {
           <Card
             key={index}
             title={item.title}
-            deadline={item.end_date.toString()}
+            deadline={formatDate(item.end_date.toString())}
             amount={item.deposit.toLocaleString()}
             description={item.description}
             progress={item.commits.length / 5}
