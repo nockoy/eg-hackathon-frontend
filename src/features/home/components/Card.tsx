@@ -5,7 +5,7 @@ import { ProgressBar } from "./ProgressBar";
 type CardProps = {
   title: string;
   deadline: string;
-  amount: number;
+  amount: string;
   description: string;
   progress: number;
   max_commit: number;
@@ -32,7 +32,7 @@ export const Card = ({
             <_Date>～ {deadline}</_Date>
           </Stack>
           <Text fz="32" fw={700} c="yellow">
-            ￥{amount}
+            ¥ {amount}
           </Text>
         </Group>
         <Text>

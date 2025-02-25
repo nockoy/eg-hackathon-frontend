@@ -1,53 +1,67 @@
 import { Stack, Text } from "@mantine/core";
-import { FC, useEffect } from "react";
+import { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Card } from "../components/Card";
 import { useNavigate } from "react-router-dom";
 import api from "../../../api/axios";
 
-const fetchMockData = () => {
+const isDevelopment = import.meta.env.VITE_ENV === "development";
+
+type Data = {
+  challenge_id: number;
+  commits: Date[];
+  created_at: Date;
+  deposit: number;
+  description: string;
+  end_date: Date;
+  refund: number;
+  status: string;
+  title: string;
+};
+
+const fetchMockData = (): Data[] => {
   return [
     {
-      id: "1",
-      status: "ongoing",
-      progress: 10,
-      title: "ジムに5回行く！",
-      deadline: "3月1日(土) 13:00",
-      amount: 2000,
+      challenge_id: 1,
+      commits: [new Date("2025-02-24T00:00:00.000Z")],
+      created_at: new Date("2025-02-24T00:00:00.000Z"),
+      deposit: 2000,
       description: "ジムに5回行く！",
-      max_commit: 5,
-      commit: 1,
+      end_date: new Date("2025-03-01T13:00:00.000Z"),
+      refund: 0,
+      status: "ongoing",
+      title: "ジムに5回行く！",
     },
     {
-      id: "2",
-      status: "ongoing",
-      progress: 60,
-      title: "本番までに過去問10年分解く",
-      deadline: "3月1日(土) 13:00",
-      amount: 2000,
+      challenge_id: 2,
+      commits: [new Date("2025-02-24T00:00:00.000Z")],
+      created_at: new Date("2025-02-24T00:00:00.000Z"),
+      deposit: 2000,
       description:
         "2010年度〜2019年度の過去問を解く！\n得点率8割越えを目指したい。",
-      max_commit: 10,
-      commit: 5,
+      end_date: new Date("2025-03-01T13:00:00.000Z"),
+      refund: 0,
+      status: "ongoing",
+      title: "本番までに過去問10年分解く",
     },
     {
-      id: "3",
-      status: "completed",
-      progress: 80,
-      title: "毎日英単語を50個覚える",
-      deadline: "3月15日(日) 18:00",
-      amount: 1500,
+      challenge_id: 3,
+      commits: [new Date("2025-02-24T00:00:00.000Z")],
+      created_at: new Date("2025-02-24T00:00:00.000Z"),
+      deposit: 1500,
       description: "毎日50個の英単語を覚えて、語彙力を強化する。",
-      max_commit: 10,
-      commit: 8,
+      end_date: new Date("2025-03-01T13:00:00.000Z"),
+      refund: 0,
+      status: "completed",
+      title: "毎日英単語を50個覚える",
     },
   ];
 };
 
-const fetchData = async () => {
+const fetchData = async (): Promise<Data[]> => {
   try {
-    const res = await api.get("/users/3/home");
-    return res;
+    const res = await api.get("/users/1/home");
+    return res.data;
   } catch (error) {
     console.error("Error fetching data:", error);
     throw error;
@@ -59,20 +73,51 @@ export const Index: FC = () => {
   const ongoingData = mockData.filter((item) => item.status === "ongoing");
   const completedData = mockData.filter((item) => item.status === "completed");
   const navigate = useNavigate();
+  const [data, setData] = useState<Data[]>([]);
 
   // fetchDataを非同期で呼び出し、結果を待つ
   const fetchDataAndLog = async () => {
-    const data = await fetchData();
-    console.log("data", data);
+    if (isDevelopment) {
+      const data = await fetchData();
+      setData(data);
+      console.log("data", data);
+    } else {
+      setData(mockData);
+    }
   };
 
   // コンポーネントがマウントされたときにデータを取得
+
   useEffect(() => {
     fetchDataAndLog();
   }, []);
 
+  // if (data.length === 0) {
+  //   return null;
+  // }
+
   return (
     <_Stack>
+      {isDevelopment && (
+        <Stack gap={16}>
+          <Text fz="24" fw={700}>
+            DBから取得したデータ
+          </Text>
+          {data.map((item, index) => (
+            <Card
+              key={index}
+              title={item.title}
+              deadline={item.end_date.toString()}
+              amount={item.deposit.toLocaleString()}
+              description={item.description}
+              progress={item.commits.length / 5}
+              max_commit={5}
+              commit={data[0].commits.length}
+              onClick={() => navigate(`/commit/${item.challenge_id}`)}
+            />
+          ))}
+        </Stack>
+      )}
       <Stack gap={16}>
         <Text fz="24" fw={700}>
           進行中
@@ -81,13 +126,13 @@ export const Index: FC = () => {
           <Card
             key={index}
             title={item.title}
-            deadline={item.deadline}
-            amount={item.amount}
+            deadline={item.end_date.toString()}
+            amount={item.deposit.toLocaleString()}
             description={item.description}
-            progress={item.progress}
-            max_commit={item.max_commit}
-            commit={item.commit}
-            onClick={() => navigate(`/commit/${item.id}`)}
+            progress={item.commits.length / 5}
+            max_commit={5}
+            commit={item.commits.length}
+            onClick={() => navigate(`/commit/${item.challenge_id}`)}
           />
         ))}
       </Stack>
@@ -100,13 +145,13 @@ export const Index: FC = () => {
           <Card
             key={index}
             title={item.title}
-            deadline={item.deadline}
-            amount={item.amount}
+            deadline={item.end_date.toString()}
+            amount={item.deposit.toLocaleString()}
             description={item.description}
-            progress={item.progress}
-            max_commit={item.max_commit}
-            commit={item.commit}
-            onClick={() => navigate(`/commit/${item.id}`)}
+            progress={item.commits.length / 5}
+            max_commit={5}
+            commit={item.commits.length}
+            onClick={() => navigate(`/commit/${item.challenge_id}`)}
           />
         ))}
       </Stack>
