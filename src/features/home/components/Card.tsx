@@ -42,7 +42,7 @@ export const Card = ({
         <Text>
           あと<_Span> 10 </_Span>時間！
         </Text>
-        <ProgressBar progress={progress} color="green" />
+        <ProgressBar progress={0.4} color="green" />
 
         <Stack justify="left" w="100%" gap={16}>
           <Text>{description}</Text>
