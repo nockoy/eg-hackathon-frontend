@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   createUserWithEmailAndPassword,
@@ -10,10 +10,12 @@ import {
 } from "firebase/auth";
 import { FirebaseError } from "firebase/app";
 import fireAuth from "../firebase";
+import { UserContext } from "../contexts/UserContext";
 
 export const useAuth = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const { setUser } = useContext(UserContext);
 
   const signInWithGoogle = useCallback(async () => {
     const provider = new GoogleAuthProvider();
@@ -63,6 +65,7 @@ export const useAuth = () => {
     try {
       const auth = getAuth();
       await signOutFirebase(auth);
+      setUser({ id: "", name: "" });
       return { success: true, message: "" };
     } catch (e) {
       if (e instanceof FirebaseError) {

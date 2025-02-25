@@ -18,6 +18,7 @@ import { ReactNode, useContext } from "react";
 import { useAuth } from "../../../../hooks/useAuth";
 import api from "../../../../api/axios";
 import { UserContext } from "../../../../contexts/UserContext";
+import { getAuth } from "firebase/auth";
 
 export const AuthenticationForm = (props: PaperProps) => {
   const { setUser } = useContext(UserContext);
@@ -71,6 +72,48 @@ export const AuthenticationForm = (props: PaperProps) => {
     }
   });
 
+  const handleGoogleSignIn = async () => {
+    try {
+      await signInWithGoogle();
+
+      // Firebase authから直接現在のユーザー情報を取得
+      const auth = getAuth();
+      const currentUser = auth.currentUser;
+
+      if (currentUser && currentUser.email) {
+        const email = currentUser.email;
+        const name = currentUser.displayName || "";
+
+        try {
+          // まずログインを試みる
+          const res = await api.get(`/auth/login?email=${email}`);
+
+          setUser({
+            id: res.data.id,
+            name: res.data.name,
+          });
+        } catch (error) {
+          // ログインに失敗した場合（ユーザーが存在しない場合）
+          console.error(error);
+          console.log("ログイン失敗、サインアップを試みます");
+
+          // サインアップを試みる
+          const signupRes = await api.post("/auth/signup", {
+            email: email,
+            name: name,
+          });
+
+          setUser({
+            id: signupRes.data.id,
+            name: signupRes.data.name,
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Google認証エラー:", error);
+    }
+  };
+
   return (
     <_Paper radius="md" p="xl" withBorder {...props}>
       <_TextWrapper>
@@ -78,7 +121,7 @@ export const AuthenticationForm = (props: PaperProps) => {
       </_TextWrapper>
 
       <Group grow mb="md" mt="md">
-        <GoogleButton radius="xl" onClick={signInWithGoogle}>
+        <GoogleButton radius="xl" onClick={handleGoogleSignIn}>
           Googleでログイン
         </GoogleButton>
       </Group>

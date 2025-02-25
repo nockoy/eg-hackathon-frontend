@@ -1,9 +1,10 @@
 import { Button, Group, Stack, Text } from "@mantine/core";
-import { FC, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Card } from "../components/Card";
 import { useNavigate } from "react-router-dom";
 import api from "../../../api/axios";
+import { UserContext } from "../../../contexts/UserContext";
 
 const isDevelopment = import.meta.env.VITE_ENV === "development";
 
@@ -81,6 +82,7 @@ export const Index: FC = () => {
   const completedData = mockData.filter((item) => item.status === "completed");
   const navigate = useNavigate();
   const [data, setData] = useState<Data[]>([]);
+  const { id, name } = useContext(UserContext);
 
   // fetchDataを非同期で呼び出し、結果を待つ
   const fetchDataAndLog = async () => {
@@ -106,6 +108,9 @@ export const Index: FC = () => {
 
   return (
     <_Stack>
+      <Text fz="24" fw={700}>
+        あなたはid: {id} でログインしている{name}さんです。
+      </Text>
       <Group justify="space-between">
         <Button
           w="47%"
