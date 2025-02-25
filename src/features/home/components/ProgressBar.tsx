@@ -3,13 +3,18 @@ import styled from "styled-components";
 
 type ProgressBarProps = {
   progress: number;
-  color: "yellow" | "green" | "orange" | "red";
+  color: "yellow" | "green" | "orange" | "red" | "gray.4";
+  backgroundColor?: string;
 };
 
-export const ProgressBar = ({ progress, color }: ProgressBarProps) => {
+export const ProgressBar = ({
+  progress,
+  color,
+  backgroundColor = "gray.2",
+}: ProgressBarProps) => {
   return (
     <div style={{ position: "relative" }}>
-      <Progress.Root w="100%" size={16} radius={8}>
+      <Progress.Root w="100%" size={16} radius={8} bg={backgroundColor}>
         <Progress.Section
           value={progress * 100}
           color={color}
@@ -37,5 +42,7 @@ const _Period = styled.div<{ color: string }>`
       ? "#40C057"
       : color === "orange"
       ? "#FD7E14"
+      : color === "gray.4"
+      ? "#CED4DA"
       : "#FA5252"};
 `;

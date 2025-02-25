@@ -42,7 +42,7 @@ const fetchMockData = (): Data[] => {
       deposit: 2000,
       description:
         "2010年度〜2019年度の過去問を解く！\n得点率8割越えを目指したい。",
-      end_date: new Date("2025-03-01T13:00:00.000Z"),
+      end_date: new Date("2025-03-03T12:35:00.000Z"),
       refund: 0,
       status: "ongoing",
       title: "本番までに過去問10年分解く",
@@ -69,19 +69,6 @@ const fetchData = async (): Promise<Data[]> => {
     console.error("Error fetching data:", error);
     throw error;
   }
-};
-
-const formatDate = (dateString: string): string => {
-  const date = new Date(dateString);
-  const options: Intl.DateTimeFormatOptions = {
-    month: "numeric",
-    day: "numeric",
-    weekday: "short",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  };
-  return new Intl.DateTimeFormat("ja-JP", options).format(date);
 };
 
 export const Index: FC = () => {
@@ -151,7 +138,8 @@ export const Index: FC = () => {
             <Card
               key={index}
               title={item.title}
-              deadline={formatDate(item.end_date.toString())}
+              start_at={item.created_at.toString()}
+              end_at={item.end_date.toString()}
               amount={item.deposit.toLocaleString()}
               description={item.description}
               progress={item.commits.length / 5}
@@ -170,7 +158,8 @@ export const Index: FC = () => {
           <Card
             key={index}
             title={item.title}
-            deadline={formatDate(item.end_date.toString())}
+            start_at={item.created_at.toString()}
+            end_at={item.end_date.toString()}
             amount={item.deposit.toLocaleString()}
             description={item.description}
             progress={item.commits.length / 5}
@@ -189,7 +178,8 @@ export const Index: FC = () => {
           <Card
             key={index}
             title={item.title}
-            deadline={formatDate(item.end_date.toString())}
+            start_at={item.created_at.toString()}
+            end_at={item.end_date.toString()}
             amount={item.deposit.toLocaleString()}
             description={item.description}
             progress={item.commits.length / 5}
