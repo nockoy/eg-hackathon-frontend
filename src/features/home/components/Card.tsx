@@ -4,10 +4,13 @@ import { ProgressBar } from "./ProgressBar";
 import { useEffect, useState } from "react";
 
 type CardProps = {
+  challenge_id: number;
   title: string;
   start_at: string;
   end_at: string;
-  amount: string;
+  deposit: number;
+  refund: number;
+  status: string;
   description: string;
   progress: number;
   max_commit: number;
@@ -32,7 +35,9 @@ export const Card = ({
   title,
   start_at,
   end_at,
-  amount,
+  deposit,
+  refund,
+  status,
   description,
   progress,
   max_commit,
@@ -80,9 +85,16 @@ export const Card = ({
             <_Text>{title}</_Text>
             <_Date>~ {formatDate(end_at)}</_Date>
           </Stack>
-          <Text fz="32" fw={700} c="yellow">
-            ¥ {amount}
-          </Text>
+          <Stack gap={4} align="flex-end">
+            <Text fz="32" fw={700} lh={1.2} c="yellow">
+              ¥ {deposit}
+            </Text>
+            {status === "completed" && (
+              <Text fz="32" fw={700} lh={1.2} c="red">
+                - ¥ {deposit - refund}
+              </Text>
+            )}
+          </Stack>
         </Group>
         <Stack gap={4}>
           <Text>

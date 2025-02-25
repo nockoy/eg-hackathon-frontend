@@ -134,13 +134,16 @@ export const Index: FC = () => {
           <Text fz="24" fw={700}>
             DBから取得したデータ
           </Text>
-          {data.map((item, index) => (
+          {data.map((item) => (
             <Card
-              key={index}
+              key={item.challenge_id}
+              challenge_id={item.challenge_id}
               title={item.title}
               start_at={item.created_at.toString()}
               end_at={item.end_date.toString()}
-              amount={item.deposit.toLocaleString()}
+              deposit={item.deposit}
+              refund={item.refund}
+              status={item.status}
               description={item.description}
               progress={item.commits.length / 5}
               max_commit={5}
@@ -154,13 +157,16 @@ export const Index: FC = () => {
         <Text fz="24" fw={700}>
           進行中
         </Text>
-        {ongoingData.map((item, index) => (
+        {ongoingData.map((item) => (
           <Card
-            key={index}
+            key={item.challenge_id}
+            challenge_id={item.challenge_id}
             title={item.title}
             start_at={item.created_at.toString()}
             end_at={item.end_date.toString()}
-            amount={item.deposit.toLocaleString()}
+            deposit={item.deposit}
+            refund={item.refund}
+            status={item.status}
             description={item.description}
             progress={item.commits.length / 5}
             max_commit={5}
@@ -174,13 +180,16 @@ export const Index: FC = () => {
         <Text fz="24" fw={700}>
           過去のコミット
         </Text>
-        {completedData.map((item, index) => (
+        {completedData.map((item) => (
           <Card
-            key={index}
+            key={item.challenge_id}
+            challenge_id={item.challenge_id}
             title={item.title}
             start_at={item.created_at.toString()}
             end_at={item.end_date.toString()}
-            amount={item.deposit.toLocaleString()}
+            deposit={item.deposit}
+            refund={item.refund}
+            status={item.status}
             description={item.description}
             progress={item.commits.length / 5}
             max_commit={5}
