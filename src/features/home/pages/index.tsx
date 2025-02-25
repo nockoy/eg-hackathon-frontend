@@ -1,6 +1,7 @@
-import { Group, Progress, Stack, Text, Tooltip } from "@mantine/core";
+import { Stack, Text } from "@mantine/core";
 import { FC } from "react";
 import styled from "styled-components";
+import { Card } from "../components/Card";
 
 const fetchMockData = () => {
   return [
@@ -11,6 +12,8 @@ const fetchMockData = () => {
       deadline: "3月1日(土) 13:00",
       amount: 2000,
       description: "ジムに5回行く！",
+      max_commit: 5,
+      commit: 1,
     },
     {
       status: "ongoing",
@@ -20,6 +23,8 @@ const fetchMockData = () => {
       amount: 2000,
       description:
         "2010年度〜2019年度の過去問を解く！\n得点率8割越えを目指したい。",
+      max_commit: 10,
+      commit: 5,
     },
     {
       status: "completed",
@@ -28,6 +33,8 @@ const fetchMockData = () => {
       deadline: "3月15日(日) 18:00",
       amount: 1500,
       description: "毎日50個の英単語を覚えて、語彙力を強化する。",
+      max_commit: 10,
+      commit: 8,
     },
   ];
 };
@@ -51,6 +58,8 @@ export const Index: FC = () => {
             amount={item.amount}
             description={item.description}
             progress={item.progress}
+            max_commit={item.max_commit}
+            commit={item.commit}
           />
         ))}
       </Stack>
@@ -67,69 +76,12 @@ export const Index: FC = () => {
             amount={item.amount}
             description={item.description}
             progress={item.progress}
+            max_commit={item.max_commit}
+            commit={item.commit}
           />
         ))}
       </Stack>
     </_Stack>
-  );
-};
-
-type CardProps = {
-  title: string;
-  deadline: string;
-  amount: number;
-  description: string;
-  progress: number;
-};
-
-const Card = ({
-  title,
-  deadline,
-  amount,
-  description,
-  progress,
-}: CardProps) => {
-  return (
-    <_Card>
-      <Stack w="100%" gap={16}>
-        <Group justify="space-between" w="100%" gap={16}>
-          <Stack gap={4}>
-            <_Text>{title}</_Text>
-            <_Date>～ {deadline}</_Date>
-          </Stack>
-          <Text fz="32" fw={700} c="yellow">
-            ￥{amount}
-          </Text>
-        </Group>
-        <ProgressBar progress={progress} />
-
-        <Stack justify="left" w="100%" gap={16}>
-          <Text>{description}</Text>
-        </Stack>
-      </Stack>
-    </_Card>
-  );
-};
-
-type ProgressBarProps = {
-  progress: number;
-};
-
-const ProgressBar = ({ progress }: ProgressBarProps) => {
-  const displayProgress = progress < 4 ? 4 : progress;
-
-  return (
-    <Progress.Root w="100%" size={20} radius={16}>
-      <Tooltip label="Progress">
-        <Progress.Section
-          value={displayProgress}
-          color="orange"
-          style={{ borderRadius: 16 }}
-        >
-          <Progress.Label></Progress.Label>
-        </Progress.Section>
-      </Tooltip>
-    </Progress.Root>
   );
 };
 
@@ -140,26 +92,4 @@ const _Stack = styled.div`
   gap: 32px;
   padding-top: 80px;
   padding-bottom: calc(80px + env(safe-area-inset-bottom) * 0.2);
-`;
-
-const _Card = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  border-radius: 16px;
-  border: 1px solid #e0e0e0;
-  padding: 16px;
-  box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.05);
-`;
-
-const _Text = styled.div`
-  font-size: 16px;
-  font-weight: bold;
-  line-height: 1.6;
-`;
-
-const _Date = styled.div`
-  font-size: 14px;
-  line-height: 1.6;
 `;
