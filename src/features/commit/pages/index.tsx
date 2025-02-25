@@ -1,19 +1,25 @@
 import { Stack, Text } from "@mantine/core";
 import { FC } from "react";
 import styled from "styled-components";
+import { formatDate } from "../../../util/formatDate";
 
 const fetchMockData = () => {
   return [
     {
-      id: "1",
+      challenge_id: 2,
+      commits: [
+        new Date("2025-02-24T00:00:00.000Z"),
+        new Date("2025-02-25T00:00:00.000Z"),
+      ],
+      created_at: new Date("2025-02-24T00:00:00.000Z"),
+      deposit: 2000,
+      description:
+        "2010年度〜2019年度の過去問を解く！\n得点率8割越えを目指したい。",
+      end_date: new Date("2025-03-03T12:35:00.000Z"),
+      refund: 0,
       status: "ongoing",
-      progress: 10,
-      title: "ジムに5回行く！",
-      deadline: "3月1日(土) 13:00",
-      amount: 2000,
-      description: "ジムに5回行く！",
+      title: "本番までに過去問10年分解く",
       max_commit: 5,
-      commit: 1,
     },
   ];
 };
@@ -32,13 +38,13 @@ export const Index: FC = () => {
               {data.title}
             </Text>
             <Text size="md" fw={400}>
-              {data.deadline} までに
+              {formatDate(data.end_date.toString())} までに
             </Text>
             <Text size="md" fw={400}>
               {data.max_commit}回
             </Text>
             <Text size="md" fw={400}>
-              {data.amount}円
+              {data.deposit.toLocaleString()}円
             </Text>
             <Text size="md" fw={400}>
               {data.description}

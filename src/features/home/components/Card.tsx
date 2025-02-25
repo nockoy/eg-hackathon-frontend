@@ -2,6 +2,7 @@ import { Stack, Text } from "@mantine/core";
 import styled from "styled-components";
 import { ProgressBar } from "./ProgressBar";
 import { useEffect, useState } from "react";
+import { formatDate } from "../../../util/formatDate";
 
 type CardProps = {
   challenge_id: number;
@@ -16,19 +17,6 @@ type CardProps = {
   max_commit: number;
   commit: number;
   onClick: () => void;
-};
-
-const formatDate = (dateString: string): string => {
-  const date = new Date(dateString);
-  const options: Intl.DateTimeFormatOptions = {
-    month: "numeric",
-    day: "numeric",
-    weekday: "short",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: false,
-  };
-  return new Intl.DateTimeFormat("ja-JP", options).format(date);
 };
 
 export const Card = ({

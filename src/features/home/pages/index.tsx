@@ -17,6 +17,7 @@ type Data = {
   refund: number;
   status: string;
   title: string;
+  max_commit: number;
 };
 
 const fetchMockData = (): Data[] => {
@@ -31,6 +32,7 @@ const fetchMockData = (): Data[] => {
       refund: 0,
       status: "ongoing",
       title: "ジムに5回行く！",
+      max_commit: 5,
     },
     {
       challenge_id: 2,
@@ -46,6 +48,7 @@ const fetchMockData = (): Data[] => {
       refund: 0,
       status: "ongoing",
       title: "本番までに過去問10年分解く",
+      max_commit: 10,
     },
     {
       challenge_id: 3,
@@ -57,6 +60,7 @@ const fetchMockData = (): Data[] => {
       refund: 0,
       status: "completed",
       title: "毎日英単語を50個覚える",
+      max_commit: 5,
     },
   ];
 };
@@ -146,9 +150,9 @@ export const Index: FC = () => {
               refund={item.refund}
               status={item.status}
               description={item.description}
-              progress={item.commits.length / 5}
-              max_commit={5}
-              commit={data[0].commits.length}
+              progress={item.commits.length / item.max_commit}
+              max_commit={item.max_commit}
+              commit={item.commits.length}
               onClick={() => navigate(`/commit/${item.challenge_id}`)}
             />
           ))}
@@ -169,8 +173,8 @@ export const Index: FC = () => {
             refund={item.refund}
             status={item.status}
             description={item.description}
-            progress={item.commits.length / 5}
-            max_commit={5}
+            progress={item.commits.length / item.max_commit}
+            max_commit={item.max_commit}
             commit={item.commits.length}
             onClick={() => navigate(`/commit/${item.challenge_id}`)}
           />
@@ -192,8 +196,8 @@ export const Index: FC = () => {
             refund={item.refund}
             status={item.status}
             description={item.description}
-            progress={item.commits.length / 5}
-            max_commit={5}
+            progress={item.commits.length / item.max_commit}
+            max_commit={item.max_commit}
             commit={item.commits.length}
             onClick={() => navigate(`/commit/${item.challenge_id}`)}
           />
