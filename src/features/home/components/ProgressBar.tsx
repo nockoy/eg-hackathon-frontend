@@ -6,12 +6,11 @@ type ProgressBarProps = {
 };
 
 export const ProgressBar = ({ progress }: ProgressBarProps) => {
-
   return (
     <div style={{ position: "relative" }}>
       <Progress.Root w="100%" size={16} radius={8}>
         <Progress.Section
-          value={progress}
+          value={progress * 100}
           color="orange"
           style={{ borderRadius: 8 }}
         >

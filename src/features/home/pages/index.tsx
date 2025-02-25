@@ -34,7 +34,10 @@ const fetchMockData = (): Data[] => {
     },
     {
       challenge_id: 2,
-      commits: [new Date("2025-02-24T00:00:00.000Z")],
+      commits: [
+        new Date("2025-02-24T00:00:00.000Z"),
+        new Date("2025-02-25T00:00:00.000Z"),
+      ],
       created_at: new Date("2025-02-24T00:00:00.000Z"),
       deposit: 2000,
       description:
