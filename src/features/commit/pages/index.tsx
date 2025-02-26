@@ -1,9 +1,9 @@
-import { Stack, Text } from "@mantine/core";
+import { Button, Stack, Text } from "@mantine/core";
 import { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 import { formatDate } from "../../../util/formatDate";
 import api from "../../../api/axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 // const fetchMockData = () => {
 //   return [
@@ -51,12 +51,27 @@ const fetchData = async (challengeId: number) => {
   return res.data;
 };
 
+
+const postReport = async (challengeId: number, comment: string = "test") => {
+  try {
+    const res = await api.post(`/reports`, {
+      challenge_id: challengeId,
+      comment: comment,
+    });
+    return { success: true, data: res.data };
+  } catch (error) {
+    console.error("レポート送信中にエラーが発生しました:", error);
+    return { success: false, error };
+  }
+};
+
+
 export const Index: FC = () => {
   const { id } = useParams();
   console.log("id", id);
   const challengeId = Number(id);
   const [data, setData] = useState<ChallengeData | null>(null);
-
+  const navigate = useNavigate();
   const fetchDataAndLog = async () => {
     try {
       const fetchedData = await fetchData(challengeId);
@@ -68,6 +83,21 @@ export const Index: FC = () => {
     }
   };
   console.log("data", data);
+
+  const handleClick = async () => {
+    try {
+      if (data) {
+        const result = await postReport(challengeId, "test");
+        if (result.success) {
+          navigate("/");
+        } else {
+          console.error("レポート送信に失敗しました");
+        }
+      }
+    } catch (error) {
+      console.error("予期せぬエラーが発生しました:", error);
+    }
+  };
 
   useEffect(() => {
     fetchDataAndLog();
@@ -84,7 +114,6 @@ export const Index: FC = () => {
 
   return (
     <_Stack>
-      <>
         <Stack gap={16}>
           <Stack gap={8}>
             <Text size="xl" fw={700}>
@@ -105,9 +134,24 @@ export const Index: FC = () => {
             <Text size="md" fw={400}>
               やること：{data.description}
             </Text>
+            <Text size="md" fw={400}>
+              コミット回数：{data.commit}回
+            </Text>
           </Stack>
         </Stack>
-      </>
+        <Button
+          w="47%"
+          color="yellow"
+          variant="outline"
+          radius="xl"
+          size="md"
+          pr={14}
+          h={48}
+          styles={{ section: { marginLeft: 22 } }}
+          onClick={handleClick}
+        >
+          コミットを作成
+        </Button>
     </_Stack>
   );
 };
