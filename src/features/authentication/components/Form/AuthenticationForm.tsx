@@ -45,34 +45,52 @@ export const AuthenticationForm = (props: PaperProps) => {
   const onSubmit = form.onSubmit(async (values) => {
     if (type === "login") {
       try {
-        await signIn(values.email, values.password);
-        const res = await api.get(`/auth/login?email=${values.email}`);
-        console.log(res);
+        const signInResult = await signIn(values.email, values.password);
+        if (!signInResult.success) {
+          console.error(signInResult.message);
+          return;
+        }
 
-        setUser({
-          userId: res.data.id,
-          nickname: res.data.name,
-        });
-        navigate("/");
+        try {
+          const res = await api.get(`/auth/login?email=${values.email}`);
+          console.log(res);
+
+          setUser({
+            userId: res.data.id,
+            nickname: res.data.name,
+          });
+          navigate("/");
+        } catch (error) {
+          console.error("APIエラー:", error);
+        }
       } catch (error) {
-        console.error(error);
+        console.error("認証エラー:", error);
       }
     } else {
       try {
-        const res = await api.post("/auth/signup", {
-          email: values.email,
-          name: values.nickname,
-        });
-        await signUp(values.email, values.password);
-        console.log(res);
+        try {
+          const signUpResult = await signUp(values.email, values.password);
+          if (!signUpResult.success) {
+            console.error(signUpResult.message);
+            return;
+          }
 
-        setUser({
-          userId: res.data.id,
-          nickname: res.data.name,
-        });
-        navigate("/");
+          const res = await api.post("/auth/signup", {
+            email: values.email,
+            name: values.nickname,
+          });
+          console.log(res);
+
+          setUser({
+            userId: res.data.id,
+            nickname: res.data.name,
+          });
+          navigate("/");
+        } catch (error) {
+          console.error("APIエラー:", error);
+        }
       } catch (error) {
-        console.error(error);
+        console.error("認証エラー:", error);
       }
     }
   });
@@ -98,7 +116,7 @@ export const AuthenticationForm = (props: PaperProps) => {
             nickname: res.data.name,
           });
           navigate("/");
-        } catch  {
+        } catch {
           // ログインに失敗した場合（ユーザーが存在しない場合）
           console.log("サインアップを試みます");
 
