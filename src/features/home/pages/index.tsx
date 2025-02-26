@@ -218,5 +218,5 @@ const _Stack = styled.div`
   flex-direction: column;
   gap: 32px;
   padding-top: 80px;
-  padding-bottom: calc(80px + env(safe-area-inset-bottom) * 0.2);
+  padding-bottom: 160px;
 `;
