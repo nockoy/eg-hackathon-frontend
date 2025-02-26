@@ -70,6 +70,42 @@ export const Index: FC = () => {
         <>
           <form>
             <Stack gap={16}>
+              <Textarea
+                label="AIに相談"
+                size="md"
+                placeholder="例）1か月後までに5kg痩せたい！"
+                autosize
+                minRows={3}
+                value={form.values.description}
+                onChange={(event) =>
+                  form.setFieldValue("description", event.currentTarget.value)
+                }
+              />
+            </Stack>
+          </form>
+          <Button
+            // variant="light"
+            radius="xl"
+            size="md"
+            color="yellow"
+            pr={14}
+            h={48}
+            styles={{ section: { marginLeft: 22 } }}
+            onClick={() => {
+              form.validate();
+              if (form.isValid()) {
+                setPage(1);
+              }
+            }}
+          >
+            相談する
+          </Button>
+        </>
+      )}
+      {page === 1 && (
+        <>
+          <form>
+            <Stack gap={16}>
               <TextInput
                 required
                 type="text"
@@ -163,7 +199,7 @@ export const Index: FC = () => {
           </Button>
         </>
       )}
-      {page === 1 && (
+      {page === 2 && (
         <>
           <Stack
             gap={24}

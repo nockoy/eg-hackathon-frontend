@@ -33,7 +33,7 @@ const fetchData = async (userId: string): Promise<Data[]> => {
 
 export const Index: FC = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState<Data[]>([]);
+  // const [data, setData] = useState<Data[]>([]);
   const [ongoingData, setOngoingData] = useState<Data[]>([]);
   const [completedData, setCompletedData] = useState<Data[]>([]);
   const { userId, nickname } = useContext(UserContext);
@@ -42,7 +42,7 @@ export const Index: FC = () => {
   const fetchDataAndLog = async () => {
     if (isDevelopment) {
       const data = await fetchData(userId);
-      setData(data);
+      // setData(data);
       console.log("data", data);
 
       const currentDate = new Date();
@@ -158,7 +158,7 @@ export const Index: FC = () => {
           <Text>過去のチャレンジはありません</Text>
         )}
       </Stack>
-      {isDevelopment && (
+      {/* {isDevelopment && (
         <Stack gap={16}>
           <Text fz="24" fw={700}>
             DBから取得したデータ
@@ -181,7 +181,7 @@ export const Index: FC = () => {
             />
           ))}
         </Stack>
-      )}
+      )} */}
     </_Stack>
   );
 };

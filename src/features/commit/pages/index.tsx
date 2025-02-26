@@ -180,16 +180,21 @@ export const Index: FC = () => {
                 コミット履歴： {data.commits.length} 回 / {data.max_commit}回
               </Text>
               {data.commits.map((commitDate, index) => (
-                <Text
-                  key={index}
-                  size="md"
-                  fw={500}
-                  c="gray.7"
-                  pl={8}
-                  style={{ borderLeft: "3px solid #FFC107" }}
-                >
-                  {index + 1}回目：{new Date(commitDate).toLocaleString()}
-                </Text>
+                <Stack gap={0}>
+                  <Text
+                    key={index}
+                    size="md"
+                    fw={500}
+                    c="gray.7"
+                    pl={8}
+                    style={{ borderLeft: "3px solid #FFC107" }}
+                  >
+                    {index + 1} 回目（{new Date(commitDate).toLocaleString()}）
+                  </Text>
+                  <Text key={index} size="md" fw={500} c="gray.7">
+                    コミットメッセージコミットメッセージコミットメッセージコミットメッセージコミットメッセージコミットメッセージコミットメッセージ
+                  </Text>
+                </Stack>
               ))}
             </Stack>
           )}
