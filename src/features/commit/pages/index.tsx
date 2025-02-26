@@ -45,6 +45,7 @@ type ChallengeData = {
   created_at: string;
   commits: Date[];
   deposit: number;
+  refund: number;
 };
 
 const fetchData = async (challengeId: number) => {
@@ -122,18 +123,28 @@ export const Index: FC = () => {
             {data.title}
           </Text>
           <Text size="md" fw={500} c="gray.7">
-            開始：{formatDate(data.created_at?.toString() || "")}
+            期間：{formatDate(data.created_at?.toString() || "")} ~
+            {formatDate(data.end_date?.toString() || "")}
           </Text>
           <Text size="md" fw={500} c="gray.7">
-            期限：{formatDate(data.end_date?.toString() || "")}
+            達成回数：{data.commit}回 / {data.max_commit}回
           </Text>
+          {/* <Text size="md" fw={500} c="gray.7">
+            達成率：{data.commit_rate}%
+          </Text> */}
           <Text size="md" fw={500} c="gray.7">
-            回数：{data.max_commit}回
+            ステータス：{data.status === "ongoing" ? "進行中" : "終了"}
           </Text>
           <Text size="md" fw={500} c="gray.7">
             預かり金額：
             <span style={{ color: "#FF6B6B", fontWeight: 600 }}>
               {data.deposit?.toLocaleString()}円
+            </span>
+          </Text>
+          <Text size="md" fw={500} c="gray.7">
+            返却金額：
+            <span style={{ color: "#FF6B6B", fontWeight: 600 }}>
+              {data.refund?.toLocaleString()}円
             </span>
           </Text>
           <Text
@@ -193,7 +204,7 @@ export const Index: FC = () => {
         styles={{ section: { marginLeft: 22 } }}
         onClick={handleClick}
       >
-        達成報告
+        {data.commits && `${data.commits?.length + 1}回目の`}達成報告
       </Button>
     </_Stack>
   );

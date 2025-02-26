@@ -136,7 +136,7 @@ export const Index: FC = () => {
           styles={{ section: { marginLeft: 22 } }}
           onClick={() => navigate("/new-commit")}
         >
-          コミットを作成
+          チャレンジ作成
         </Button>
       </Group>
       {isDevelopment && (
