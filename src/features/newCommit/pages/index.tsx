@@ -151,7 +151,7 @@ export const Index: FC = () => {
               radius="xl"
               size="md"
               color="yellow"
-              onClick={() => setPage(0)}
+              onClick={() => navigate("/")}
               style={{ flex: 1, maxWidth: "45%" }}
             >
               戻る
@@ -230,7 +230,7 @@ export const Index: FC = () => {
                   回数
                 </Text>
                 <Text size="md" fw={500}>
-                  {form.values.max_commit}回
+                  {form.values.max_commit} 回
                 </Text>
               </Group>
 
@@ -239,7 +239,7 @@ export const Index: FC = () => {
                   金額
                 </Text>
                 <Text size="md" fw={500}>
-                  {form.values.deposit}円
+                  {form.values.deposit} 円
                 </Text>
               </Group>
 
