@@ -97,7 +97,11 @@ export const AuthenticationForm = (props: PaperProps) => {
 
   const handleGoogleSignIn = async () => {
     try {
-      await signInWithGoogle();
+      const googleResult = await signInWithGoogle();
+      if (!googleResult.success) {
+        console.error(googleResult.message);
+        return;
+      }
 
       // Firebase authから直接現在のユーザー情報を取得
       const auth = getAuth();
@@ -116,21 +120,25 @@ export const AuthenticationForm = (props: PaperProps) => {
             nickname: res.data.name,
           });
           navigate("/");
-        } catch {
+        } catch  {
           // ログインに失敗した場合（ユーザーが存在しない場合）
           console.log("サインアップを試みます");
 
-          // サインアップを試みる
-          const signupRes = await api.post("/auth/signup", {
-            email: email,
-            name: name,
-          });
+          try {
+            // サインアップを試みる
+            const signupRes = await api.post("/auth/signup", {
+              email: email,
+              name: name,
+            });
 
-          setUser({
-            userId: signupRes.data.id,
-            nickname: signupRes.data.name,
-          });
-          navigate("/");
+            setUser({
+              userId: signupRes.data.id,
+              nickname: signupRes.data.name,
+            });
+            navigate("/");
+          } catch (signupError) {
+            console.error("サインアップエラー:", signupError);
+          }
         }
       }
     } catch (error) {
