@@ -37,7 +37,7 @@ type ChallengeData = {
   max_commit: number;
   commit: number;
   commit_rate: number;
-  status: string;
+  // status: string;
   end_date: string;
   public: boolean;
   official: boolean;
@@ -70,6 +70,7 @@ export const Index: FC = () => {
   const { id } = useParams();
   const challengeId = Number(id);
   const [data, setData] = useState<ChallengeData | null>(null);
+  const [isOngoing, setIsOngoing] = useState(false);
   const navigate = useNavigate();
   const form = useForm({
     initialValues: {
@@ -84,7 +85,12 @@ export const Index: FC = () => {
     try {
       const fetchedData = await fetchData(challengeId);
       setData(fetchedData);
-      console.log(fetchedData);
+      console.log("fetchedData", fetchedData);
+      setIsOngoing(
+        !fetchedData.commits ||
+          (fetchedData.commits.length < fetchedData.max_commit &&
+            new Date(fetchedData.end_date) >= new Date())
+      );
     } catch (error) {
       console.error("データの取得中にエラーが発生しました:", error);
       setData(null);
@@ -139,7 +145,7 @@ export const Index: FC = () => {
             達成率：{data.commit_rate}%
           </Text> */}
           <Text size="md" fw={500} c="gray.7">
-            ステータス：{data.status === "ongoing" ? "進行中" : "終了"}
+            ステータス：{isOngoing ? "進行中" : "終了"}
           </Text>
           <Text size="md" fw={500} c="gray.7">
             預かり金額：
@@ -161,20 +167,6 @@ export const Index: FC = () => {
           >
             やること：{data.description}
           </Text>
-
-          <Textarea
-            required
-            label="達成報告"
-            size="md"
-            placeholder="達成したことを書きましょう"
-            autosize
-            minRows={3}
-            value={form.values.description}
-            onChange={(event) =>
-              form.setFieldValue("description", event.currentTarget.value)
-            }
-            error={form.errors.description && "10文字以上入力してください"}
-          />
 
           {data.commits && (
             <Stack
@@ -202,18 +194,36 @@ export const Index: FC = () => {
           )}
         </Stack>
       </Stack>
-      <Button
-        color="yellow"
-        variant="outline"
-        radius="xl"
-        size="md"
-        pr={14}
-        h={48}
-        styles={{ section: { marginLeft: 22 } }}
-        onClick={handleClick}
-      >
-        {data.commits && `${data.commits?.length + 1}回目の`}達成報告
-      </Button>
+      {isOngoing && (
+        <Stack gap={16}>
+          <Textarea
+            required
+            label="達成報告"
+            size="md"
+            placeholder="達成したことを書きましょう"
+            autosize
+            minRows={3}
+            value={form.values.description}
+            onChange={(event) =>
+              form.setFieldValue("description", event.currentTarget.value)
+            }
+            error={form.errors.description && "10文字以上入力してください"}
+          />
+          <Button
+            color="yellow"
+            variant="outline"
+            radius="xl"
+            size="md"
+            pr={14}
+            h={48}
+            styles={{ section: { marginLeft: 22 } }}
+            onClick={handleClick}
+          >
+            {data.commits && `${data.commits?.length + 1}回目の`}達成報告
+          </Button>
+          {/* TODO: 締め切りを超えたら出せないようにしたい */}
+        </Stack>
+      )}
     </_Stack>
   );
 };

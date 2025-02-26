@@ -1,5 +1,4 @@
 import { useCallback, useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import {
   createUserWithEmailAndPassword,
   getAuth,
@@ -13,7 +12,6 @@ import fireAuth from "../firebase";
 import { UserContext } from "../contexts/UserContext";
 
 export const useAuth = () => {
-  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const { setUser } = useContext(UserContext);
 
@@ -22,7 +20,6 @@ export const useAuth = () => {
     try {
       const auth = getAuth();
       await signInWithPopup(auth, provider);
-      navigate("/");
       return { success: true, message: "" };
     } catch (e) {
       if (e instanceof FirebaseError) {
@@ -30,20 +27,19 @@ export const useAuth = () => {
       }
       return { success: false, message: "エラーが発生しました" };
     }
-  }, [navigate]);
+  }, []);
 
   const signIn = useCallback(
     async (email: string, password: string) => {
       setLoading(true);
       try {
         await signInWithEmailAndPassword(fireAuth, email, password);
-        navigate("/");
       } catch (error) {
         console.error(error);
         setLoading(false);
       }
     },
-    [navigate]
+    []
   );
 
   const signUp = useCallback(
@@ -52,13 +48,12 @@ export const useAuth = () => {
 
       try {
         await createUserWithEmailAndPassword(fireAuth, email, password);
-        navigate("/");
       } catch (error) {
         console.error(error);
         setLoading(false);
       }
     },
-    [navigate]
+    []
   );
 
   const signOut = useCallback(async () => {

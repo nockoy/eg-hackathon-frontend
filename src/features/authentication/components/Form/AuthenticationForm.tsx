@@ -19,11 +19,14 @@ import { useAuth } from "../../../../hooks/useAuth";
 import api from "../../../../api/axios";
 import { UserContext } from "../../../../contexts/UserContext";
 import { getAuth } from "firebase/auth";
+import { useNavigate } from "react-router-dom";
 
 export const AuthenticationForm = (props: PaperProps) => {
   const { setUser } = useContext(UserContext);
   const { signInWithGoogle, signIn, signUp, loading } = useAuth();
   const [type, toggle] = useToggle(["login", "register"]);
+  const navigate = useNavigate();
+
   const form = useForm({
     initialValues: {
       email: "",
@@ -50,6 +53,7 @@ export const AuthenticationForm = (props: PaperProps) => {
           userId: res.data.id,
           nickname: res.data.name,
         });
+        navigate("/");
       } catch (error) {
         console.error(error);
       }
@@ -66,6 +70,7 @@ export const AuthenticationForm = (props: PaperProps) => {
           userId: res.data.id,
           nickname: res.data.name,
         });
+        navigate("/");
       } catch (error) {
         console.error(error);
       }
@@ -92,10 +97,10 @@ export const AuthenticationForm = (props: PaperProps) => {
             userId: res.data.id,
             nickname: res.data.name,
           });
-        } catch (error) {
+          navigate("/");
+        } catch  {
           // ログインに失敗した場合（ユーザーが存在しない場合）
-          console.error(error);
-          console.log("ログイン失敗、サインアップを試みます");
+          console.log("サインアップを試みます");
 
           // サインアップを試みる
           const signupRes = await api.post("/auth/signup", {
@@ -107,6 +112,7 @@ export const AuthenticationForm = (props: PaperProps) => {
             userId: signupRes.data.id,
             nickname: signupRes.data.name,
           });
+          navigate("/");
         }
       }
     } catch (error) {

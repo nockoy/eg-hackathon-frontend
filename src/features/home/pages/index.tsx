@@ -66,9 +66,9 @@ type Data = {
 //   ];
 // };
 
-const fetchData = async (): Promise<Data[]> => {
+const fetchData = async (userId: string): Promise<Data[]> => {
   try {
-    const res = await api.get("/users/1/home");
+    const res = await api.get(`/users/${userId}/home`);
     return res.data;
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -89,7 +89,7 @@ export const Index: FC = () => {
   // fetchDataを非同期で呼び出し、結果を待つ
   const fetchDataAndLog = async () => {
     if (isDevelopment) {
-      const data = await fetchData();
+      const data = await fetchData(userId);
       setData(data);
       console.log("data", data);
 
