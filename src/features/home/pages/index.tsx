@@ -21,51 +21,6 @@ type Data = {
   max_commit: number;
 };
 
-// const fetchMockData = (): Data[] => {
-//   return [
-//     {
-//       challenge_id: 1,
-//       commits: [new Date("2025-02-24T00:00:00.000Z")],
-//       created_at: new Date("2025-02-24T00:00:00.000Z"),
-//       deposit: 2000,
-//       description: "ジムに5回行く！",
-//       end_date: new Date("2025-03-01T13:00:00.000Z"),
-//       refund: 0,
-//       status: "ongoing",
-//       title: "ジムに5回行く！",
-//       max_commit: 5,
-//     },
-//     {
-//       challenge_id: 2,
-//       commits: [
-//         new Date("2025-02-24T00:00:00.000Z"),
-//         new Date("2025-02-25T00:00:00.000Z"),
-//       ],
-//       created_at: new Date("2025-02-24T00:00:00.000Z"),
-//       deposit: 2000,
-//       description:
-//         "2010年度〜2019年度の過去問を解く！\n得点率8割越えを目指したい。",
-//       end_date: new Date("2025-03-03T12:35:00.000Z"),
-//       refund: 0,
-//       status: "ongoing",
-//       title: "本番までに過去問10年分解く",
-//       max_commit: 10,
-//     },
-//     {
-//       challenge_id: 3,
-//       commits: [new Date("2025-02-24T00:00:00.000Z")],
-//       created_at: new Date("2025-02-24T00:00:00.000Z"),
-//       deposit: 1500,
-//       description: "毎日50個の英単語を覚えて、語彙力を強化する。",
-//       end_date: new Date("2025-02-24T10:00:00.000Z"),
-//       refund: 0,
-//       status: "completed",
-//       title: "毎日英単語を50個覚える",
-//       max_commit: 5,
-//     },
-//   ];
-// };
-
 const fetchData = async (userId: string): Promise<Data[]> => {
   try {
     const res = await api.get(`/users/${userId}/home`);
@@ -77,9 +32,6 @@ const fetchData = async (userId: string): Promise<Data[]> => {
 };
 
 export const Index: FC = () => {
-  // const mockData = fetchMockData();
-  // const ongoingData = mockData.filter((item) => item.status === "ongoing");
-  // const completedData = mockData.filter((item) => item.status === "completed");
   const navigate = useNavigate();
   const [data, setData] = useState<Data[]>([]);
   const [ongoingData, setOngoingData] = useState<Data[]>([]);
@@ -111,21 +63,13 @@ export const Index: FC = () => {
 
       setOngoingData(ongoingData);
       setCompletedData(completedData);
-    } else {
-      // setData(mockData);
     }
   };
-
-  // コンポーネントがマウントされたときにデータを取得
 
   useEffect(() => {
     fetchDataAndLog();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
-  // if (data.length === 0) {
-  //   return null;
-  // }
 
   return (
     <_Stack>
