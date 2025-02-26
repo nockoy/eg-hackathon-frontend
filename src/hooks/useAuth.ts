@@ -29,32 +29,29 @@ export const useAuth = () => {
     }
   }, []);
 
-  const signIn = useCallback(
-    async (email: string, password: string) => {
-      setLoading(true);
-      try {
-        await signInWithEmailAndPassword(fireAuth, email, password);
-      } catch (error) {
-        console.error(error);
-        setLoading(false);
-      }
-    },
-    []
-  );
+  const signIn = useCallback(async (email: string, password: string) => {
+    setLoading(true);
+    try {
+      await signInWithEmailAndPassword(fireAuth, email, password);
+      return { success: true, message: "" };
+    } catch (error) {
+      console.error("ログインエラー:", error);
+      setLoading(false);
+      return { success: false, message: "ログインに失敗しました" };
+    }
+  }, []);
 
-  const signUp = useCallback(
-    async (email: string, password: string) => {
-      setLoading(true);
-
-      try {
-        await createUserWithEmailAndPassword(fireAuth, email, password);
-      } catch (error) {
-        console.error(error);
-        setLoading(false);
-      }
-    },
-    []
-  );
+  const signUp = useCallback(async (email: string, password: string) => {
+    setLoading(true);
+    try {
+      await createUserWithEmailAndPassword(fireAuth, email, password);
+      return { success: true, message: "" };
+    } catch (error) {
+      console.error("サインアップエラー:", error);
+      setLoading(false);
+      return { success: false, message: "アカウント作成に失敗しました" };
+    }
+  }, []);
 
   const signOut = useCallback(async () => {
     try {
