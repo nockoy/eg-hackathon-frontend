@@ -17,18 +17,24 @@ export const Index: FC = () => {
   const form = useForm({
     initialValues: {
       title: "",
-      deadline: "",
+      end_at: selectedDate.toString(),
       count: "",
-      amount: "",
+      deposit: "",
       description: "",
     },
     validate: {
       title: (val) => (val.length > 0 ? null : "タイトルを入力してください"),
-      deadline: (val) => (val.length > 0 ? null : "期限を入力してください"),
+      end_at: (val) => (val.length > 0 ? null : "期限を入力してください"),
       count: (val) => (val.length > 0 ? null : "回数を入力してください"),
-      amount: (val) => (val.length > 0 ? null : "金額を入力してください"),
+      deposit: (val) => (val.length > 0 ? null : "金額を入力してください"),
     },
   });
+
+  const handleClickCreate = () => {
+    console.log("create");
+    console.log(form.values);
+    navigate("/");
+  };
 
   return (
     <_Stack>
@@ -40,23 +46,36 @@ export const Index: FC = () => {
                 required
                 type="text"
                 size="md"
-                placeholder="例）1週間後までに2回ジムに行く！"
+                placeholder="例）1か月後までに2kg痩せたい！"
                 label="タイトル"
                 radius="8px"
                 value={form.values.title}
-                onChange={(event) =>
-                  form.setFieldValue("title", event.currentTarget.value)
-                }
+                onChange={(event) => {
+                  form.setFieldValue("title", event.currentTarget.value);
+                  console.log(event.currentTarget.value);
+                }}
                 error={form.errors.title && "タイトルを入力してください"}
               />
               <Stack gap={0}>
                 <Group gap={4}>
                   <Text>期限</Text>
-                  <span style={{ color: "var(--input-asterisk-color, var(--mantine-color-error))", fontSize: 16 }}>*</span>
+                  <span
+                    style={{
+                      color:
+                        "var(--input-asterisk-color, var(--mantine-color-error))",
+                      fontSize: 16,
+                    }}
+                  >
+                    *
+                  </span>
                 </Group>
                 <CustomDatePicker
                   selectedDate={selectedDate}
                   setSelectedDate={setSelectedDate}
+                  onChange={(event) => {
+                    form.setFieldValue("end_at", event.toString());
+                    console.log("event", event.toString());
+                  }}
                 />
               </Stack>
               <TextInput
@@ -79,11 +98,11 @@ export const Index: FC = () => {
                 placeholder="例）2000"
                 label="金額（円）"
                 radius="8px"
-                value={form.values.amount}
+                value={form.values.deposit}
                 onChange={(event) =>
-                  form.setFieldValue("amount", event.currentTarget.value)
+                  form.setFieldValue("deposit", event.currentTarget.value)
                 }
-                error={form.errors.amount && "金額を入力してください"}
+                error={form.errors.deposit && "金額を入力してください"}
               />
               <Textarea
                 label="やること"
@@ -125,13 +144,13 @@ export const Index: FC = () => {
                 {form.values.title}
               </Text>
               <Text size="md" fw={400}>
-                {form.values.deadline} までに
+                {form.values.end_at} までに
               </Text>
               <Text size="md" fw={400}>
                 {form.values.count}回
               </Text>
               <Text size="md" fw={400}>
-                {form.values.amount}円
+                {form.values.deposit}円
               </Text>
               <Text size="md" fw={400}>
                 {form.values.description}
@@ -148,7 +167,7 @@ export const Index: FC = () => {
             pr={14}
             h={48}
             styles={{ section: { marginLeft: 22 } }}
-            onClick={() => navigate("/")}
+            onClick={handleClickCreate}
           >
             作成
           </Button>

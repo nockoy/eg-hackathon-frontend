@@ -8,11 +8,13 @@ import "./datepicker-custom.css";
 type CustomDatePickerProps = {
   selectedDate: Date;
   setSelectedDate: (date: Date) => void;
+  onChange: (date: Date) => void;
 };
 
 export const CustomDatePicker: FC<CustomDatePickerProps> = ({
   selectedDate,
   setSelectedDate,
+  onChange,
 }) => {
   // 日本語ロケールを登録
   registerLocale("ja", ja);
@@ -31,10 +33,13 @@ export const CustomDatePicker: FC<CustomDatePickerProps> = ({
   return (
     <div style={{ position: "relative" }}>
       <DatePicker
-        dateFormat="yyyy/MM/dd HH:mm"
+        dateFormat="yyyy-MM-dd HH:mm"
         locale="ja"
         selected={selectedDate}
-        onChange={(date) => setSelectedDate(date!)}
+        onChange={(date) => {
+          setSelectedDate(date!);
+          onChange(date!);
+        }}
         showTimeSelect
         timeIntervals={30}
         timeFormat="HH:mm"
