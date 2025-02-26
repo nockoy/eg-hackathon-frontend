@@ -1,9 +1,10 @@
-import { Button, Stack, Text } from "@mantine/core";
+import { Button, Stack, Text, Textarea } from "@mantine/core";
 import { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 import { formatDate } from "../../../util/formatDate";
 import api from "../../../api/axios";
 import { useNavigate, useParams } from "react-router-dom";
+import { useForm } from "@mantine/form";
 
 // const fetchMockData = () => {
 //   return [
@@ -51,7 +52,6 @@ const fetchData = async (challengeId: number) => {
   return res.data;
 };
 
-
 const postReport = async (challengeId: number, comment: string = "test") => {
   try {
     const res = await api.post(`/reports`, {
@@ -65,13 +65,16 @@ const postReport = async (challengeId: number, comment: string = "test") => {
   }
 };
 
-
 export const Index: FC = () => {
   const { id } = useParams();
-  console.log("id", id);
   const challengeId = Number(id);
   const [data, setData] = useState<ChallengeData | null>(null);
   const navigate = useNavigate();
+  const form = useForm({
+    initialValues: {
+      description: "",
+    },
+  });
   const fetchDataAndLog = async () => {
     try {
       const fetchedData = await fetchData(challengeId);
@@ -82,12 +85,11 @@ export const Index: FC = () => {
       setData(null);
     }
   };
-  console.log("data", data);
 
   const handleClick = async () => {
     try {
       if (data) {
-        const result = await postReport(challengeId, "test");
+        const result = await postReport(challengeId, form.values.description);
         if (result.success) {
           navigate("/");
         } else {
@@ -114,44 +116,85 @@ export const Index: FC = () => {
 
   return (
     <_Stack>
-        <Stack gap={16}>
-          <Stack gap={8}>
-            <Text size="xl" fw={700}>
-              {data.title}
-            </Text>
-            <Text size="md" fw={400}>
-              開始：{formatDate(data.created_at?.toString() || "")}
-            </Text>
-            <Text size="md" fw={400}>
-              期限：{formatDate(data.end_date?.toString() || "")}
-            </Text>
-            <Text size="md" fw={400}>
-              回数：{data.max_commit}回
-            </Text>
-            <Text size="md" fw={400}>
-              預かり金額：{data.deposit?.toLocaleString()}円
-            </Text>
-            <Text size="md" fw={400}>
-              やること：{data.description}
-            </Text>
-            <Text size="md" fw={400}>
-              コミット回数：{data.commit}回
-            </Text>
-          </Stack>
+      <Stack gap={16}>
+        <Stack gap={8}>
+          <Text size="xl" fw={700} c="dark.8">
+            {data.title}
+          </Text>
+          <Text size="md" fw={500} c="gray.7">
+            開始：{formatDate(data.created_at?.toString() || "")}
+          </Text>
+          <Text size="md" fw={500} c="gray.7">
+            期限：{formatDate(data.end_date?.toString() || "")}
+          </Text>
+          <Text size="md" fw={500} c="gray.7">
+            回数：{data.max_commit}回
+          </Text>
+          <Text size="md" fw={500} c="gray.7">
+            預かり金額：
+            <span style={{ color: "#FF6B6B", fontWeight: 600 }}>
+              {data.deposit?.toLocaleString()}円
+            </span>
+          </Text>
+          <Text
+            size="md"
+            fw={500}
+            c="gray.7"
+            style={{ whiteSpace: "pre-wrap" }}
+          >
+            やること：{data.description}
+          </Text>
+
+          <Textarea
+            label="達成報告"
+            size="md"
+            placeholder="達成したことを書きましょう"
+            autosize
+            minRows={3}
+            value={form.values.description}
+            onChange={(event) =>
+              form.setFieldValue("description", event.currentTarget.value)
+            }
+          />
+
+          {data.commits && (
+            <Stack
+              gap={12}
+              mt={8}
+              p={16}
+              style={{ backgroundColor: "#f8f9fa", borderRadius: "8px" }}
+            >
+              <Text size="md" fw={600} c="dark.8">
+                コミット履歴：{data.commits.length}/{data.max_commit}回
+              </Text>
+              {data.commits.map((commitDate, index) => (
+                <Text
+                  key={index}
+                  size="md"
+                  fw={500}
+                  c="gray.7"
+                  pl={8}
+                  style={{ borderLeft: "3px solid #FFC107" }}
+                >
+                  {index + 1}回目：{new Date(commitDate).toLocaleString()}
+                </Text>
+              ))}
+            </Stack>
+          )}
         </Stack>
-        <Button
-          w="47%"
-          color="yellow"
-          variant="outline"
-          radius="xl"
-          size="md"
-          pr={14}
-          h={48}
-          styles={{ section: { marginLeft: 22 } }}
-          onClick={handleClick}
-        >
-          コミットを作成
-        </Button>
+      </Stack>
+      <Button
+        color="yellow"
+        variant="outline"
+        radius="xl"
+        size="md"
+        pr={14}
+        h={48}
+        styles={{ section: { marginLeft: 22 } }}
+        onClick={handleClick}
+      >
+        達成報告
+      </Button>
     </_Stack>
   );
 };
