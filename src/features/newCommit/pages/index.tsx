@@ -132,7 +132,6 @@ export const Index: FC = () => {
                 error={form.errors.deposit && "金額を入力してください"}
               />
               <Textarea
-                radius="8px"
                 label="やること"
                 size="md"
                 placeholder="目標をしっかりと書こう"
@@ -145,33 +144,23 @@ export const Index: FC = () => {
               />
             </Stack>
           </form>
-          <Group justify="space-between">
-            <Button
-              variant="outline"
-              radius="xl"
-              size="md"
-              color="yellow"
-              onClick={() => navigate("/")}
-              style={{ flex: 1, maxWidth: "45%" }}
-            >
-              戻る
-            </Button>
-            <Button
-              variant="filled"
-              radius="xl"
-              size="md"
-              color="yellow"
-              style={{ flex: 1, maxWidth: "45%" }}
-              onClick={() => {
-                form.validate();
-                if (form.isValid()) {
-                  setPage(1);
-                }
-              }}
-            >
-              次へ
-            </Button>
-          </Group>
+          <Button
+            // variant="light"
+            radius="xl"
+            size="md"
+            color="yellow"
+            pr={14}
+            h={48}
+            styles={{ section: { marginLeft: 22 } }}
+            onClick={() => {
+              form.validate();
+              if (form.isValid()) {
+                setPage(1);
+              }
+            }}
+          >
+            次へ
+          </Button>
         </>
       )}
       {page === 1 && (
@@ -197,7 +186,7 @@ export const Index: FC = () => {
               確認画面
             </Text>
             <Stack gap={12}>
-              <Group >
+              <Group>
                 <Text size="sm" fw={500} color="dimmed">
                   タイトル
                 </Text>
@@ -206,7 +195,7 @@ export const Index: FC = () => {
                 </Text>
               </Group>
 
-              <Group >
+              <Group>
                 <Text size="sm" fw={500} color="dimmed">
                   期限
                 </Text>
@@ -225,21 +214,21 @@ export const Index: FC = () => {
                 </Text>
               </Group>
 
-              <Group >
+              <Group>
                 <Text size="sm" fw={500} color="dimmed">
                   回数
                 </Text>
                 <Text size="md" fw={500}>
-                  {form.values.max_commit} 回
+                  {form.values.max_commit}回
                 </Text>
               </Group>
 
-              <Group >
+              <Group>
                 <Text size="sm" fw={500} color="dimmed">
                   金額
                 </Text>
                 <Text size="md" fw={500}>
-                  {form.values.deposit} 円
+                  {form.values.deposit}円
                 </Text>
               </Group>
 
