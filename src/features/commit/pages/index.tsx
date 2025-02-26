@@ -93,6 +93,7 @@ export const Index: FC = () => {
       );
     } catch (error) {
       console.error("データの取得中にエラーが発生しました:", error);
+      alert("サーバーに接続できません。ネットワーク設定を確認してください。");
       setData(null);
     }
   };
