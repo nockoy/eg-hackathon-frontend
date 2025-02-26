@@ -1,0 +1,29 @@
+/* DatePickerのヘッダースタイル */
+.react-datepicker__header {
+  background-color: #fff;
+  border-bottom: 1px solid #f0f0f0;
+  padding-top: 10px;
+}
+
+/* 月表示のスタイル */
+.react-datepicker__current-month {
+  font-weight: bold;
+  color: #333;
+}
+
+/* 曜日表示のスタイル */
+.react-datepicker__day-name {
+  color: #666;
+}
+
+/* フォーカス時の入力フィールドのスタイル */
+.custom-datepicker-wrapper input:focus {
+  /* border: 1px solid #228BE6; */
+  outline: none;
+}
+
+/* カレンダー全体のスタイル */
+/* .custom-datepicker-calendar {
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+} */

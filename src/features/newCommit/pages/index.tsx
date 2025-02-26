@@ -1,14 +1,17 @@
-import { Button, Stack, Textarea, TextInput, Text } from "@mantine/core";
+import { Button, Stack, Textarea, TextInput, Text, Group } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+import { CustomDatePicker } from "../components/DatePicker/DatePicker";
 
 export const Index: FC = () => {
   const [page, setPage] = useState<number>(0);
-  const [selectedDate, setSelectedDate] = useState<Date>();
+  const [selectedDate, setSelectedDate] = useState<Date>(() => {
+    const date = new Date();
+    date.setDate(date.getDate() + 7);
+    return date;
+  });
   const navigate = useNavigate();
 
   const form = useForm({
@@ -46,27 +49,16 @@ export const Index: FC = () => {
                 }
                 error={form.errors.title && "タイトルを入力してください"}
               />
-              <DatePicker
-                dateFormat="yyyy/MM/dd HH:mm"
-                locale="ja"
-                selected={selectedDate}
-                onChange={(date) => setSelectedDate(date!)}
-                showTimeSelect
-                timeIntervals={30}
-              />
-              <TextInput
-                required
-                type="text"
-                size="md"
-                placeholder="例）3月1日(土) 13:00"
-                label="期限"
-                radius="8px"
-                value={form.values.deadline}
-                onChange={(event) =>
-                  form.setFieldValue("deadline", event.currentTarget.value)
-                }
-                error={form.errors.deadline && "期限を入力してください"}
-              />
+              <Stack gap={0}>
+                <Group gap={4}>
+                  <Text>期限</Text>
+                  <span style={{ color: "var(--input-asterisk-color, var(--mantine-color-error))", fontSize: 16 }}>*</span>
+                </Group>
+                <CustomDatePicker
+                  selectedDate={selectedDate}
+                  setSelectedDate={setSelectedDate}
+                />
+              </Stack>
               <TextInput
                 required
                 type="number"
