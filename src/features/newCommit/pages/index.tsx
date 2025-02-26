@@ -103,7 +103,6 @@ export const Index: FC = () => {
                     form.setFieldValue("end_at", event.toString());
                     console.log("event", event.toString());
                   }}
-                  
                 />
               </Stack>
               <TextInput
@@ -133,6 +132,7 @@ export const Index: FC = () => {
                 error={form.errors.deposit && "金額を入力してください"}
               />
               <Textarea
+                radius="8px"
                 label="やること"
                 size="md"
                 placeholder="目標をしっかりと書こう"
@@ -145,81 +145,148 @@ export const Index: FC = () => {
               />
             </Stack>
           </form>
-          <Button
-            // variant="light"
-            radius="xl"
-            size="md"
-            color="yellow"
-            pr={14}
-            h={48}
-            styles={{ section: { marginLeft: 22 } }}
-            onClick={() => {
-              form.validate();
-              if (form.isValid()) {
-                setPage(1);
-              }
-            }}
-          >
-            次へ
-          </Button>
+          <Group justify="space-between">
+            <Button
+              variant="outline"
+              radius="xl"
+              size="md"
+              color="yellow"
+              onClick={() => setPage(0)}
+              style={{ flex: 1, maxWidth: "45%" }}
+            >
+              戻る
+            </Button>
+            <Button
+              variant="filled"
+              radius="xl"
+              size="md"
+              color="yellow"
+              style={{ flex: 1, maxWidth: "45%" }}
+              onClick={() => {
+                form.validate();
+                if (form.isValid()) {
+                  setPage(1);
+                }
+              }}
+            >
+              次へ
+            </Button>
+          </Group>
         </>
       )}
       {page === 1 && (
         <>
-          <Stack gap={16}>
-            <Stack gap={8}>
-              <Text size="xl" fw={700}>
-                {form.values.title}
-              </Text>
-              <Text size="md" fw={400}>
-                {new Date(form.values.end_at)
-                  .toLocaleString("ja-JP", {
-                    year: "numeric",
-                    month: "2-digit",
-                    day: "2-digit",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                  })
-                  .replace(/\//g, "/")
-                  .replace(",", "")}
-                &nbsp; までに
-              </Text>
-              <Text size="md" fw={400}>
-                {form.values.max_commit}回
-              </Text>
-              <Text size="md" fw={400}>
-                {form.values.deposit}円
-              </Text>
-              <Text size="md" fw={400}>
-                {form.values.description}
-              </Text>
-              {/* <Text size="xl" fw={700}>
-                決済方法
-              </Text> */}
+          <Stack
+            gap={24}
+            p={20}
+            style={{
+              backgroundColor: "#f9f9f9",
+              borderRadius: "12px",
+              boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+            }}
+          >
+            <Text
+              size="lg"
+              fw={700}
+              color="#444"
+              style={{
+                borderBottom: "2px solid #FFD43B",
+                paddingBottom: "8px",
+              }}
+            >
+              確認画面
+            </Text>
+            <Stack gap={12}>
+              <Group >
+                <Text size="sm" fw={500} color="dimmed">
+                  タイトル
+                </Text>
+                <Text size="md" fw={700}>
+                  {form.values.title}
+                </Text>
+              </Group>
+
+              <Group >
+                <Text size="sm" fw={500} color="dimmed">
+                  期限
+                </Text>
+                <Text size="md" fw={500}>
+                  {new Date(form.values.end_at)
+                    .toLocaleString("ja-JP", {
+                      year: "numeric",
+                      month: "2-digit",
+                      day: "2-digit",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })
+                    .replace(/\//g, "/")
+                    .replace(",", "")}
+                  &nbsp;まで
+                </Text>
+              </Group>
+
+              <Group >
+                <Text size="sm" fw={500} color="dimmed">
+                  回数
+                </Text>
+                <Text size="md" fw={500}>
+                  {form.values.max_commit}回
+                </Text>
+              </Group>
+
+              <Group >
+                <Text size="sm" fw={500} color="dimmed">
+                  金額
+                </Text>
+                <Text size="md" fw={500}>
+                  {form.values.deposit}円
+                </Text>
+              </Group>
+
+              {form.values.description && (
+                <>
+                  <Text size="sm" fw={500} color="dimmed" mt={8}>
+                    やること
+                  </Text>
+                  <Text
+                    size="md"
+                    fw={400}
+                    p={12}
+                    style={{
+                      backgroundColor: "white",
+                      borderRadius: "8px",
+                      border: "1px solid #eee",
+                    }}
+                  >
+                    {form.values.description}
+                  </Text>
+                </>
+              )}
             </Stack>
           </Stack>
-          <Button
-            variant="outline"
-            radius="xl"
-            size="md"
-            pr={14}
-            h={48}
-            styles={{ section: { marginLeft: 22 } }}
-            onClick={() => setPage(0)}
-          >
-            戻る
-          </Button>
-          <Button
-            variant="light"
-            radius="xl"
-            size="md"
-            pr={14}
-            h={48}
-            styles={{ section: { marginLeft: 22 } }}
-            onClick={handleClickCreate}
-          >
-            作成
-          </Button>
+
+          <Group justify="space-between">
+            <Button
+              variant="outline"
+              radius="xl"
+              size="md"
+              color="yellow"
+              onClick={() => setPage(0)}
+              style={{ flex: 1, maxWidth: "45%" }}
+            >
+              戻る
+            </Button>
+            <Button
+              variant="filled"
+              radius="xl"
+              size="md"
+              color="yellow"
+              onClick={handleClickCreate}
+              style={{ flex: 1, maxWidth: "45%" }}
+            >
+              作成する
+            </Button>
+          </Group>
         </>
       )}
     </_Stack>

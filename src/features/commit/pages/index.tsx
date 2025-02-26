@@ -136,7 +136,7 @@ export const Index: FC = () => {
             {data.title}
           </Text>
           <Text size="md" fw={500} c="gray.7">
-            期間：{formatDate(data.created_at?.toString() || "")} ~
+            {formatDate(data.created_at?.toString() || "")} ~
             {formatDate(data.end_date?.toString() || "")}
           </Text>
           {/* <Text size="md" fw={500} c="gray.7">
@@ -201,7 +201,7 @@ export const Index: FC = () => {
             required
             label="達成報告"
             size="md"
-            placeholder="達成したことを書きましょう"
+            placeholder="達成したことを書きましょう（10文字以上）"
             autosize
             minRows={3}
             value={form.values.description}
