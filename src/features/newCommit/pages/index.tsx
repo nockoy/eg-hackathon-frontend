@@ -83,7 +83,7 @@ export const Index: FC = () => {
                 }}
                 error={form.errors.title && "タイトルを入力してください"}
               />
-              <Stack gap={0}>
+              <Stack gap={0} w="100%">
                 <Group gap={4}>
                   <Text>期限</Text>
                   <span
@@ -103,6 +103,7 @@ export const Index: FC = () => {
                     form.setFieldValue("end_at", event.toString());
                     console.log("event", event.toString());
                   }}
+                  
                 />
               </Stack>
               <TextInput

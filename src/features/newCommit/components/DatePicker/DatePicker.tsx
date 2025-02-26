@@ -27,11 +27,11 @@ export const CustomDatePicker: FC<CustomDatePickerProps> = ({
       padding: "0 12px",
       border: "1px solid #ccc",
       fontSize: "16px",
+      width: "100%",
     },
   };
 
   return (
-    <div style={{ position: "relative" }}>
       <DatePicker
         dateFormat="yyyy-MM-dd HH:mm"
         locale="ja"
@@ -47,8 +47,12 @@ export const CustomDatePicker: FC<CustomDatePickerProps> = ({
         wrapperClassName="custom-datepicker-wrapper"
         calendarClassName="custom-datepicker-calendar"
         customInput={<input style={customStyles.input} />}
-        popperPlacement="bottom-end"
+        popperProps={{
+          strategy: "fixed",
+          placement: "bottom"
+        }}
       />
-    </div>
   );
 };
+
+
