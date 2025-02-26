@@ -1,18 +1,18 @@
 import { FC } from "react";
-import { Index } from "../../features/newCommit/pages";
+import { Index } from "../../features/calendar/pages";
 import { DefaultLayout } from "../../components/Layout/DefaultLayout";
 import { Header } from "../../components/Header/Header";
 import { BottomNavBar } from "../../components/BottomNavBar/BottomNavBar";
 import styled from "styled-components";
 
-export const NewCommit: FC = () => {
+export const Calendar: FC = () => {
   return (
     <DefaultLayout>
       <Header />
       <_Container>
         <Index />
       </_Container>
-      <BottomNavBar currentTabNum={0} />
+      <BottomNavBar currentTabNum={1} />
     </DefaultLayout>
   );
 };

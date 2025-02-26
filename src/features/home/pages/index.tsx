@@ -82,7 +82,7 @@ export const Index: FC = () => {
   const completedData = mockData.filter((item) => item.status === "completed");
   const navigate = useNavigate();
   const [data, setData] = useState<Data[]>([]);
-  const { id, name } = useContext(UserContext);
+  const { userId, nickname } = useContext(UserContext);
 
   // fetchDataを非同期で呼び出し、結果を待つ
   const fetchDataAndLog = async () => {
@@ -109,7 +109,7 @@ export const Index: FC = () => {
   return (
     <_Stack>
       <Text fz="24" fw={700}>
-        あなたはid: {id} でログインしている{name}さんです。
+        あなたはid: {userId} でログインしている{nickname}さんです。
       </Text>
       <Group justify="space-between">
         <Button

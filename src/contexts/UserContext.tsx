@@ -1,39 +1,39 @@
 import { useState, createContext, ReactNode, FC } from "react";
 
 type UserContextType = {
-  id: string;
-  name: string;
-  setUser: (user: { id: string; name: string }) => void;
+  userId: string;
+  nickname: string;
+  setUser: (user: { userId: string; nickname: string }) => void;
 };
 
 const defaultValue: UserContextType = {
-  id: "",
-  name: "",
+  userId: "",
+  nickname: "",
   setUser: () => {},
 };
 
 export const UserContext = createContext<UserContextType>(defaultValue);
 
 export const UserProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const [id, setId] = useState(() => {
+  const [userId, setId] = useState(() => {
     const savedId = localStorage.getItem("userId");
     return savedId || "";
   });
 
-  const [name, setName] = useState(() => {
+  const [nickname, setName] = useState(() => {
     const savedName = localStorage.getItem("userName");
     return savedName || "";
   });
 
-  const setUser = (user: { id: string; name: string }) => {
-    setId(user.id);
-    setName(user.name);
-    localStorage.setItem("userId", user.id);
-    localStorage.setItem("userName", user.name);
+  const setUser = (user: { userId: string; nickname: string }) => {
+    setId(user.userId);
+    setName(user.nickname);
+    localStorage.setItem("userId", user.userId);
+    localStorage.setItem("userName", user.nickname);
   };
 
   return (
-    <UserContext.Provider value={{ id, name, setUser }}>
+    <UserContext.Provider value={{ userId, nickname, setUser }}>
       {children}
     </UserContext.Provider>
   );

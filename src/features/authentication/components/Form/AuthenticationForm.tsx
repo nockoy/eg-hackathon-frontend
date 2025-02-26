@@ -47,8 +47,8 @@ export const AuthenticationForm = (props: PaperProps) => {
         console.log(res);
 
         setUser({
-          id: res.data.id,
-          name: res.data.name,
+          userId: res.data.id,
+          nickname: res.data.name,
         });
       } catch (error) {
         console.error(error);
@@ -63,8 +63,8 @@ export const AuthenticationForm = (props: PaperProps) => {
         console.log(res);
 
         setUser({
-          id: res.data.id,
-          name: res.data.name,
+          userId: res.data.id,
+          nickname: res.data.name,
         });
       } catch (error) {
         console.error(error);
@@ -89,8 +89,8 @@ export const AuthenticationForm = (props: PaperProps) => {
           const res = await api.get(`/auth/login?email=${email}`);
 
           setUser({
-            id: res.data.id,
-            name: res.data.name,
+            userId: res.data.id,
+            nickname: res.data.name,
           });
         } catch (error) {
           // ログインに失敗した場合（ユーザーが存在しない場合）
@@ -104,8 +104,8 @@ export const AuthenticationForm = (props: PaperProps) => {
           });
 
           setUser({
-            id: signupRes.data.id,
-            name: signupRes.data.name,
+            userId: signupRes.data.id,
+            nickname: signupRes.data.name,
           });
         }
       }

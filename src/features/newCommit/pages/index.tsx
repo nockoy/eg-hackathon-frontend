@@ -1,9 +1,11 @@
 import { Button, Stack, Textarea, TextInput, Text, Group } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { FC, useState } from "react";
+import { FC, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { CustomDatePicker } from "../components/DatePicker/DatePicker";
+import api from "../../../api/axios";
+import { UserContext } from "../../../contexts/UserContext";
 
 export const Index: FC = () => {
   const [page, setPage] = useState<number>(0);
@@ -13,27 +15,53 @@ export const Index: FC = () => {
     return date;
   });
   const navigate = useNavigate();
+  const { userId } = useContext(UserContext);
 
   const form = useForm({
     initialValues: {
       title: "",
       end_at: selectedDate.toString(),
-      count: "",
+      max_commit: "",
       deposit: "",
       description: "",
     },
     validate: {
       title: (val) => (val.length > 0 ? null : "タイトルを入力してください"),
-      end_at: (val) => (val.length > 0 ? null : "期限を入力してください"),
-      count: (val) => (val.length > 0 ? null : "回数を入力してください"),
+      end_at: (val) => (val.length > 0 ? null : "期限を入力してください"), // TODO: 最短でも10分後にしたい
+      max_commit: (val) => (val.length > 0 ? null : "回数を入力してください"),
       deposit: (val) => (val.length > 0 ? null : "金額を入力してください"),
     },
   });
 
-  const handleClickCreate = () => {
+  const handleClickCreate = async () => {
     console.log("create");
     console.log(form.values);
-    navigate("/");
+
+    // 日付を「2025-03-05 13:12:16」形式に変換（時間はそのまま）
+    const date = new Date(form.values.end_at);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const hours = String(date.getHours()).padStart(2, "0");
+    const minutes = String(date.getMinutes()).padStart(2, "0");
+    const seconds = String(date.getSeconds()).padStart(2, "0");
+
+    const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+
+    try {
+      await api.post("/challenges", {
+        user_id: parseInt(userId),
+        title: form.values.title,
+        description: form.values.description,
+        max_commit: parseInt(form.values.max_commit),
+        end_date: formattedDate, // フォーマットした日付を使用
+        // deposit: form.values.deposit, // TODO: 追加
+      });
+
+      navigate("/");
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -52,7 +80,6 @@ export const Index: FC = () => {
                 value={form.values.title}
                 onChange={(event) => {
                   form.setFieldValue("title", event.currentTarget.value);
-                  console.log(event.currentTarget.value);
                 }}
                 error={form.errors.title && "タイトルを入力してください"}
               />
@@ -85,11 +112,11 @@ export const Index: FC = () => {
                 placeholder="例）2"
                 label="回数"
                 radius="8px"
-                value={form.values.count}
+                value={form.values.max_commit}
                 onChange={(event) =>
-                  form.setFieldValue("count", event.currentTarget.value)
+                  form.setFieldValue("max_commit", event.currentTarget.value)
                 }
-                error={form.errors.count && "回数を入力してください"}
+                error={form.errors.max_commit && "回数を入力してください"}
               />
               <TextInput
                 required
@@ -144,10 +171,20 @@ export const Index: FC = () => {
                 {form.values.title}
               </Text>
               <Text size="md" fw={400}>
-                {form.values.end_at} までに
+                {new Date(form.values.end_at)
+                  .toLocaleString("ja-JP", {
+                    year: "numeric",
+                    month: "2-digit",
+                    day: "2-digit",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })
+                  .replace(/\//g, "/")
+                  .replace(",", "")}
+                &nbsp; までに
               </Text>
               <Text size="md" fw={400}>
-                {form.values.count}回
+                {form.values.max_commit}回
               </Text>
               <Text size="md" fw={400}>
                 {form.values.deposit}円
@@ -155,11 +192,22 @@ export const Index: FC = () => {
               <Text size="md" fw={400}>
                 {form.values.description}
               </Text>
-              <Text size="xl" fw={700}>
+              {/* <Text size="xl" fw={700}>
                 決済方法
-              </Text>
+              </Text> */}
             </Stack>
           </Stack>
+          <Button
+            variant="outline"
+            radius="xl"
+            size="md"
+            pr={14}
+            h={48}
+            styles={{ section: { marginLeft: 22 } }}
+            onClick={() => setPage(0)}
+          >
+            戻る
+          </Button>
           <Button
             variant="light"
             radius="xl"
