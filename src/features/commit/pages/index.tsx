@@ -49,7 +49,7 @@ type ChallengeData = {
 };
 
 const fetchData = async (challengeId: number) => {
-  const res = await api.get(`/challenges?challenge_id=${challengeId}`);
+  const res = await api.get(`/challenges/detail?challenge_id=${challengeId}`);
   return res.data;
 };
 
@@ -138,9 +138,9 @@ export const Index: FC = () => {
             期間：{formatDate(data.created_at?.toString() || "")} ~
             {formatDate(data.end_date?.toString() || "")}
           </Text>
-          <Text size="md" fw={500} c="gray.7">
-            達成回数：{data.commit}回 / {data.max_commit}回
-          </Text>
+          {/* <Text size="md" fw={500} c="gray.7">
+            達成回数：{data.commits.length}回 / {data.max_commit}回
+          </Text> */}
           {/* <Text size="md" fw={500} c="gray.7">
             達成率：{data.commit_rate}%
           </Text> */}
@@ -176,7 +176,7 @@ export const Index: FC = () => {
               style={{ backgroundColor: "#f8f9fa", borderRadius: "8px" }}
             >
               <Text size="md" fw={600} c="dark.8">
-                コミット履歴：{data.commits.length}/{data.max_commit}回
+                コミット履歴： {data.commits.length} 回 / {data.max_commit}回
               </Text>
               {data.commits.map((commitDate, index) => (
                 <Text
