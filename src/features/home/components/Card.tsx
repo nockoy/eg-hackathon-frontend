@@ -71,7 +71,9 @@ export const Card = ({
         <_Row>
           <Stack gap={4}>
             <_Text>{title}</_Text>
-            <_Date>~ {formatDate(end_at)}</_Date>
+            <_Date>
+              {formatDate(start_at)} ~ {formatDate(end_at)}
+            </_Date>
           </Stack>
           <Stack gap={4} align="flex-end" w="fit-content">
             {status === "ongoing" && (
