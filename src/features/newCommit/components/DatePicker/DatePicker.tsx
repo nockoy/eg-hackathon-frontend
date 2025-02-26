@@ -47,6 +47,16 @@ export const CustomDatePicker: FC<CustomDatePickerProps> = ({
         wrapperClassName="custom-datepicker-wrapper"
         calendarClassName="custom-datepicker-calendar"
         customInput={<input style={customStyles.input} />}
+        popperPlacement="bottom-end"
+        // popperModifiers={[
+        //   {
+        //     name: "preventOverflow",
+        //     options: {
+        //       rootBoundary: "viewport",
+        //       padding: 8,
+        //     },
+        //   },
+        // ]}
       />
     </div>
   );
