@@ -168,36 +168,6 @@ export const Index: FC = () => {
           >
             やること：{data.description}
           </Text>
-
-          {data.commits && (
-            <Stack
-              gap={12}
-              mt={8}
-              p={16}
-              style={{ backgroundColor: "#f8f9fa", borderRadius: "8px" }}
-            >
-              <Text size="md" fw={600} c="dark.8">
-                コミット履歴： {data.commits.length} 回 / {data.max_commit}回
-              </Text>
-              {data.commits.map((commitDate, index) => (
-                <Stack gap={0}>
-                  <Text
-                    key={index}
-                    size="md"
-                    fw={500}
-                    c="gray.7"
-                    pl={8}
-                    style={{ borderLeft: "3px solid #FFC107" }}
-                  >
-                    {index + 1} 回目（{new Date(commitDate).toLocaleString()}）
-                  </Text>
-                  <Text key={index} size="md" fw={500} c="gray.7">
-                    コミットメッセージコミットメッセージコミットメッセージコミットメッセージコミットメッセージコミットメッセージコミットメッセージ
-                  </Text>
-                </Stack>
-              ))}
-            </Stack>
-          )}
         </Stack>
       </Stack>
       {isOngoing && (
@@ -217,7 +187,6 @@ export const Index: FC = () => {
           />
           <Button
             color="yellow"
-            variant="outline"
             radius="xl"
             size="md"
             pr={14}
@@ -228,6 +197,34 @@ export const Index: FC = () => {
             {data.commits && `${data.commits?.length + 1}回目の`}達成報告
           </Button>
           {/* TODO: 締め切りを超えたら出せないようにしたい */}
+        </Stack>
+      )}
+      {data.commits && (
+        <Stack
+          gap={12}
+          mt={8}
+          p={16}
+          style={{ backgroundColor: "#f8f9fa", borderRadius: "8px" }}
+        >
+          <Text size="md" fw={600} c="dark.8">
+            コミット履歴： {data.commits.length} 回 / {data.max_commit}回
+          </Text>
+          {data.commits.map((commitDate, index) => (
+            <Stack key={index} gap={0}>
+              <Text
+                size="md"
+                fw={500}
+                c="gray.7"
+                pl={8}
+                style={{ borderLeft: "3px solid #FFC107" }}
+              >
+                {index + 1} 回目（{new Date(commitDate).toLocaleString()}）
+              </Text>
+              <Text key={index} size="md" fw={500} c="gray.7">
+                コミットメッセージコミットメッセージコミットメッセージコミットメッセージコミットメッセージコミットメッセージコミットメッセージ
+              </Text>
+            </Stack>
+          ))}
         </Stack>
       )}
     </_Stack>

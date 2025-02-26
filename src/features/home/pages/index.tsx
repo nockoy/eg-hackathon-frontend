@@ -86,7 +86,7 @@ export const Index: FC = () => {
           pr={14}
           h={48}
           styles={{ section: { marginLeft: 22 } }}
-          onClick={() => navigate("/new-commit")}
+          onClick={() => navigate("/new-commit?mode=ai")}
         >
           AIに相談
         </Button>

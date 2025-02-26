@@ -111,10 +111,17 @@ export const Card = ({
           </Stack>
         </_Row>
         <Stack gap={4}>
-          <Text>
-            あと<_OrangeSpan> {max_commit - commit} </_OrangeSpan> 回 /{" "}
-            {max_commit} 回
-          </Text>
+          {max_commit - commit > 0 ? (
+            <Text>
+              あと<_OrangeSpan> {max_commit - commit} </_OrangeSpan> 回 /{" "}
+              {max_commit} 回
+            </Text>
+          ) : (
+            <Text c="yellow" fw={700}>
+              達成おめでとうございます！
+            </Text>
+          )}
+
           <ProgressBar progress={progress} color="yellow" />
         </Stack>
         <Stack gap={4}>

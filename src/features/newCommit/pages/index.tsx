@@ -1,4 +1,4 @@
-import { Button, Stack, Textarea, TextInput, Text, Group } from "@mantine/core";
+import { Button, Stack, Textarea, TextInput, Text, Group, Loader } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { FC, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -8,7 +8,13 @@ import api from "../../../api/axios";
 import { UserContext } from "../../../contexts/UserContext";
 
 export const Index: FC = () => {
-  const [page, setPage] = useState<number>(0);
+  const [page, setPage] = useState<number>(() => {
+    // URLからクエリパラメータを取得
+    const params = new URLSearchParams(window.location.search);
+    const mode = params.get("mode");
+    // modeが'ai'なら0、それ以外は1
+    return mode === "ai" ? 0 : 1;
+  });
   const [selectedDate, setSelectedDate] = useState<Date>(() => {
     const date = new Date();
     date.setDate(date.getDate() + 7);
@@ -16,6 +22,16 @@ export const Index: FC = () => {
   });
   const navigate = useNavigate();
   const { userId } = useContext(UserContext);
+  const [isLoading, setIsLoading] = useState(false);
+
+  const consultantForm = useForm({
+    initialValues: {
+      consultation: "",
+    },
+    validate: {
+      consultation: (val) => (val.length > 0 ? null : "相談を入力してください"),
+    },
+  });
 
   const form = useForm({
     initialValues: {
@@ -32,6 +48,62 @@ export const Index: FC = () => {
       deposit: (val) => (val.length > 0 ? null : "金額を入力してください"),
     },
   });
+
+  const handleClickConsult = async () => {
+    console.log("consult");
+    console.log(consultantForm.values);
+    consultantForm.validate();
+    if (consultantForm.isValid()) {
+      try {
+        // ローディング開始
+        setIsLoading(true);
+        
+        // APIリクエスト
+        const response = await api.get("/ai?input=" + encodeURIComponent(consultantForm.values.consultation));
+
+        // const response = {
+        //   data: {
+        //     response:
+        //       "{\"title\":\"健康促進\",\"concrete_task\":\"毎日30分のウォーキング\",\"times\": 30,\"remaining_days\":\"60\"}",
+        //   },
+        // };
+
+        // エスケープされたJSONを適切にパース
+        if (response.data && response.data.response) {
+          const parsedData = JSON.parse(response.data.response);
+          console.log("Parsed AI response:", parsedData);
+
+          // 残り日数に基づいて期限を計算
+          const endDate = new Date();
+          if (parsedData.remaining_days) {
+            const daysToAdd = parseInt(parsedData.remaining_days);
+            if (!isNaN(daysToAdd)) {
+              endDate.setDate(endDate.getDate() + daysToAdd);
+              setSelectedDate(endDate); // DatePickerの表示も更新
+            }
+          }
+
+          // パースしたデータをフォームに設定
+          form.setValues({
+            title: parsedData.title || "",
+            description: parsedData.concrete_task || "",
+            max_commit: parsedData.times?.toString() || "",
+            deposit: "", // APIからは返ってこないので空のまま
+            end_at: endDate.toString(),
+          });
+        }
+
+        // 次のページへ
+        setPage(1);
+      } catch (error) {
+        console.error("AI consultation error:", error);
+        // エラー処理
+      } finally {
+        // 処理完了後、ローディング終了
+        setIsLoading(false);
+      }
+    }
+  };
 
   const handleClickCreate = async () => {
     console.log("create");
@@ -69,37 +141,39 @@ export const Index: FC = () => {
       {page === 0 && (
         <>
           <form>
-            <Stack gap={16}>
-              <Textarea
-                label="AIに相談"
-                size="md"
-                placeholder="例）1か月後までに5kg痩せたい！"
-                autosize
-                minRows={3}
-                value={form.values.description}
-                onChange={(event) =>
-                  form.setFieldValue("description", event.currentTarget.value)
-                }
-              />
-            </Stack>
+            <Textarea
+              radius="8px"
+              label="AIに相談"
+              size="md"
+              placeholder="例）1か月後までに5kg痩せたい！"
+              autosize
+              minRows={3}
+              value={consultantForm.values.consultation}
+              onChange={(event) =>
+                consultantForm.setFieldValue(
+                  "consultation",
+                  event.currentTarget.value
+                )
+              }
+              error={
+                consultantForm.errors.consultation && "相談を入力してください"
+              }
+            />
           </form>
           <Button
-            // variant="light"
             radius="xl"
             size="md"
             color="yellow"
             pr={14}
             h={48}
             styles={{ section: { marginLeft: 22 } }}
-            onClick={() => {
-              form.validate();
-              if (form.isValid()) {
-                setPage(1);
-              }
-            }}
+            onClick={handleClickConsult}
+            disabled={isLoading}
           >
-            相談する
+            {isLoading ? "AIが考え中..." : "AIに決めてもらう"}
           </Button>
+
+          {isLoading ? <Loader size="sm" color="yellow" /> : undefined}
         </>
       )}
       {page === 1 && (
@@ -191,7 +265,7 @@ export const Index: FC = () => {
             onClick={() => {
               form.validate();
               if (form.isValid()) {
-                setPage(1);
+                setPage(2);
               }
             }}
           >
@@ -296,7 +370,7 @@ export const Index: FC = () => {
               radius="xl"
               size="md"
               color="yellow"
-              onClick={() => setPage(0)}
+              onClick={() => setPage(1)}
               style={{ flex: 1, maxWidth: "45%" }}
             >
               戻る
