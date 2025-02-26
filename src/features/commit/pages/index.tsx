@@ -75,6 +75,10 @@ export const Index: FC = () => {
     initialValues: {
       description: "",
     },
+    validate: {
+      description: (value) =>
+        value.length < 10 ? "10文字以上入力してください" : null,
+    },
   });
   const fetchDataAndLog = async () => {
     try {
@@ -88,6 +92,8 @@ export const Index: FC = () => {
   };
 
   const handleClick = async () => {
+    form.validate();
+    if (!form.isValid()) return;
     try {
       if (data) {
         const result = await postReport(challengeId, form.values.description);
@@ -157,6 +163,7 @@ export const Index: FC = () => {
           </Text>
 
           <Textarea
+            required
             label="達成報告"
             size="md"
             placeholder="達成したことを書きましょう"
@@ -166,6 +173,7 @@ export const Index: FC = () => {
             onChange={(event) =>
               form.setFieldValue("description", event.currentTarget.value)
             }
+            error={form.errors.description && "10文字以上入力してください"}
           />
 
           {data.commits && (

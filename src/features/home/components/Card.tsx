@@ -11,11 +11,11 @@ type CardProps = {
   end_at: string;
   deposit: number;
   refund: number;
-  status: string;
   description: string;
   progress: number;
   max_commit: number;
   commit: number;
+  commits: Date[];
   onClick: () => void;
 };
 
@@ -25,7 +25,6 @@ export const Card = ({
   end_at,
   deposit,
   refund,
-  status,
   description,
   progress,
   max_commit,
