@@ -65,7 +65,7 @@ export const useAuth = () => {
     try {
       const auth = getAuth();
       await signOutFirebase(auth);
-      setUser({ id: "", name: "" });
+      setUser({ userId: "", nickname: "" });
       return { success: true, message: "" };
     } catch (e) {
       if (e instanceof FirebaseError) {
