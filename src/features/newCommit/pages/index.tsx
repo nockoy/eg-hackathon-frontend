@@ -3,9 +3,12 @@ import { useForm } from "@mantine/form";
 import { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 export const Index: FC = () => {
   const [page, setPage] = useState<number>(0);
+  const [selectedDate, setSelectedDate] = useState<Date>();
   const navigate = useNavigate();
 
   const form = useForm({
@@ -42,6 +45,14 @@ export const Index: FC = () => {
                   form.setFieldValue("title", event.currentTarget.value)
                 }
                 error={form.errors.title && "タイトルを入力してください"}
+              />
+              <DatePicker
+                dateFormat="yyyy/MM/dd HH:mm"
+                locale="ja"
+                selected={selectedDate}
+                onChange={(date) => setSelectedDate(date!)}
+                showTimeSelect
+                timeIntervals={30}
               />
               <TextInput
                 required
