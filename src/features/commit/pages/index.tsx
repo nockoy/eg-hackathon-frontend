@@ -131,31 +131,66 @@ export const Index: FC = () => {
   return (
     <_Stack>
       <Stack gap={16}>
-        <Stack gap={8}>
-          <Text size="xl" fw={700} c="dark.8">
+        <Stack
+          gap={12}
+          p={16}
+          style={{ backgroundColor: "#f8f9fa", borderRadius: "12px" }}
+        >
+          <Text
+            size="xl"
+            fw={700}
+            c="dark.8"
+            style={{ borderBottom: "2px solid #FFC107", paddingBottom: "8px" }}
+          >
             {data.title}
           </Text>
-          <Text size="md" fw={500} c="gray.7">
+          <Text
+            size="md"
+            fw={500}
+            c="gray.7"
+            style={{ display: "flex", alignItems: "center", gap: "6px" }}
+          >
+            <span style={{ color: "#555" }}>期間：</span>
             {formatDate(data.created_at?.toString() || "")} ~
             {formatDate(data.end_date?.toString() || "")}
           </Text>
-          {/* <Text size="md" fw={500} c="gray.7">
-            達成回数：{data.commits.length}回 / {data.max_commit}回
-          </Text> */}
-          {/* <Text size="md" fw={500} c="gray.7">
-            達成率：{data.commit_rate}%
-          </Text> */}
-          <Text size="md" fw={500} c="gray.7">
-            ステータス：{isOngoing ? "進行中" : "終了"}
+          <Text
+            size="md"
+            fw={500}
+            c="gray.7"
+            style={{ display: "flex", alignItems: "center", gap: "6px" }}
+          >
+            <span style={{ color: "#555" }}>ステータス：</span>
+            <span
+              style={{
+                backgroundColor: isOngoing ? "#E6F4EA" : "#FEEFC3",
+                color: isOngoing ? "#137333" : "#B06000",
+                padding: "2px 10px",
+                borderRadius: "12px",
+                fontSize: "0.9em",
+              }}
+            >
+              {isOngoing ? "進行中" : "終了"}
+            </span>
           </Text>
-          <Text size="md" fw={500} c="gray.7">
-            預かり金額：
+          <Text
+            size="md"
+            fw={500}
+            c="gray.7"
+            style={{ display: "flex", alignItems: "center", gap: "6px" }}
+          >
+            <span style={{ color: "#555" }}>預かり金額：</span>
             <span style={{ color: "#FF6B6B", fontWeight: 600 }}>
               {data.deposit?.toLocaleString()}円
             </span>
           </Text>
-          <Text size="md" fw={500} c="gray.7">
-            返却金額：
+          <Text
+            size="md"
+            fw={500}
+            c="gray.7"
+            style={{ display: "flex", alignItems: "center", gap: "6px" }}
+          >
+            <span style={{ color: "#555" }}>返却金額：</span>
             <span style={{ color: "#FF6B6B", fontWeight: 600 }}>
               {data.refund?.toLocaleString()}円
             </span>
@@ -164,9 +199,21 @@ export const Index: FC = () => {
             size="md"
             fw={500}
             c="gray.7"
-            style={{ whiteSpace: "pre-wrap" }}
+            style={{
+              whiteSpace: "pre-wrap",
+              backgroundColor: "white",
+              padding: "12px",
+              borderRadius: "8px",
+              border: "1px solid #eee",
+              marginTop: "4px",
+            }}
           >
-            やること：{data.description}
+            <span
+              style={{ color: "#555", display: "block", marginBottom: "4px" }}
+            >
+              やること：
+            </span>
+            {data.description}
           </Text>
         </Stack>
       </Stack>
@@ -201,26 +248,48 @@ export const Index: FC = () => {
       )}
       {data.commits && (
         <Stack
-          gap={12}
+          gap={16}
           mt={8}
-          p={16}
-          style={{ backgroundColor: "#f8f9fa", borderRadius: "8px" }}
+          p={20}
+          style={{
+            backgroundColor: "#f8f9fa",
+            borderRadius: "12px",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.05)",
+          }}
         >
-          <Text size="md" fw={600} c="dark.8">
-            コミット履歴： {data.commits.length} 回 / {data.max_commit}回
+          <Text size="lg" fw={700} c="dark.8">
+            コミット履歴：{" "}
+            <span style={{ color: "#FFC107" }}>{data.commits.length}</span> /{" "}
+            {data.max_commit}回
           </Text>
           {data.commits.map((commitDate, index) => (
-            <Stack key={index} gap={0}>
+            <Stack
+              key={index}
+              gap={8}
+              p={16}
+              style={{
+                backgroundColor: "white",
+                borderRadius: "8px",
+                border: "1px solid #eee",
+              }}
+            >
               <Text
                 size="md"
-                fw={500}
-                c="gray.7"
-                pl={8}
-                style={{ borderLeft: "3px solid #FFC107" }}
+                fw={600}
+                c="dark.7"
+                pl={10}
+                style={{
+                  borderLeft: "4px solid #FFC107",
+                  display: "flex",
+                  justifyContent: "space-between",
+                }}
               >
-                {index + 1} 回目（{new Date(commitDate).toLocaleString()}）
+                <span>{index + 1} 回目</span>
+                <span style={{ fontSize: "0.9em", color: "#888" }}>
+                  {new Date(commitDate).toLocaleString()}
+                </span>
               </Text>
-              <Text key={index} size="md" fw={500} c="gray.7">
+              <Text size="sm" fw={400} c="gray.7" lh={1.6}>
                 コミットメッセージコミットメッセージコミットメッセージコミットメッセージコミットメッセージコミットメッセージコミットメッセージ
               </Text>
             </Stack>
