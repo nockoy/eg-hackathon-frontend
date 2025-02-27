@@ -1,11 +1,11 @@
 import { FC } from "react";
-import { Index } from "../../features/calendar/pages";
+import { Index } from "../../features/analysis/pages";
 import { DefaultLayout } from "../../components/Layout/DefaultLayout";
 import { Header } from "../../components/Header/Header";
 import { BottomNavBar } from "../../components/BottomNavBar/BottomNavBar";
 import styled from "styled-components";
 
-export const Calendar: FC = () => {
+export const Analysis: FC = () => {
   return (
     <DefaultLayout>
       <Header />

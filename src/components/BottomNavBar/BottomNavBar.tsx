@@ -3,7 +3,7 @@ import { AppShell, Group, Stack, Text } from "@mantine/core";
 import styled from "styled-components";
 import { useNavigate } from "react-router-dom";
 
-type IconType = "home" | "calendar_month" | "groups" | "settings";
+type IconType = "home" | "bar_chart" | "groups" | "settings";
 
 export type BottomNavBarProps = {
   currentTabNum: number;
@@ -18,7 +18,7 @@ type TabItem = {
 
 const tabItems: TabItem[] = [
   { tabNum: 0, title: "ホーム", iconName: "home", to: "/" },
-  { tabNum: 1, title: "カレンダー", iconName: "calendar_month", to: "/calendar" },
+  { tabNum: 1, title: "分析", iconName: "bar_chart", to: "/analysis" },
   { tabNum: 2, title: "コミュニティ", iconName: "groups", to: "/community" },
   { tabNum: 3, title: "マイページ", iconName: "settings", to: "/setting" },
 ];

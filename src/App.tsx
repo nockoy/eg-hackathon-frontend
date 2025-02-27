@@ -11,7 +11,7 @@ import { NewCommit } from "./pages/NewCommit";
 import { Community } from "./pages/Community";
 import { Setting } from "./pages/Setting";
 import { Commit } from "./pages/Commit";
-import { Calendar } from "./pages/Calendar";
+import { Analysis } from "./pages/Analysis";
 
 export const App = () => {
   const { user, loading } = useAuthContext();
@@ -33,7 +33,7 @@ export const App = () => {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/new-commit" element={<NewCommit />} />
-        <Route path="/calendar" element={<Calendar />} />
+        <Route path="/analysis" element={<Analysis />} />
         <Route path="/commit/:id" element={<Commit />} />
         <Route path="/community" element={<Community />} />
         <Route path="/setting" element={<Setting />} />
