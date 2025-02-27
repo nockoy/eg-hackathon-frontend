@@ -1,8 +1,8 @@
 import { Stack, Text } from "@mantine/core";
 import styled from "styled-components";
-import { ProgressBar } from "./ProgressBar";
+import { ProgressBar } from "../ProgressBar";
 import { useEffect, useState } from "react";
-import { formatDate } from "../../../util/formatDate";
+import { formatDate } from "../../../../util/formatDate";
 
 type CardProps = {
   status: "ongoing" | "completed";

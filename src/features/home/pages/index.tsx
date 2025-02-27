@@ -1,10 +1,11 @@
 import { Button, Group, Stack, Text } from "@mantine/core";
 import { FC, useContext, useEffect, useState } from "react";
 import styled from "styled-components";
-import { Card } from "../components/Card";
+import { Card } from "../components/Card/Card";
 import { useNavigate } from "react-router-dom";
 import api from "../../../api/axios";
 import { UserContext } from "../../../contexts/UserContext";
+import { SkeletonCard } from "../components/Card/SkeletonCard";
 
 type Data = {
   challenge_id: number;
@@ -34,32 +35,40 @@ export const Index: FC = () => {
   // const [data, setData] = useState<Data[]>([]);
   const [ongoingData, setOngoingData] = useState<Data[]>([]);
   const [completedData, setCompletedData] = useState<Data[]>([]);
+  const [loading, setLoading] = useState(true);
   const { userId } = useContext(UserContext);
 
   // fetchDataを非同期で呼び出し、結果を待つ
   const fetchDataAndLog = async () => {
-    const data = await fetchData(userId);
-    // setData(data);
-    console.log("data", data);
+    setLoading(true);
+    try {
+      const data = await fetchData(userId);
+      // setData(data);
+      console.log("data", data);
 
-    const currentDate = new Date();
+      const currentDate = new Date();
 
-    // 完了したチャレンジ：コミット回数が上限に達したか、期限が過ぎたもの
-    const completedData = data.filter(
-      (item) =>
-        item.commits.length >= item.max_commit ||
-        new Date(item.end_date) < currentDate
-    );
+      // 完了したチャレンジ：コミット回数が上限に達したか、期限が過ぎたもの
+      const completedData = data.filter(
+        (item) =>
+          item.commits.length >= item.max_commit ||
+          new Date(item.end_date) < currentDate
+      );
 
-    // 進行中のチャレンジ：完了していないもの
-    const ongoingData = data.filter(
-      (item) =>
-        item.commits.length < item.max_commit &&
-        new Date(item.end_date) >= currentDate
-    );
+      // 進行中のチャレンジ：完了していないもの
+      const ongoingData = data.filter(
+        (item) =>
+          item.commits.length < item.max_commit &&
+          new Date(item.end_date) >= currentDate
+      );
 
-    setOngoingData(ongoingData);
-    setCompletedData(completedData);
+      setOngoingData(ongoingData);
+      setCompletedData(completedData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -102,7 +111,12 @@ export const Index: FC = () => {
         <Text fz="24" fw={700}>
           進行中
         </Text>
-        {ongoingData.length > 0 ? (
+        {loading ? (
+          <>
+            <SkeletonCard />
+            <SkeletonCard />
+          </>
+        ) : ongoingData.length > 0 ? (
           ongoingData.map((item) => (
             <Card
               key={item.challenge_id}
@@ -130,7 +144,12 @@ export const Index: FC = () => {
         <Text fz="24" fw={700}>
           過去のチャレンジ
         </Text>
-        {completedData.length > 0 ? (
+        {loading ? (
+          <>
+            <SkeletonCard />
+            <SkeletonCard />
+          </>
+        ) : completedData.length > 0 ? (
           completedData.map((item) => (
             <Card
               key={item.challenge_id}
