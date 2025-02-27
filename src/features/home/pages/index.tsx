@@ -6,8 +6,6 @@ import { useNavigate } from "react-router-dom";
 import api from "../../../api/axios";
 import { UserContext } from "../../../contexts/UserContext";
 
-const isDevelopment = import.meta.env.VITE_ENV === "development";
-
 type Data = {
   challenge_id: number;
   commits: Date[];
@@ -40,30 +38,28 @@ export const Index: FC = () => {
 
   // fetchDataを非同期で呼び出し、結果を待つ
   const fetchDataAndLog = async () => {
-    if (isDevelopment) {
-      const data = await fetchData(userId);
-      // setData(data);
-      console.log("data", data);
+    const data = await fetchData(userId);
+    // setData(data);
+    console.log("data", data);
 
-      const currentDate = new Date();
+    const currentDate = new Date();
 
-      // 完了したチャレンジ：コミット回数が上限に達したか、期限が過ぎたもの
-      const completedData = data.filter(
-        (item) =>
-          item.commits.length >= item.max_commit ||
-          new Date(item.end_date) < currentDate
-      );
+    // 完了したチャレンジ：コミット回数が上限に達したか、期限が過ぎたもの
+    const completedData = data.filter(
+      (item) =>
+        item.commits.length >= item.max_commit ||
+        new Date(item.end_date) < currentDate
+    );
 
-      // 進行中のチャレンジ：完了していないもの
-      const ongoingData = data.filter(
-        (item) =>
-          item.commits.length < item.max_commit &&
-          new Date(item.end_date) >= currentDate
-      );
+    // 進行中のチャレンジ：完了していないもの
+    const ongoingData = data.filter(
+      (item) =>
+        item.commits.length < item.max_commit &&
+        new Date(item.end_date) >= currentDate
+    );
 
-      setOngoingData(ongoingData);
-      setCompletedData(completedData);
-    }
+    setOngoingData(ongoingData);
+    setCompletedData(completedData);
   };
 
   useEffect(() => {
@@ -157,30 +153,6 @@ export const Index: FC = () => {
           <Text>過去のチャレンジはありません</Text>
         )}
       </Stack>
-      {/* {isDevelopment && (
-        <Stack gap={16}>
-          <Text fz="24" fw={700}>
-            DBから取得したデータ
-          </Text>
-          {data.map((item) => (
-            <Card
-              key={item.challenge_id}
-              challenge_id={item.challenge_id}
-              title={item.title}
-              start_at={item.created_at.toString()}
-              end_at={item.end_date.toString()}
-              deposit={item.deposit}
-              refund={item.refund}
-              description={item.description}
-              progress={item.commits.length / item.max_commit}
-              max_commit={item.max_commit}
-              commit={item.commits.length}
-              commits={item.commits}
-              onClick={() => navigate(`/challenge/${item.challenge_id}`)}
-            />
-          ))}
-        </Stack>
-      )} */}
     </_Stack>
   );
 };
