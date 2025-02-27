@@ -3,66 +3,22 @@ import { FC, useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import { Card } from "../components/Card/Card";
 import { useNavigate } from "react-router-dom";
-import api from "../../../api/axios";
 import { UserContext } from "../../../contexts/UserContext";
 import { SkeletonCard } from "../components/Card/SkeletonCard";
-
-type Data = {
-  challenge_id: number;
-  commits: Date[];
-  created_at: Date;
-  deposit: number;
-  description: string;
-  end_date: Date;
-  refund: number;
-  // status: string;
-  title: string;
-  max_commit: number;
-};
-
-const fetchData = async (userId: string): Promise<Data[]> => {
-  try {
-    const res = await api.get(`/users/${userId}/home`);
-    return res.data;
-  } catch (error) {
-    console.error("Error fetching data:", error);
-    throw error;
-  }
-};
-
-// キャッシュのキー
-const CACHE_KEY = "homeDataCache";
-// キャッシュの有効期限（ミリ秒）- 例: 5分
-const CACHE_EXPIRY = 5 * 60 * 1000;
+import {
+  HomeData,
+  fetchHomeData,
+  getDataFromCache,
+  saveDataToCache,
+  CACHE_EXPIRY,
+} from "../api/index";
 
 export const Index: FC = () => {
   const navigate = useNavigate();
-  const [ongoingData, setOngoingData] = useState<Data[]>([]);
-  const [completedData, setCompletedData] = useState<Data[]>([]);
+  const [ongoingData, setOngoingData] = useState<HomeData[]>([]);
+  const [completedData, setCompletedData] = useState<HomeData[]>([]);
   const [loading, setLoading] = useState(true);
   const { userId } = useContext(UserContext);
-
-  // キャッシュからデータを取得する関数
-  const getDataFromCache = (): {
-    data: Data[] | null;
-    timestamp: number | null;
-  } => {
-    const cachedData = sessionStorage.getItem(CACHE_KEY);
-    if (cachedData) {
-      const { data, timestamp } = JSON.parse(cachedData);
-      return { data, timestamp };
-    }
-    return { data: null, timestamp: null };
-  };
-
-  // キャッシュにデータを保存する関数
-  const saveDataToCache = (data: Data[]) => {
-    const cacheData = {
-      data,
-      timestamp: Date.now(),
-    };
-    sessionStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
-  };
 
   // fetchDataを非同期で呼び出し、結果を待つ
   const fetchDataAndLog = async () => {
@@ -77,7 +33,7 @@ export const Index: FC = () => {
 
       // バックグラウンドで常に最新データを取得（ローディング表示なし）
       try {
-        const data = await fetchData(userId);
+        const data = await fetchHomeData(userId);
         console.log("Background update completed");
 
         // 新しいデータをキャッシュに保存
@@ -94,7 +50,7 @@ export const Index: FC = () => {
     // キャッシュがない場合は通常のローディング表示
     setLoading(true);
     try {
-      const data = await fetchData(userId);
+      const data = await fetchHomeData(userId);
       console.log("data", data);
 
       // 新しいデータをキャッシュに保存
@@ -116,7 +72,7 @@ export const Index: FC = () => {
   };
 
   // データを処理して状態を更新する関数
-  const processData = (data: Data[]) => {
+  const processData = (data: HomeData[]) => {
     const currentDate = new Date();
 
     // 完了したチャレンジ：コミット回数が上限に達したか、期限が過ぎたもの

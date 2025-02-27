@@ -2,10 +2,10 @@ import { Button, Stack, Text, Textarea } from "@mantine/core";
 import { FC, useEffect, useState } from "react";
 import styled from "styled-components";
 import { formatDate } from "../../../util/formatDate";
-import api from "../../../api/axios";
+import { fetchChallengeDetail, postChallengeReport } from "../api/index";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "@mantine/form";
-import { ChallengeDetailSkeleton } from "./ChallengeDetailSkeleton";
+import { ChallengeDetailSkeleton } from "../components/ChallengeDetailSkeleton";
 
 type ChallengeData = {
   challenge_id: number;
@@ -29,24 +29,6 @@ type ChallengeData = {
   }[];
   deposit: number;
   refund: number;
-};
-
-const fetchData = async (challengeId: number) => {
-  const res = await api.get(`/challenges/detail?challenge_id=${challengeId}`);
-  return res.data;
-};
-
-const postReport = async (challengeId: number, comment: string = "test") => {
-  try {
-    const res = await api.post(`/reports`, {
-      challenge_id: challengeId,
-      comment: comment,
-    });
-    return { success: true, data: res.data };
-  } catch (error) {
-    console.error("レポート送信中にエラーが発生しました:", error);
-    return { success: false, error };
-  }
 };
 
 // キャッシュのキープレフィックス
@@ -117,7 +99,7 @@ export const Index: FC = () => {
 
       // バックグラウンドで最新データを取得（ローディング表示なし）
       try {
-        const fetchedData = await fetchData(challengeId);
+        const fetchedData = await fetchChallengeDetail(challengeId);
         console.log("バックグラウンド更新完了");
 
         // 新しいデータをキャッシュに保存
@@ -139,7 +121,7 @@ export const Index: FC = () => {
     // キャッシュがない場合は通常のローディング表示
     setLoading(true);
     try {
-      const fetchedData = await fetchData(challengeId);
+      const fetchedData = await fetchChallengeDetail(challengeId);
       console.log("fetchedData", fetchedData);
 
       // 新しいデータをキャッシュに保存
@@ -177,7 +159,10 @@ export const Index: FC = () => {
     if (!form.isValid()) return;
     try {
       if (data) {
-        const result = await postReport(challengeId, form.values.description);
+        const result = await postChallengeReport(
+          challengeId,
+          form.values.description
+        );
         if (result.success) {
           // レポート送信成功後、キャッシュを削除して最新データを取得
           sessionStorage.removeItem(`${CACHE_KEY_PREFIX}${challengeId}`);
