@@ -28,7 +28,7 @@ export const Index: FC = () => {
   const [activeTab, setActiveTab] = useState<string | null>("discover");
   const [searchQuery, setSearchQuery] = useState("");
 
-  // ダミーデータ
+  // ダミーデータを拡張
   const popularChallenges = [
     {
       id: 1,
@@ -36,6 +36,8 @@ export const Index: FC = () => {
       participants: 128,
       category: "フィットネス",
       difficulty: "medium",
+      avgDeposit: 5000,
+      successRate: 68,
     },
     {
       id: 2,
@@ -71,6 +73,9 @@ export const Index: FC = () => {
       topStreak: 12,
       startDate: "2023-10-01",
       endDate: "2023-12-31",
+      myDeposit: 10000,
+      potentialReturn: 12000,
+      totalPot: 80000,
     },
     {
       id: 2,
@@ -117,6 +122,15 @@ export const Index: FC = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.currentTarget.value)}
               rightSection={<IconSearch size={16} />}
+              styles={{
+                input: {
+                  borderRadius: "8px",
+                  border: "1px solid #e9ecef",
+                  "&:focus": {
+                    borderColor: "#FFC107",
+                  },
+                },
+              }}
             />
 
             <Text fw={600} size="md" mt="sm">
@@ -125,43 +139,79 @@ export const Index: FC = () => {
 
             {popularChallenges.map((challenge) => (
               <ChallengeCard key={challenge.id}>
-                <Group justify="space-between" wrap="nowrap">
-                  <Stack gap="xs">
-                    <Group gap="xs">
-                      <Badge
-                        color={
-                          challenge.difficulty === "easy"
-                            ? "green"
+                <Stack gap="md">
+                  <Group justify="space-between" wrap="nowrap">
+                    <Stack gap="xs">
+                      <Group gap="xs">
+                        <Badge
+                          color={
+                            challenge.difficulty === "easy"
+                              ? "green"
+                              : challenge.difficulty === "medium"
+                              ? "yellow"
+                              : "red"
+                          }
+                          variant="light"
+                          radius="md"
+                          px={8}
+                        >
+                          {challenge.difficulty === "easy"
+                            ? "初級"
                             : challenge.difficulty === "medium"
-                            ? "yellow"
-                            : "red"
-                        }
-                        variant="light"
-                      >
-                        {challenge.difficulty === "easy"
-                          ? "初級"
-                          : challenge.difficulty === "medium"
-                          ? "中級"
-                          : "上級"}
-                      </Badge>
-                      <Badge color="blue" variant="light">
-                        {challenge.category}
-                      </Badge>
+                            ? "中級"
+                            : "上級"}
+                        </Badge>
+                        <Badge color="blue" variant="light" radius="md" px={8}>
+                          {challenge.category}
+                        </Badge>
+                      </Group>
+                      <Text fw={600}>{challenge.title}</Text>
+                      <Group gap="xs">
+                        <ThemeIcon
+                          color="gray"
+                          variant="light"
+                          size="sm"
+                          radius="xl"
+                        >
+                          <IconUsers size={12} />
+                        </ThemeIcon>
+                        <Text size="sm" c="dimmed">
+                          {challenge.participants}人が参加中
+                        </Text>
+                      </Group>
+                    </Stack>
+                    <ActionIcon variant="subtle" color="gray" radius="xl">
+                      <IconChevronRight size={16} />
+                    </ActionIcon>
+                  </Group>
+
+                  {/* デポジット情報を追加 */}
+                  <Paper p="xs" radius="md" bg="gray.0">
+                    <Group justify="space-between">
+                      <Group>
+                        <ThemeIcon
+                          color="yellow"
+                          variant="light"
+                          radius="xl"
+                          size="md"
+                        >
+                          <IconTrophy size={16} />
+                        </ThemeIcon>
+                        <Text size="sm">
+                          成功率: <b>{challenge.successRate}%</b>
+                        </Text>
+                      </Group>
+                      <Group>
+                        <Text size="sm">
+                          平均デポジット:{" "}
+                          <b style={{ color: "#FF6B6B" }}>
+                            {(challenge.avgDeposit || 0).toLocaleString()}円
+                          </b>
+                        </Text>
+                      </Group>
                     </Group>
-                    <Text fw={600}>{challenge.title}</Text>
-                    <Group gap="xs">
-                      <ThemeIcon color="gray" variant="light" size="sm">
-                        <IconUsers size={12} />
-                      </ThemeIcon>
-                      <Text size="sm" c="dimmed">
-                        {challenge.participants}人が参加中
-                      </Text>
-                    </Group>
-                  </Stack>
-                  <ActionIcon variant="subtle" color="gray">
-                    <IconChevronRight size={16} />
-                  </ActionIcon>
-                </Group>
+                  </Paper>
+                </Stack>
               </ChallengeCard>
             ))}
 
@@ -180,6 +230,8 @@ export const Index: FC = () => {
                   leftSection={<IconPlus size={16} />}
                   color="yellow"
                   fullWidth
+                  radius="xl"
+                  h={42}
                 >
                   新しいグループを作成
                 </Button>
@@ -205,7 +257,9 @@ export const Index: FC = () => {
                         </Text>
                       </div>
                     </Group>
-                    <Badge>{group.members}人参加中</Badge>
+                    <Badge radius="xl" px={10}>
+                      {group.members}人参加中
+                    </Badge>
                   </Group>
 
                   <Text fw={500} size="sm">
@@ -219,8 +273,45 @@ export const Index: FC = () => {
                         {group.progress}%
                       </Text>
                     </Group>
-                    <Progress value={group.progress} color="blue" />
+                    <Progress value={group.progress} color="yellow" />
                   </Stack>
+
+                  {/* デポジット情報を追加 */}
+                  <Paper
+                    p="sm"
+                    radius="md"
+                    bg="yellow.0"
+                    withBorder
+                    style={{ borderColor: "#FFC107" }}
+                  >
+                    <Stack gap="xs">
+                      <Group justify="space-between">
+                        <Text size="sm" fw={500}>
+                          あなたのデポジット
+                        </Text>
+                        <Text size="sm" fw={700} c="red.6">
+                          {(group.myDeposit || 0).toLocaleString()}円
+                        </Text>
+                      </Group>
+                      <Group justify="space-between">
+                        <Text size="sm" fw={500}>
+                          達成時の獲得額
+                        </Text>
+                        <Text size="sm" fw={700} c="green.6">
+                          {(group.potentialReturn || 0).toLocaleString()}円
+                        </Text>
+                      </Group>
+                      <Progress
+                        value={group.progress}
+                        color="yellow"
+                        size="sm"
+                      />
+                      <Text size="xs" c="dimmed">
+                        グループ全体のデポジット:{" "}
+                        {(group.totalPot || 0).toLocaleString()}円
+                      </Text>
+                    </Stack>
+                  </Paper>
 
                   <Group grow>
                     <Paper p="xs" radius="md" withBorder>
@@ -284,9 +375,14 @@ export const Index: FC = () => {
                     )}
                   </MemberList>
 
-                  <Button variant="light" color="blue" fullWidth>
-                    詳細を見る
-                  </Button>
+                  <Group grow>
+                    <Button variant="light" color="blue" radius="xl">
+                      詳細を見る
+                    </Button>
+                    <Button variant="light" color="yellow" radius="xl">
+                      デポジット追加
+                    </Button>
+                  </Group>
                 </Stack>
               </GroupCard>
             ))}
