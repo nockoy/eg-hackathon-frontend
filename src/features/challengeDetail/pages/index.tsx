@@ -5,27 +5,7 @@ import { formatDate } from "../../../util/formatDate";
 import api from "../../../api/axios";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "@mantine/form";
-
-// const fetchMockData = () => {
-//   return [
-//     {
-//       challenge_id: 2,
-//       commits: [
-//         new Date("2025-02-24T00:00:00.000Z"),
-//         new Date("2025-02-25T00:00:00.000Z"),
-//       ],
-//       created_at: new Date("2025-02-24T00:00:00.000Z"),
-//       deposit: 2000,
-//       description:
-//         "2010年度〜2019年度の過去問を解く！\n得点率8割越えを目指したい。",
-//       end_date: new Date("2025-03-03T12:35:00.000Z"),
-//       refund: 0,
-//       status: "ongoing",
-//       title: "本番までに過去問10年分解く",
-//       max_commit: 5,
-//     },
-//   ];
-// };
+import { ChallengeDetailSkeleton } from "./ChallengeDetailSkeleton";
 
 type ChallengeData = {
   challenge_id: number;
@@ -69,11 +49,17 @@ const postReport = async (challengeId: number, comment: string = "test") => {
   }
 };
 
+// キャッシュのキープレフィックス
+const CACHE_KEY_PREFIX = "challengeDetail_";
+// キャッシュの有効期限（ミリ秒）- 例: 5分
+const CACHE_EXPIRY = 5 * 60 * 1000;
+
 export const Index: FC = () => {
   const { id } = useParams();
   const challengeId = Number(id);
   const [data, setData] = useState<ChallengeData | null>(null);
   const [isOngoing, setIsOngoing] = useState(false);
+  const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   const form = useForm({
     initialValues: {
@@ -81,14 +67,85 @@ export const Index: FC = () => {
     },
     validate: {
       description: (value) =>
-        value.length < 10 ? "10文字以上入力してください" : null,
+        value.length < 5 ? "5文字以上入力してください" : null,
     },
   });
+
+  // キャッシュからデータを取得する関数
+  const getDataFromCache = (): {
+    data: ChallengeData | null;
+    timestamp: number | null;
+  } => {
+    const cacheKey = `${CACHE_KEY_PREFIX}${challengeId}`;
+    const cachedData = localStorage.getItem(cacheKey);
+    if (cachedData) {
+      try {
+        const { data, timestamp } = JSON.parse(cachedData);
+        return { data, timestamp };
+      } catch (error) {
+        console.error("キャッシュデータの解析に失敗しました:", error);
+        return { data: null, timestamp: null };
+      }
+    }
+    return { data: null, timestamp: null };
+  };
+
+  // キャッシュにデータを保存する関数
+  const saveDataToCache = (data: ChallengeData) => {
+    const cacheKey = `${CACHE_KEY_PREFIX}${challengeId}`;
+    const cacheData = {
+      data,
+      timestamp: Date.now(),
+    };
+    localStorage.setItem(cacheKey, JSON.stringify(cacheData));
+  };
+
   const fetchDataAndLog = async () => {
+    // キャッシュからデータを取得
+    const { data: cachedData, timestamp } = getDataFromCache();
+    const isCacheValid = timestamp && Date.now() - timestamp < CACHE_EXPIRY;
+
+    // キャッシュが有効な場合はまずキャッシュデータを表示
+    if (cachedData && isCacheValid) {
+      setData(cachedData);
+      setIsOngoing(
+        !cachedData.commits ||
+          (cachedData.commits.length < cachedData.max_commit &&
+            new Date(cachedData.end_date) >= new Date())
+      );
+      setLoading(false);
+
+      // バックグラウンドで最新データを取得（ローディング表示なし）
+      try {
+        const fetchedData = await fetchData(challengeId);
+        console.log("バックグラウンド更新完了");
+
+        // 新しいデータをキャッシュに保存
+        saveDataToCache(fetchedData);
+
+        // データを更新
+        setData(fetchedData);
+        setIsOngoing(
+          !fetchedData.commits ||
+            (fetchedData.commits.length < fetchedData.max_commit &&
+              new Date(fetchedData.end_date) >= new Date())
+        );
+      } catch (error) {
+        console.error("バックグラウンド取得中にエラーが発生しました:", error);
+      }
+      return;
+    }
+
+    // キャッシュがない場合は通常のローディング表示
+    setLoading(true);
     try {
       const fetchedData = await fetchData(challengeId);
-      setData(fetchedData);
       console.log("fetchedData", fetchedData);
+
+      // 新しいデータをキャッシュに保存
+      saveDataToCache(fetchedData);
+
+      setData(fetchedData);
       setIsOngoing(
         !fetchedData.commits ||
           (fetchedData.commits.length < fetchedData.max_commit &&
@@ -96,8 +153,22 @@ export const Index: FC = () => {
       );
     } catch (error) {
       console.error("データの取得中にエラーが発生しました:", error);
-      alert("サーバーに接続できません。ネットワーク設定を確認してください。");
-      setData(null);
+
+      // エラー時にキャッシュがあれば使用
+      if (cachedData) {
+        console.log("エラーのためキャッシュデータを使用します");
+        setData(cachedData);
+        setIsOngoing(
+          !cachedData.commits ||
+            (cachedData.commits.length < cachedData.max_commit &&
+              new Date(cachedData.end_date) >= new Date())
+        );
+      } else {
+        alert("サーバーに接続できません。ネットワーク設定を確認してください。");
+        setData(null);
+      }
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -108,6 +179,8 @@ export const Index: FC = () => {
       if (data) {
         const result = await postReport(challengeId, form.values.description);
         if (result.success) {
+          // レポート送信成功後、キャッシュを削除して最新データを取得
+          localStorage.removeItem(`${CACHE_KEY_PREFIX}${challengeId}`);
           navigate("/");
         } else {
           console.error("レポート送信に失敗しました");
@@ -122,6 +195,10 @@ export const Index: FC = () => {
     fetchDataAndLog();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [challengeId]);
+
+  if (loading) {
+    return <ChallengeDetailSkeleton />;
+  }
 
   if (!data) {
     return (
@@ -230,14 +307,14 @@ export const Index: FC = () => {
             required
             label="達成報告"
             size="md"
-            placeholder="達成したことを書きましょう（10文字以上）"
+            placeholder="達成したことを書きましょう"
             autosize
             minRows={3}
             value={form.values.description}
             onChange={(event) =>
               form.setFieldValue("description", event.currentTarget.value)
             }
-            error={form.errors.description && "10文字以上入力してください"}
+            error={form.errors.description && "5文字以上入力してください"}
           />
           <Button
             color="yellow"

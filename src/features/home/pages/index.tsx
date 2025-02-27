@@ -30,45 +30,111 @@ const fetchData = async (userId: string): Promise<Data[]> => {
   }
 };
 
+// キャッシュのキー
+const CACHE_KEY = "homeDataCache";
+// キャッシュの有効期限（ミリ秒）- 例: 5分
+const CACHE_EXPIRY = 5 * 60 * 1000;
+
 export const Index: FC = () => {
   const navigate = useNavigate();
-  // const [data, setData] = useState<Data[]>([]);
   const [ongoingData, setOngoingData] = useState<Data[]>([]);
   const [completedData, setCompletedData] = useState<Data[]>([]);
   const [loading, setLoading] = useState(true);
   const { userId } = useContext(UserContext);
 
+  // キャッシュからデータを取得する関数
+  const getDataFromCache = (): {
+    data: Data[] | null;
+    timestamp: number | null;
+  } => {
+    const cachedData = localStorage.getItem(CACHE_KEY);
+    if (cachedData) {
+      const { data, timestamp } = JSON.parse(cachedData);
+      return { data, timestamp };
+    }
+    return { data: null, timestamp: null };
+  };
+
+  // キャッシュにデータを保存する関数
+  const saveDataToCache = (data: Data[]) => {
+    const cacheData = {
+      data,
+      timestamp: Date.now(),
+    };
+    localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
+  };
+
   // fetchDataを非同期で呼び出し、結果を待つ
   const fetchDataAndLog = async () => {
+    // キャッシュからデータを取得
+    const { data: cachedData, timestamp } = getDataFromCache();
+    const isCacheValid = timestamp && Date.now() - timestamp < CACHE_EXPIRY;
+
+    // キャッシュが有効な場合はまずキャッシュデータを表示
+    if (cachedData && isCacheValid) {
+      processData(cachedData);
+      setLoading(false);
+
+      // バックグラウンドで常に最新データを取得（ローディング表示なし）
+      try {
+        const data = await fetchData(userId);
+        console.log("Background update completed");
+
+        // 新しいデータをキャッシュに保存
+        saveDataToCache(data);
+
+        // データを処理して状態を更新
+        processData(data);
+      } catch (error) {
+        console.error("Error in background fetch:", error);
+      }
+      return;
+    }
+
+    // キャッシュがない場合は通常のローディング表示
     setLoading(true);
     try {
       const data = await fetchData(userId);
-      // setData(data);
       console.log("data", data);
 
-      const currentDate = new Date();
+      // 新しいデータをキャッシュに保存
+      saveDataToCache(data);
 
-      // 完了したチャレンジ：コミット回数が上限に達したか、期限が過ぎたもの
-      const completedData = data.filter(
-        (item) =>
-          item.commits.length >= item.max_commit ||
-          new Date(item.end_date) < currentDate
-      );
-
-      // 進行中のチャレンジ：完了していないもの
-      const ongoingData = data.filter(
-        (item) =>
-          item.commits.length < item.max_commit &&
-          new Date(item.end_date) >= currentDate
-      );
-
-      setOngoingData(ongoingData);
-      setCompletedData(completedData);
+      // データを処理して状態を更新
+      processData(data);
     } catch (error) {
       console.error("Error fetching data:", error);
+
+      // エラー時にキャッシュがあれば使用
+      if (cachedData) {
+        console.log("Using cached data due to fetch error");
+        processData(cachedData);
+      }
     } finally {
       setLoading(false);
     }
+  };
+
+  // データを処理して状態を更新する関数
+  const processData = (data: Data[]) => {
+    const currentDate = new Date();
+
+    // 完了したチャレンジ：コミット回数が上限に達したか、期限が過ぎたもの
+    const completed = data.filter(
+      (item) =>
+        item.commits.length >= item.max_commit ||
+        new Date(item.end_date) < currentDate
+    );
+
+    // 進行中のチャレンジ：完了していないもの
+    const ongoing = data.filter(
+      (item) =>
+        item.commits.length < item.max_commit &&
+        new Date(item.end_date) >= currentDate
+    );
+
+    setOngoingData(ongoing);
+    setCompletedData(completed);
   };
 
   useEffect(() => {
