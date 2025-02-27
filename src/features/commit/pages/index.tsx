@@ -194,9 +194,13 @@ export const Index: FC = () => {
             style={{ display: "flex", alignItems: "center", gap: "6px" }}
           >
             <span style={{ color: "#555" }}>返却金額：</span>
-            <span style={{ color: "#FF6B6B", fontWeight: 600 }}>
-              {data.refund?.toLocaleString()}円
-            </span>
+            {isOngoing ? (
+              <span style={{ fontWeight: 600 }}>-</span>
+            ) : (
+              <span style={{ color: "#FF6B6B", fontWeight: 600 }}>
+                {data.refund?.toLocaleString()}円
+              </span>
+            )}
           </Text>
           <Text
             size="md"
