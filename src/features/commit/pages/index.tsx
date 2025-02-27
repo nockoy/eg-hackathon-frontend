@@ -43,7 +43,10 @@ type ChallengeData = {
   official: boolean;
   updated_at: string;
   created_at: string;
-  commits: Date[];
+  commits: {
+    created_at: Date;
+    comment: string;
+  }[];
   deposit: number;
   refund: number;
 };
@@ -286,11 +289,11 @@ export const Index: FC = () => {
               >
                 <span>{index + 1} 回目</span>
                 <span style={{ fontSize: "0.9em", color: "#888" }}>
-                  {new Date(commitDate).toLocaleString()}
+                  {formatDate(commitDate.created_at.toString())}
                 </span>
               </Text>
               <Text size="sm" fw={400} c="gray.7" lh={1.6}>
-                コミットメッセージコミットメッセージコミットメッセージコミットメッセージコミットメッセージコミットメッセージコミットメッセージ
+                {commitDate.comment}
               </Text>
             </Stack>
           ))}
