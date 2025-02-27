@@ -189,7 +189,7 @@ export const Index: FC = () => {
             />
           </Group>
 
-            <Group justify="space-between">
+          <Group justify="space-between">
             <Group>
               <ThemeIcon color="gray" variant="light" size="md" radius="xl">
                 <IconBell size={18} />
@@ -314,5 +314,5 @@ const _Stack = styled.div`
   flex-direction: column;
   gap: 16px;
   padding-top: 80px;
-  padding-bottom: calc(80px + env(safe-area-inset-bottom) * 0.2);
+  padding-bottom: 160px;
 `;
