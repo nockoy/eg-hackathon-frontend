@@ -154,7 +154,7 @@ export const Index: FC = () => {
             style={{ display: "flex", alignItems: "center", gap: "6px" }}
           >
             <span style={{ color: "#555" }}>期間：</span>
-            {formatDate(data.created_at?.toString() || "")} ~
+            {formatDate(data.created_at?.toString() || "")}&nbsp;~&nbsp;
             {formatDate(data.end_date?.toString() || "")}
           </Text>
           <Text

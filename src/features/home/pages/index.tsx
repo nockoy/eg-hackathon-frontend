@@ -83,7 +83,7 @@ export const Index: FC = () => {
           pr={14}
           h={48}
           styles={{ section: { marginLeft: 22 } }}
-          onClick={() => navigate("/new-commit?mode=ai")}
+          onClick={() => navigate("/new-challenge?mode=ai")}
         >
           AIに相談
         </Button>
@@ -96,7 +96,7 @@ export const Index: FC = () => {
           pr={14}
           h={48}
           styles={{ section: { marginLeft: 22 } }}
-          onClick={() => navigate("/new-commit")}
+          onClick={() => navigate("/new-challenge")}
         >
           チャレンジ作成
         </Button>
@@ -122,7 +122,7 @@ export const Index: FC = () => {
               max_commit={item.max_commit}
               commit={item.commits.length}
               commits={item.commits}
-              onClick={() => navigate(`/commit/${item.challenge_id}`)}
+              onClick={() => navigate(`/challenge/${item.challenge_id}`)}
             />
           ))
         ) : (
@@ -150,7 +150,7 @@ export const Index: FC = () => {
               max_commit={item.max_commit}
               commit={item.commits.length}
               commits={item.commits}
-              onClick={() => navigate(`/commit/${item.challenge_id}`)}
+              onClick={() => navigate(`/challenge/${item.challenge_id}`)}
             />
           ))
         ) : (
@@ -176,7 +176,7 @@ export const Index: FC = () => {
               max_commit={item.max_commit}
               commit={item.commits.length}
               commits={item.commits}
-              onClick={() => navigate(`/commit/${item.challenge_id}`)}
+              onClick={() => navigate(`/challenge/${item.challenge_id}`)}
             />
           ))}
         </Stack>

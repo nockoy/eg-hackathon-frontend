@@ -1,11 +1,11 @@
 import { FC } from "react";
-import { Index } from "../../features/commit/pages";
+import { Index } from "../../features/challengeDetail/pages";
 import { DefaultLayout } from "../../components/Layout/DefaultLayout";
 import { Header } from "../../components/Header/Header";
 import { BottomNavBar } from "../../components/BottomNavBar/BottomNavBar";
 import styled from "styled-components";
 
-export const Commit: FC = () => {
+export const ChallengeDetail: FC = () => {
   return (
     <DefaultLayout>
       <Header />
