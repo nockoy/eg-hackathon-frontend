@@ -137,7 +137,8 @@ export const Index: FC = () => {
         description: form.values.description,
         max_commit: parseInt(form.values.max_commit),
         end_date: formattedDate, // フォーマットした日付を使用
-        // deposit: form.values.deposit, // TODO: 追加
+        deposit: parseInt(form.values.deposit),
+        payment_method: "PayPal", // TODO: 選択できるように
       });
 
       navigate("/");

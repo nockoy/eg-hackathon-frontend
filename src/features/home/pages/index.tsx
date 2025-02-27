@@ -36,7 +36,7 @@ export const Index: FC = () => {
   // const [data, setData] = useState<Data[]>([]);
   const [ongoingData, setOngoingData] = useState<Data[]>([]);
   const [completedData, setCompletedData] = useState<Data[]>([]);
-  const { userId, nickname } = useContext(UserContext);
+  const { userId } = useContext(UserContext);
 
   // fetchDataを非同期で呼び出し、結果を待つ
   const fetchDataAndLog = async () => {
@@ -73,9 +73,6 @@ export const Index: FC = () => {
 
   return (
     <_Stack>
-      <Text fz="24" fw={700}>
-        あなたはid: {userId} でログインしている{nickname}さんです。
-      </Text>
       <Group justify="space-between">
         <Button
           w="47%"
