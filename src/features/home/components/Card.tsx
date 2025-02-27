@@ -173,25 +173,33 @@ const _Card = styled.div`
   flex-direction: column;
   align-items: center;
   border-radius: 16px;
-  border: 1px solid #e0e0e0;
+  border: 1px solid #e9e9e9;
   padding: 16px;
-  box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.05);
+  box-shadow: 0px 0px 2px 1px rgba(0, 0, 0, 0.08);
   cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: 0px 6px 16px rgba(0, 0, 0, 0.12);
+  }
 `;
 
 const _Text = styled.div`
-  font-size: 16px;
-  font-weight: bold;
-  line-height: 1.6;
+  font-size: 18px;
+  font-weight: 700;
+  line-height: 1.4;
+  color: #333;
 `;
 
 const _Date = styled.div`
   font-size: 14px;
   line-height: 1.6;
+  color: #666;
 `;
 
 const _OrangeSpan = styled.span`
-  color: #ffa500;
+  color: #ff9500;
   font-weight: bold;
   font-size: 26px;
 `;
@@ -209,6 +217,7 @@ const _OrangeSpan = styled.span`
 // `;
 
 const _Span = styled.span`
-  /* font-weight: bold; */
   font-size: 22px;
+  font-weight: 500;
+  color: #444;
 `;
