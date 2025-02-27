@@ -47,7 +47,7 @@ export const Index: FC = () => {
     data: Data[] | null;
     timestamp: number | null;
   } => {
-    const cachedData = localStorage.getItem(CACHE_KEY);
+    const cachedData = sessionStorage.getItem(CACHE_KEY);
     if (cachedData) {
       const { data, timestamp } = JSON.parse(cachedData);
       return { data, timestamp };
@@ -61,7 +61,7 @@ export const Index: FC = () => {
       data,
       timestamp: Date.now(),
     };
-    localStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
+    sessionStorage.setItem(CACHE_KEY, JSON.stringify(cacheData));
   };
 
   // fetchDataを非同期で呼び出し、結果を待つ

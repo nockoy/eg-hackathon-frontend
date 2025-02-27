@@ -77,7 +77,7 @@ export const Index: FC = () => {
     timestamp: number | null;
   } => {
     const cacheKey = `${CACHE_KEY_PREFIX}${challengeId}`;
-    const cachedData = localStorage.getItem(cacheKey);
+    const cachedData = sessionStorage.getItem(cacheKey);
     if (cachedData) {
       try {
         const { data, timestamp } = JSON.parse(cachedData);
@@ -97,7 +97,7 @@ export const Index: FC = () => {
       data,
       timestamp: Date.now(),
     };
-    localStorage.setItem(cacheKey, JSON.stringify(cacheData));
+    sessionStorage.setItem(cacheKey, JSON.stringify(cacheData));
   };
 
   const fetchDataAndLog = async () => {
@@ -180,7 +180,7 @@ export const Index: FC = () => {
         const result = await postReport(challengeId, form.values.description);
         if (result.success) {
           // レポート送信成功後、キャッシュを削除して最新データを取得
-          localStorage.removeItem(`${CACHE_KEY_PREFIX}${challengeId}`);
+          sessionStorage.removeItem(`${CACHE_KEY_PREFIX}${challengeId}`);
           navigate("/");
         } else {
           console.error("レポート送信に失敗しました");
