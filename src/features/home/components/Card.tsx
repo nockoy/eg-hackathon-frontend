@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { formatDate } from "../../../util/formatDate";
 
 type CardProps = {
+  status: "ongoing" | "completed";
   challenge_id: number;
   title: string;
   start_at: string;
@@ -20,6 +21,7 @@ type CardProps = {
 };
 
 export const Card = ({
+  status,
   title,
   start_at,
   end_at,
@@ -127,6 +129,7 @@ export const Card = ({
         <Stack gap={4}>
           <Text>
             {timeRatio < 1 ? (
+              // 達成できた場合はcommitsのラストの日付から計算したい
               <>
                 残り
                 {remainingDays > 0 && (

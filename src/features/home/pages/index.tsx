@@ -113,6 +113,7 @@ export const Index: FC = () => {
           ongoingData.map((item) => (
             <Card
               key={item.challenge_id}
+              status={"ongoing"}
               challenge_id={item.challenge_id}
               title={item.title}
               start_at={item.created_at.toString()}
@@ -140,6 +141,7 @@ export const Index: FC = () => {
           completedData.map((item) => (
             <Card
               key={item.challenge_id}
+              status={"completed"}
               challenge_id={item.challenge_id}
               title={item.title}
               start_at={item.created_at.toString()}
