@@ -1,4 +1,12 @@
-import { Button, Stack, Textarea, TextInput, Text, Group, Loader } from "@mantine/core";
+import {
+  Button,
+  Stack,
+  Textarea,
+  TextInput,
+  Text,
+  Group,
+  Loader,
+} from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { FC, useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -57,9 +65,11 @@ export const Index: FC = () => {
       try {
         // ローディング開始
         setIsLoading(true);
-        
+
         // APIリクエスト
-        const response = await api.get("/ai?input=" + encodeURIComponent(consultantForm.values.consultation));
+        const response = await api.get(
+          "/ai?input=" + encodeURIComponent(consultantForm.values.consultation)
+        );
 
         // const response = {
         //   data: {
@@ -398,5 +408,5 @@ const _Stack = styled.div`
   flex-direction: column;
   gap: 32px;
   padding-top: 80px;
-  padding-bottom: calc(80px + env(safe-area-inset-bottom) * 0.2);
+  padding-bottom: 160px;
 `;
