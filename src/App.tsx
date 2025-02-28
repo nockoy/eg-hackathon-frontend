@@ -12,6 +12,7 @@ import { Community } from "./pages/Community";
 import { Setting } from "./pages/Setting";
 import { ChallengeDetail } from "./pages/ChallengeDetail";
 import { Analysis } from "./pages/Analysis";
+import { PaymentSuccess } from "./pages/PaymentSuccess";
 
 export const App = () => {
   const { user, loading } = useAuthContext();
@@ -38,6 +39,7 @@ export const App = () => {
         <Route path="/community" element={<Community />} />
         <Route path="/setting" element={<Setting />} />
         <Route path="/authentication" element={<Authentication />} />
+        <Route path="/payment-success" element={<PaymentSuccess />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </MantineProvider>

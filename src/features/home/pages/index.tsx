@@ -12,7 +12,7 @@ import {
   saveDataToCache,
   CACHE_EXPIRY,
 } from "../api/index";
-
+import PayPayButton from "../../../components/PayPayButton/PayPayButton";
 export const Index: FC = () => {
   const navigate = useNavigate();
   const [ongoingData, setOngoingData] = useState<HomeData[]>([]);
@@ -128,6 +128,13 @@ export const Index: FC = () => {
           チャレンジ作成
         </Button>
       </Group>
+
+      <PayPayButton
+        amount={100}
+        description="Committyチャレンジ参加費"
+        onSuccess={() => console.log("支払い処理が開始されました")}
+        onError={(error) => console.error("支払いエラー:", error)}
+      />
 
       <Stack gap={16}>
         <Text fz="24" fw={700}>
