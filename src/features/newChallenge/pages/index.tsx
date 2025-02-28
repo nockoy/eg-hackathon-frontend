@@ -252,19 +252,7 @@ export const Index: FC = () => {
                   }}
                 />
               </Stack>
-              <TextInput
-                required
-                type="number"
-                size="md"
-                placeholder="例）2"
-                label="報告回数"
-                radius="8px"
-                value={form.values.max_commit}
-                onChange={(event) =>
-                  form.setFieldValue("max_commit", event.currentTarget.value)
-                }
-                error={form.errors.max_commit && "回数を入力してください"}
-              />
+
               <TextInput
                 required
                 type="number"
@@ -278,10 +266,23 @@ export const Index: FC = () => {
                 }
                 error={form.errors.deposit && "金額を入力してください"}
               />
+              <TextInput
+                required
+                type="number"
+                size="md"
+                placeholder="例）2"
+                label="報告回数"
+                radius="8px"
+                value={form.values.max_commit}
+                onChange={(event) =>
+                  form.setFieldValue("max_commit", event.currentTarget.value)
+                }
+                error={form.errors.max_commit && "回数を入力してください"}
+              />
               <Textarea
                 label="報告するタイミング"
                 size="md"
-                placeholder="プランクを2分やる"
+                placeholder="プランクを2分やったら報告"
                 autosize
                 minRows={3}
                 value={form.values.description}

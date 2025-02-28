@@ -10,6 +10,7 @@ import {
 } from "@mantine/core";
 import { useNavigate } from "react-router-dom";
 import { IconCheck, IconHome } from "@tabler/icons-react";
+import api from "../api/axios";
 
 export const PaymentSuccess = () => {
   const navigate = useNavigate();
@@ -22,7 +23,7 @@ export const PaymentSuccess = () => {
 
     // 必要に応じてバックエンドに支払い完了を通知
     if (paymentId) {
-      // api.post('/api/payments/confirm', { payment_id: paymentId });
+      api.get(`/api/paypay/payment-status?orderId=${paymentId}`);
     }
   }, []);
 
