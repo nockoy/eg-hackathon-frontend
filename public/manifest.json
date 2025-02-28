@@ -3,6 +3,14 @@
   "short_name": "Committy",
   "description": "結果にComittする",
   "start_url": "/",
+  "scope": "/",
+  "related_applications": [
+    {
+      "platform": "webapp",
+      "url": "https://committy.vercel.app/manifest.json"
+    }
+  ],
+  "prefer_related_applications": true,
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#ffffff",
