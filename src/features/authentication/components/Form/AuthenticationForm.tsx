@@ -14,18 +14,20 @@ import { useForm } from "@mantine/form";
 import { useToggle } from "@mantine/hooks";
 import { GoogleButton } from "../Button/GoogleButton";
 import styled from "styled-components";
-import { ReactNode, useContext } from "react";
+import { ReactNode, useContext, useState } from "react";
 import { useAuth } from "../../../../hooks/useAuth";
 import api from "../../../../api/axios";
 import { UserContext } from "../../../../contexts/UserContext";
 import { getAuth } from "firebase/auth";
 import { useNavigate } from "react-router-dom";
+import { notifications } from "@mantine/notifications";
 
 export const AuthenticationForm = (props: PaperProps) => {
   const { setUser } = useContext(UserContext);
   const { signInWithGoogle, signIn, signUp, loading } = useAuth();
   const [type, toggle] = useToggle(["login", "register"]);
   const navigate = useNavigate();
+  const [error, setError] = useState<string | null>(null);
 
   const form = useForm({
     initialValues: {
@@ -43,11 +45,21 @@ export const AuthenticationForm = (props: PaperProps) => {
   });
 
   const onSubmit = form.onSubmit(async (values) => {
+    setError(null); // エラーをリセット
+
     if (type === "login") {
       try {
         const signInResult = await signIn(values.email, values.password);
         if (!signInResult.success) {
-          console.error(signInResult.message);
+          setError(
+            signInResult.message ||
+              "ログインに失敗しました。メールアドレスとパスワードを確認してください。"
+          );
+          notifications.show({
+            title: "ログインエラー",
+            message: signInResult.message || "ログインに失敗しました",
+            color: "red",
+          });
           return;
         }
 
@@ -59,22 +71,53 @@ export const AuthenticationForm = (props: PaperProps) => {
             userId: res.data.id,
             nickname: res.data.name,
           });
+
+          notifications.show({
+            title: "ログイン成功",
+            message: "ようこそ！",
+            color: "green",
+          });
+
           navigate("/");
         } catch (error) {
           console.error("APIエラー:", error);
+          setError(
+            "サーバーとの通信に失敗しました。しばらく経ってからお試しください。"
+          );
+          notifications.show({
+            title: "サーバーエラー",
+            message: "サーバーとの通信に失敗しました",
+            color: "red",
+          });
         }
       } catch (error) {
         console.error("認証エラー:", error);
+        setError(
+          "認証中にエラーが発生しました。しばらく経ってからお試しください。"
+        );
+        notifications.show({
+          title: "認証エラー",
+          message: "認証中にエラーが発生しました",
+          color: "red",
+        });
       }
     } else {
       try {
-        try {
-          const signUpResult = await signUp(values.email, values.password);
-          if (!signUpResult.success) {
-            console.error(signUpResult.message);
-            return;
-          }
+        const signUpResult = await signUp(values.email, values.password);
+        if (!signUpResult.success) {
+          setError(
+            signUpResult.message ||
+              "アカウント作成に失敗しました。別のメールアドレスをお試しください。"
+          );
+          notifications.show({
+            title: "登録エラー",
+            message: signUpResult.message || "アカウント作成に失敗しました",
+            color: "red",
+          });
+          return;
+        }
 
+        try {
           const res = await api.post("/auth/signup", {
             email: values.email,
             name: values.nickname,
@@ -85,21 +128,51 @@ export const AuthenticationForm = (props: PaperProps) => {
             userId: res.data.id,
             nickname: res.data.name,
           });
+
+          notifications.show({
+            title: "登録成功",
+            message: "アカウントが作成されました！",
+            color: "green",
+          });
+
           navigate("/");
         } catch (error) {
           console.error("APIエラー:", error);
+          setError(
+            "サーバーとの通信に失敗しました。しばらく経ってからお試しください。"
+          );
+          notifications.show({
+            title: "サーバーエラー",
+            message: "サーバーとの通信に失敗しました",
+            color: "red",
+          });
         }
       } catch (error) {
         console.error("認証エラー:", error);
+        setError(
+          "認証中にエラーが発生しました。しばらく経ってからお試しください。"
+        );
+        notifications.show({
+          title: "認証エラー",
+          message: "認証中にエラーが発生しました",
+          color: "red",
+        });
       }
     }
   });
 
   const handleGoogleSignIn = async () => {
+    setError(null); // エラーをリセット
+
     try {
       const googleResult = await signInWithGoogle();
       if (!googleResult.success) {
-        console.error(googleResult.message);
+        setError(googleResult.message || "Googleログインに失敗しました。");
+        notifications.show({
+          title: "Googleログインエラー",
+          message: googleResult.message || "Googleログインに失敗しました",
+          color: "red",
+        });
         return;
       }
 
@@ -119,8 +192,15 @@ export const AuthenticationForm = (props: PaperProps) => {
             userId: res.data.id,
             nickname: res.data.name,
           });
+
+          notifications.show({
+            title: "ログイン成功",
+            message: "ようこそ！",
+            color: "green",
+          });
+
           navigate("/");
-        } catch  {
+        } catch {
           // ログインに失敗した場合（ユーザーが存在しない場合）
           console.log("サインアップを試みます");
 
@@ -135,14 +215,37 @@ export const AuthenticationForm = (props: PaperProps) => {
               userId: signupRes.data.id,
               nickname: signupRes.data.name,
             });
+
+            notifications.show({
+              title: "登録成功",
+              message: "アカウントが作成されました！",
+              color: "green",
+            });
+
             navigate("/");
           } catch (signupError) {
             console.error("サインアップエラー:", signupError);
+            setError(
+              "アカウント作成に失敗しました。しばらく経ってからお試しください。"
+            );
+            notifications.show({
+              title: "サインアップエラー",
+              message: "アカウント作成に失敗しました",
+              color: "red",
+            });
           }
         }
       }
     } catch (error) {
       console.error("Google認証エラー:", error);
+      setError(
+        "Google認証中にエラーが発生しました。しばらく経ってからお試しください。"
+      );
+      notifications.show({
+        title: "Google認証エラー",
+        message: "Google認証中にエラーが発生しました",
+        color: "red",
+      });
     }
   };
 
@@ -151,6 +254,8 @@ export const AuthenticationForm = (props: PaperProps) => {
       <_TextWrapper>
         <_Logo src="/img/committy_round.svg" alt="Committy" />
       </_TextWrapper>
+
+      {error && <ErrorMessage>{error}</ErrorMessage>}
 
       <Group grow mb="md" mt="md">
         <GoogleButton radius="xl" onClick={handleGoogleSignIn}>
@@ -255,4 +360,14 @@ const _Paper = styled(Paper)<PaperPropsWithChildren>`
   width: 100%;
   max-width: 340px;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+`;
+
+const ErrorMessage = styled.div`
+  color: #fa5252;
+  background-color: #fff5f5;
+  padding: 10px;
+  border-radius: 4px;
+  margin: 10px 0;
+  font-size: 14px;
+  text-align: center;
 `;
