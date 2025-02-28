@@ -280,7 +280,7 @@ export const Index: FC = () => {
             <span
               style={{ color: "#555", display: "block", marginBottom: "4px" }}
             >
-              やること：
+              報告するタイミング：
             </span>
             {data.description}
           </Text>

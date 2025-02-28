@@ -279,7 +279,7 @@ export const Index: FC = () => {
                 error={form.errors.deposit && "金額を入力してください"}
               />
               <Textarea
-                label="具体的にやること"
+                label="報告するタイミング"
                 size="md"
                 placeholder="プランクを2分やる"
                 autosize
@@ -382,7 +382,7 @@ export const Index: FC = () => {
               {form.values.description && (
                 <>
                   <Text size="sm" fw={500} color="dimmed" mt={8}>
-                    やること
+                    報告するタイミング
                   </Text>
                   <Text
                     size="md"
