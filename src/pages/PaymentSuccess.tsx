@@ -1,4 +1,4 @@
-import  { useEffect } from "react";
+import { useEffect } from "react";
 import {
   Title,
   Text,
@@ -17,17 +17,13 @@ export const PaymentSuccess = () => {
 
   useEffect(() => {
     // URLパラメータから支払い情報を取得することも可能
-    // const urlParams = new URLSearchParams(window.location.search);
-    // const paymentId = urlParams.get("paymentId");
+    const urlParams = new URLSearchParams(window.location.search);
+    const paymentId = urlParams.get("paymentId");
 
     // 必要に応じてバックエンドに支払い完了を通知
-    // if (paymentId) {
-    //   // api.post('/api/payments/confirm', { payment_id: paymentId });
-    // }
-
-    // 成功音を再生（オプション）
-    const successSound = new Audio("/sounds/success.mp3");
-    successSound.play().catch((e) => console.log("音声再生エラー:", e));
+    if (paymentId) {
+      // api.post('/api/payments/confirm', { payment_id: paymentId });
+    }
   }, []);
 
   return (
@@ -51,11 +47,7 @@ export const PaymentSuccess = () => {
         }}
       >
         <Stack align="center" gap={32} p={24}>
-          <ThemeIcon
-            size={80}
-            radius={100}
-            color="green"
-          >
+          <ThemeIcon size={80} radius={100} color="green">
             <IconCheck size={50} />
           </ThemeIcon>
 
