@@ -20,6 +20,24 @@ type CardProps = {
   onClick: () => void;
 };
 
+// 日時の差分を計算する関数
+const calculateTimeDifference = (
+  endDate: string | Date,
+  lastCommitDate: string | Date
+) => {
+  const end = new Date(endDate);
+  const lastCommit = new Date(lastCommitDate);
+  const diffTime = end.getTime() - lastCommit.getTime();
+
+  const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+  const diffHours = Math.floor(
+    (diffTime % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+  );
+  const diffMinutes = Math.floor((diffTime % (1000 * 60 * 60)) / (1000 * 60));
+
+  return { diffDays, diffHours, diffMinutes };
+};
+
 export const Card = ({
   status,
   title,
@@ -31,6 +49,7 @@ export const Card = ({
   progress,
   max_commit,
   commit,
+  commits,
   onClick,
 }: CardProps) => {
   const [remainingDays, setRemainingDays] = useState(0);
@@ -99,15 +118,27 @@ export const Card = ({
                 >
                   ¥ {deposit.toLocaleString()}
                 </Text>
-                <Text
-                  fz="32"
-                  fw={700}
-                  lh={1.2}
-                  c="red"
-                  style={{ whiteSpace: "nowrap" }}
-                >
-                  - ¥ {(deposit - refund).toLocaleString()}
-                </Text>
+                {max_commit - commit > 0 ? (
+                  <Text
+                    fz="32"
+                    fw={700}
+                    lh={1.2}
+                    c="red"
+                    style={{ whiteSpace: "nowrap" }}
+                  >
+                    - ¥ {(deposit - refund).toLocaleString()}
+                  </Text>
+                ) : (
+                  <Text
+                    fz="32"
+                    fw={700}
+                    lh={1.2}
+                    c="green"
+                    style={{ whiteSpace: "nowrap" }}
+                  >
+                    達成！
+                  </Text>
+                )}
               </>
             )}
           </Stack>
@@ -128,7 +159,31 @@ export const Card = ({
         </Stack>
         <Stack gap={4}>
           <Text>
-            {timeRatio < 1 ? (
+            {commit === max_commit ? (
+              <>
+                残り
+                {(() => {
+                  const { diffDays, diffHours, diffMinutes } =
+                    calculateTimeDifference(
+                      end_at,
+                      commits[commits.length - 1]
+                    );
+
+                  return (
+                    <>
+                      {diffDays > 0 && (
+                        <>
+                          <_Span> {diffDays}</_Span>日&nbsp;
+                        </>
+                      )}
+                      <_Span>{diffHours}</_Span>時間
+                      <_Span>{diffMinutes}</_Span>分
+                    </>
+                  );
+                })()}
+                で達成しました
+              </>
+            ) : 0 <= timeRatio && timeRatio < 1 ? (
               // 達成できた場合はcommitsのラストの日付から計算したい
               <>
                 残り
