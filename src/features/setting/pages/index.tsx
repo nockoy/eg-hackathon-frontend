@@ -111,9 +111,9 @@ export const Index: FC = () => {
           <Paper p="xs" withBorder radius="md">
             <Stack gap={0} align="center">
               <Text size="xs" c="dimmed">
-                総獲得額
+                総損失額
               </Text>
-              <Text fw={700} c="green.6">
+              <Text fw={700} c="red.6">
                 ¥12,000
               </Text>
             </Stack>
