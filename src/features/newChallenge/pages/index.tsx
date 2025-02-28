@@ -9,7 +9,6 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { FC, useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { CustomDatePicker } from "../components/DatePicker/DatePicker";
 import api from "../../../api/axios";
@@ -28,7 +27,6 @@ export const Index: FC = () => {
     date.setDate(date.getDate() + 7);
     return date;
   });
-  const navigate = useNavigate();
   const { userId } = useContext(UserContext);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -118,6 +116,11 @@ export const Index: FC = () => {
   const handleClickCreate = async () => {
     console.log("create");
     console.log(form.values);
+    form.validate();
+
+    if (!form.isValid()) {
+      return;
+    }
 
     // 日付を「2025-03-05 13:12:00」形式に変換（秒は00に固定）
     const date = new Date(form.values.end_at);
@@ -131,19 +134,42 @@ export const Index: FC = () => {
     const formattedDate = `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
 
     try {
-      await api.post("/challenges", {
+      // ローディング状態を開始
+      setIsLoading(true);
+
+      // チャレンジ作成とPayPay支払いリクエスト
+      const response = await api.post("/challenges", {
         user_id: parseInt(userId),
         title: form.values.title,
         description: form.values.description,
         max_commit: parseInt(form.values.max_commit),
-        end_date: formattedDate, // フォーマットした日付を使用
+        end_date: formattedDate,
         deposit: parseInt(form.values.deposit),
-        payment_method: "PayPal", // TODO: 選択できるように
+        payment_method: "PayPay", // TODO: 選択できるように
       });
 
-      navigate("/");
+      // レスポンスの検証
+      if (response.data.status !== "ok") {
+        throw new Error("決済リクエストの作成に失敗しました");
+      }
+
+      // PayPayのQRコードURLを取得
+      const paymentUrl = response.data.data.url;
+
+      if (!paymentUrl) {
+        throw new Error("PayPayのURLが見つかりません");
+      }
+
+      // PayPayの支払い画面にリダイレクト
+      console.log("リダイレクト先URL:", paymentUrl);
+      window.location.href = paymentUrl;
     } catch (error) {
-      console.error(error);
+      console.error("支払い処理エラー:", error);
+      // エラーメッセージを表示
+      alert("支払い処理中にエラーが発生しました。もう一度お試しください。");
+    } finally {
+      // 処理完了後、ローディング状態を終了
+      setIsLoading(false);
     }
   };
 
@@ -231,7 +257,7 @@ export const Index: FC = () => {
                 type="number"
                 size="md"
                 placeholder="例）2"
-                label="回数"
+                label="報告回数"
                 radius="8px"
                 value={form.values.max_commit}
                 onChange={(event) =>
@@ -253,9 +279,9 @@ export const Index: FC = () => {
                 error={form.errors.deposit && "金額を入力してください"}
               />
               <Textarea
-                label="やること"
+                label="具体的にやること"
                 size="md"
-                placeholder="目標をしっかりと書こう"
+                placeholder="プランクを2分やる"
                 autosize
                 minRows={3}
                 value={form.values.description}
@@ -394,7 +420,7 @@ export const Index: FC = () => {
               onClick={handleClickCreate}
               style={{ flex: 1, maxWidth: "45%" }}
             >
-              作成する
+              支払う
             </Button>
           </Group>
         </>

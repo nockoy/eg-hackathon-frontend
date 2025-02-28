@@ -33,7 +33,7 @@ import { useDisclosure } from "@mantine/hooks";
 
 export const Index: FC = () => {
   const { signOut } = useAuth();
-  const { userId, nickname } = useContext(UserContext);
+  const { nickname } = useContext(UserContext);
   const [darkMode, setDarkMode] = useState(false);
   const [notifications, setNotifications] = useState(true);
   const [opened, { open, close }] = useDisclosure(false);
@@ -82,9 +82,9 @@ export const Index: FC = () => {
           <Text fw={700} size="lg">
             {nickname || "ユーザー"}
           </Text>
-          <Text size="xs" c="dimmed">
+          {/* <Text size="xs" c="dimmed">
             ID: {userId}
-          </Text>
+          </Text> */}
         </Stack>
 
         <Text size="sm" c="dimmed" mb="md">

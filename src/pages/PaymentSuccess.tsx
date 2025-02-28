@@ -17,13 +17,13 @@ export const PaymentSuccess = () => {
 
   useEffect(() => {
     // URLパラメータから支払い情報を取得することも可能
-    const urlParams = new URLSearchParams(window.location.search);
-    const paymentId = urlParams.get("paymentId");
+    // const urlParams = new URLSearchParams(window.location.search);
+    // const paymentId = urlParams.get("paymentId");
 
     // 必要に応じてバックエンドに支払い完了を通知
-    if (paymentId) {
-      // api.post('/api/payments/confirm', { payment_id: paymentId });
-    }
+    // if (paymentId) {
+    //   // api.post('/api/payments/confirm', { payment_id: paymentId });
+    // }
 
     // 成功音を再生（オプション）
     const successSound = new Audio("/sounds/success.mp3");
@@ -84,7 +84,7 @@ export const PaymentSuccess = () => {
           </Text>
 
           <Stack gap={16} w="100%">
-            <Stack align="center" gap={4}>
+            {/* <Stack align="center" gap={4}>
               <Text size="sm" c="dimmed">
                 取引ID:
               </Text>
@@ -92,7 +92,7 @@ export const PaymentSuccess = () => {
                 {new URLSearchParams(window.location.search).get("paymentId") ||
                   "N/A"}
               </Text>
-            </Stack>
+            </Stack> */}
             <Stack align="center" gap={4}>
               <Text size="sm" c="dimmed">
                 支払日時:
