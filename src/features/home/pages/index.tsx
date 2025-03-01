@@ -1,5 +1,5 @@
 import { Button, Group, Stack, Text } from "@mantine/core";
-import { FC, useContext, useEffect, useState } from "react";
+import { FC, useContext, useEffect, useState, useRef } from "react";
 import styled from "styled-components";
 import { Card } from "../components/Card/Card";
 import { useNavigate } from "react-router-dom";
@@ -19,6 +19,7 @@ export const Index: FC = () => {
   const [completedData, setCompletedData] = useState<HomeData[]>([]);
   const [loading, setLoading] = useState(true);
   const { userId } = useContext(UserContext);
+  const pageRef = useRef<HTMLDivElement>(null);
 
   // fetchDataを非同期で呼び出し、結果を待つ
   const fetchDataAndLog = async () => {
@@ -95,11 +96,24 @@ export const Index: FC = () => {
 
   useEffect(() => {
     fetchDataAndLog();
+    
+    // ページマウント時にスクロール位置をリセット
+    window.scrollTo(0, 0);
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  // チャレンジ詳細ページへの遷移関数
+  const navigateToChallenge = (challengeId: number) => {
+    // スクロール位置を保存（オプション）
+    sessionStorage.setItem('homeScrollPosition', window.scrollY.toString());
+    
+    // 遷移
+    navigate(`/challenge/${challengeId}`);
+  };
+
   return (
-    <_Stack>
+    <_Stack ref={pageRef}>
       <Group justify="space-between">
         <Button
           w="47%"
@@ -154,7 +168,7 @@ export const Index: FC = () => {
               max_commit={item.max_commit}
               commit={item.commits.length}
               commits={item.commits}
-              onClick={() => navigate(`/challenge/${item.challenge_id}`)}
+              onClick={() => navigateToChallenge(item.challenge_id)}
             />
           ))
         ) : (
@@ -187,7 +201,7 @@ export const Index: FC = () => {
               max_commit={item.max_commit}
               commit={item.commits.length}
               commits={item.commits}
-              onClick={() => navigate(`/challenge/${item.challenge_id}`)}
+              onClick={() => navigateToChallenge(item.challenge_id)}
             />
           ))
         ) : (

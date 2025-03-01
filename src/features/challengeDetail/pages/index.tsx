@@ -177,6 +177,9 @@ export const Index: FC = () => {
   };
 
   useEffect(() => {
+    // ページマウント時にスクロール位置をリセット
+    window.scrollTo(0, 0);
+
     fetchDataAndLog();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [challengeId]);
